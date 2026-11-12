@@ -48,6 +48,46 @@ export async function prepareBatch(files: File[], kind: CaptureCategory, note: s
   return items;
 }
 
+// Bound the actual stream, not only Content-Length (which can be absent or false).
+export async function readOriginalArchive(response: Response, signal: AbortSignal): Promise<Uint8Array> {
+  const limit = MAX_FILE + 1024 * 1024;
+  const declared = Number(response.headers.get("content-length"));
+  if (declared > limit) {
+    await response.body?.cancel();
+    throw new Error("原件归档超过大小限制，已停止。");
+  }
+  if (!response.body) throw new Error("原件响应为空，已停止。");
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  const abort = () => {
+    void reader.cancel().catch(() => {});
+  };
+  signal.addEventListener("abort", abort, { once: true });
+  try {
+    while (true) {
+      signal.throwIfAborted();
+      const { done, value } = await reader.read();
+      signal.throwIfAborted();
+      if (done) break;
+      size += value.length;
+      if (size > limit) throw new Error("原件归档超过大小限制，已停止。");
+      chunks.push(value);
+    }
+    const result = new Uint8Array(size);
+    let offset = 0;
+    for (const chunk of chunks) {
+      result.set(chunk, offset);
+      offset += chunk.length;
+    }
+    return result;
+  } finally {
+    signal.removeEventListener("abort", abort);
+    await reader.cancel().catch(() => {});
+    reader.releaseLock();
+  }
+}
+
 export async function ingestBatchSource(
   item: BatchSource,
   signal: AbortSignal,
@@ -72,7 +112,7 @@ export async function ingestBatchSource(
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
     if (!response.ok) throw new Error("无法读取原件，已停止。");
-    const bytes = new Uint8Array(await response.arrayBuffer());
+    const bytes = await readOriginalArchive(response, signal);
     if (bytes.length > MAX_FILE + 1024 * 1024) throw new Error("原件归档异常，已停止。");
     let entryCount = 0;
     const entries = unzipSync(bytes, {

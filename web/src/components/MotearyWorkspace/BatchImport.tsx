@@ -13,6 +13,7 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
   const [error, setError] = useState("");
   const controller = useRef<AbortController | null>(null);
   const lock = useRef(false);
+  const fileInput = useRef<HTMLInputElement | null>(null);
   useEffect(() => () => controller.current?.abort(), []);
   useEffect(() => {
     if (!busy) return;
@@ -81,6 +82,7 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
         <label className="text-sm">
           选择多个资料
           <input
+            ref={fileInput}
             aria-label="批量资料文件"
             type="file"
             multiple
@@ -130,7 +132,9 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
           <ul className="my-4 space-y-2 text-sm">
             {items.map((item) => (
               <li key={item.id} className="flex flex-wrap justify-between gap-2 border-b border-border py-2">
-                <span className="break-all">{item.filename}</span>
+                <span className="break-all">
+                  {item.filename} · {(item.data.length / 1024).toFixed(1)} KiB
+                </span>
                 <span>{states[item.id] ?? "已预检，尚未保存"}</span>
               </li>
             ))}
@@ -139,6 +143,21 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
             保存为私有记录 / 复核重试
           </Button>
         </>
+      )}
+      {files.length > 0 && !busy && (
+        <Button
+          type="button"
+          variant="outline"
+          className="ms-2"
+          onClick={() => {
+            setFiles([]);
+            setNote("");
+            reset();
+            if (fileInput.current) fileInput.current.value = "";
+          }}
+        >
+          清空本页队列
+        </Button>
       )}
       {busy && controller.current && (
         <Button type="button" variant="outline" onClick={() => controller.current?.abort()} className="ms-2">
@@ -156,7 +175,8 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
         </p>
       )}
       <p className="mt-3 text-xs text-muted-foreground">
-        选择的文件与队列只留在本页内存。中断后重新选择同一文件和相同分类、批注即可复核；此界面与 CLI 的导入身份各自独立。
+        清空队列仅移除本页文件与批注，不删除已保存记录。选择的文件与队列只留在本页内存。中断后重新选择同一文件和相同分类、批注即可复核；此界面与
+        CLI 的导入身份各自独立。
       </p>
     </section>
   );

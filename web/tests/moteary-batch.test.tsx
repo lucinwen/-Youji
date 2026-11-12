@@ -4,7 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { unzipSync } from "fflate";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import BatchImport from "@/components/MotearyWorkspace/BatchImport";
-import { ingestBatchSource, prepareBatch } from "@/components/MotearyWorkspace/batchImport";
+import { ingestBatchSource, MAX_FILE, prepareBatch, readOriginalArchive } from "@/components/MotearyWorkspace/batchImport";
 import { Visibility } from "@/types/proto/api/memo_service_pb";
 
 const { getMemo, createMemo, createAttachment } = vi.hoisted(() => ({ getMemo: vi.fn(), createMemo: vi.fn(), createAttachment: vi.fn() }));
@@ -84,5 +84,61 @@ describe("batch sources", () => {
     expect(screen.queryByText("private details")).not.toBeInTheDocument();
     expect(createMemo).toHaveBeenCalledOnce();
     expect(screen.getByText("已预检，尚未保存")).toBeInTheDocument();
+  });
+});
+
+describe("bounded original download", () => {
+  it("preserves chunks without trusting Content-Length", async () => {
+    const response = new Response(
+      new ReadableStream({
+        start(controller) {
+          controller.enqueue(new Uint8Array([1, 2]));
+          controller.enqueue(new Uint8Array([3]));
+          controller.close();
+        },
+      }),
+    );
+    expect(await readOriginalArchive(response, new AbortController().signal)).toEqual(new Uint8Array([1, 2, 3]));
+  });
+  it("rejects a declared oversized archive before consuming it", async () => {
+    const cancel = vi.fn();
+    const response = new Response(new ReadableStream({ cancel }), { headers: { "content-length": String(MAX_FILE * 2) } });
+    await expect(readOriginalArchive(response, new AbortController().signal)).rejects.toThrow("大小限制");
+    expect(cancel).toHaveBeenCalledOnce();
+  });
+  it("cancels an oversized stream even when server declares a small size", async () => {
+    const cancel = vi.fn();
+    const response = new Response(
+      new ReadableStream({
+        start(controller) {
+          controller.enqueue(new Uint8Array(MAX_FILE + 1024 * 1024 + 1));
+        },
+        cancel,
+      }),
+      { headers: { "content-length": "1" } },
+    );
+    await expect(readOriginalArchive(response, new AbortController().signal)).rejects.toThrow("大小限制");
+    expect(cancel).toHaveBeenCalledOnce();
+  });
+  it("cancels a stalled download when the user stops", async () => {
+    const cancel = vi.fn();
+    const abort = new AbortController();
+    const response = new Response(new ReadableStream({ cancel }));
+    const promise = readOriginalArchive(response, abort.signal);
+    abort.abort();
+    await expect(promise).rejects.toThrow();
+    expect(cancel).toHaveBeenCalledOnce();
+  });
+  it("clears queued original bytes and notes without saving or deleting records", async () => {
+    render(<BatchImport onSaved={vi.fn()} userName="users/alice" />);
+    fireEvent.change(screen.getByLabelText("批量资料文件"), { target: { files: [file("private.txt")] } });
+    fireEvent.change(screen.getByLabelText("批量共同批注"), { target: { value: "private note" } });
+    fireEvent.click(screen.getByRole("button", { name: "预检这批资料" }));
+    await screen.findByText("已预检，尚未保存");
+    fireEvent.click(screen.getByRole("button", { name: "清空本页队列" }));
+    expect(screen.queryByText(/private.txt/)).not.toBeInTheDocument();
+    expect(screen.getByLabelText("批量共同批注")).toHaveValue("");
+    expect(createMemo).not.toHaveBeenCalled();
+    expect(createAttachment).not.toHaveBeenCalled();
   });
 });

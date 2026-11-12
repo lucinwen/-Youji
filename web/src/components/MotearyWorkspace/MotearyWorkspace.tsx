@@ -176,6 +176,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
         </section>
 
         <BatchImport
+          key={userName}
           userName={userName}
           onSaved={() => {
             void query.refetch();
