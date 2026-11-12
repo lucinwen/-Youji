@@ -4,6 +4,9 @@ from urllib.parse import quote,urlencode
 root=pathlib.Path(__file__).resolve().parents[2]
 binary=os.environ.get('MOTEARY_BINARY',str(root/'build/moteary'))
 s=importlib.util.spec_from_file_location('imp',root/'moteary/import_sources.py'); m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+import sys
+sys.path.insert(0,str(root/'moteary'))
+import import_long_text as longtext
 results=[]
 def check(name, ok, detail=None):
  results.append({'check':name,'passed':bool(ok),**({'detail':detail} if detail is not None else {})})
@@ -60,6 +63,35 @@ with tempfile.TemporaryDirectory(prefix='moteary-live-qa-') as d:
   check('21KB Chinese memo rejected against real 8192-byte quota before upload',rejected)
   check('Quota rejection leaves attachment count unchanged',len(client.call('GET','attachments').get('attachments',[]))==before_attachments)
   check('Quota rejection leaves memo count unchanged',len(client.call('GET','memos').get('memos',[]))==before_memos)
+  # Long-text explicit mode: interruption, resume, private search and original recovery.
+  longitem=m.prepare(large,'reference')
+  longplan=longtext.plan(longitem,8192)
+  original_ingest=client.ingest
+  seen=[0]
+  def interrupt_ingest(record):
+   seen[0]+=1
+   if seen[0]==3: raise RuntimeError('synthetic interruption')
+   return original_ingest(record)
+  client.ingest=interrupt_ingest
+  interrupted=False
+  try:longtext.ingest_long(client,longitem)
+  except RuntimeError as e:interrupted='Partial import: 2/' in str(e)
+  client.ingest=original_ingest
+  check('long text interruption reports partial state',interrupted)
+  longresult=longtext.ingest_long(client,longitem)
+  check('long text resume verifies prefix and completes remaining parts',longresult['status']=='complete' and longresult['records'][0]['status']=='already-imported' and longresult['records'][2]['status']=='imported')
+  longretry=longtext.ingest_long(client,longitem)
+  check('long text full retry creates no duplicate records',all(x['status']=='already-imported' for x in longretry['records']))
+  longmemos=[client.call('GET',x['name']) for x in longresult['records']]
+  check('long index and every part are private',all(x['visibility']=='PRIVATE' for x in longmemos))
+  recovered=''.join(x['content'].split('## 分段原文\n',1)[1] for x in longmemos[1:])
+  check('long chunks reconstruct exact UTF8 source without truncation',recovered.encode('utf8')==longitem['data'])
+  la=longmemos[0]['attachments'][0]
+  longfile='/file/'+la['name']+'/'+quote(la['filename'],safe='')
+  with zipfile.ZipFile(io.BytesIO(req(longfile,token=token).read())) as z:
+   check('long index archive preserves full original SHA256',hashlib.sha256(z.read(longitem['filename'])).hexdigest()==longitem['sha256'])
+  found=client.call('GET','memos?'+urlencode({'filter':scoped+' && content.contains("合成测试材料")'})).get('memos',[])
+  check('long text chunks retrievable with account scoped keyword',any(x['name']==longmemos[1]['name'] for x in found))
   # Batch CLI uses the real isolated service, not a mock.
   batch_files=[]
   for filename,kind,body in [('batch-diary.txt','diary','批量合成日记'),('batch-work.md','work','批量合成工作资料')]:
@@ -102,8 +134,22 @@ with tempfile.TemporaryDirectory(prefix='moteary-live-qa-') as d:
    try:req(route,token=other_token).close();status=200
    except urllib.error.HTTPError as e:status=e.code
    check('other account cannot read private '+label,status in (401,403,404),{'status':status})
+  for lm in longmemos:
+   try:req('/api/'+lm['name'],token=other_token).close();status=200
+   except urllib.error.HTTPError as e:status=e.code
+   check('other account cannot read long record '+lm['name'],status in (401,403,404))
+  try:req(longfile,token=other_token).close();status=200
+  except urllib.error.HTTPError as e:status=e.code
+  check('other account cannot download long original',status in (401,403,404))
+  other_result=longtext.ingest_long(m.Client(base,other_token),longitem)
+  check('other account can independently import identical long source',other_result['index']!=longresult['index'] and other_result['status']=='complete')
   exported=req('/file/users/'+user+'/export',token=token).read()
   with zipfile.ZipFile(io.BytesIO(exported)) as full_export:
+   long_entries=[x for x in full_export.namelist() if x.endswith('/'+longitem['filename']+'.original.zip')]
+   check('export contains full long original archive',len(long_entries)==1)
+   if long_entries:
+    with zipfile.ZipFile(io.BytesIO(full_export.read(long_entries[0]))) as z:
+     check('exported long original exact bytes',z.read(longitem['filename'])==longitem['data'])
    original_entries=[x for x in full_export.namelist() if x.endswith('/'+item['filename']+'.original.zip')]
    check('upstream export includes original archive',len(original_entries)==1)
    if original_entries:
@@ -117,6 +163,13 @@ with tempfile.TemporaryDirectory(prefix='moteary-live-qa-') as d:
   token=json.load(req('/api/auth/signin',{'passwordCredentials':{'username':user,'password':password}}))['accessToken'];client=m.Client(base,token)
   check('restart preserves exact original and replay identity',client.ingest(item)['status']=='already-imported')
   check('restart preserves archived JPEG and replay identity',client.ingest(imageitem)['status']=='already-imported')
+  check('restart verifies complete long text and original',all(x['status']=='already-imported' for x in longtext.ingest_long(client,longitem)['records']))
+  altered=longmemos[1]
+  client.call('PATCH',altered['name']+'?updateMask=content',{'name':altered['name'],'content':altered['content']+'手动改动'})
+  conflict=False
+  try:longtext.ingest_long(client,longitem)
+  except RuntimeError:conflict=True
+  check('long text refuses to overwrite manual edits',conflict and client.call('GET',altered['name'])['content'].endswith('手动改动'))
   # Mutate synthetic private memo's visibility only, prove importer refuses changed scope.
   client.call('PATCH',memo['name']+'?updateMask=visibility',{'name':memo['name'],'visibility':'PUBLIC'})
   try:client.ingest(item);check('public scope mutation rejected on retry',False)
