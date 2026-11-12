@@ -81,3 +81,20 @@ describe("optional editor starter", () => {
     for (const draftKey of alternateKeys) expect(initialEditorState({ draftKey, defaultContent: "starter" }).content).toBe("starter");
   });
 });
+
+describe("private workspace keyword search", () => {
+  it("keeps creator, category and space restrictions while quoting search literally", () => {
+    const filter = buildSourceFilter("users/alice", "work", "spaces/team", 'meeting") || true || ("');
+    expect(filter).toContain(`content.contains(${JSON.stringify('meeting") || true || ("')})`);
+    expect(filter).toContain('space == "spaces/team"');
+    expect(filter).toContain('tag in ["work"]');
+    expect(filter).toContain("alice");
+  });
+  it("ignores empty search and bounds long terms", () => {
+    expect(buildSourceFilter("users/alice", "all", undefined, "  ")).toBe(buildSourceFilter("users/alice", "all"));
+    expect(buildSourceFilter("users/alice", "all", undefined, "x".repeat(201))).toContain(`content.contains("${"x".repeat(200)}")`);
+  });
+  it("shows the imported filename rather than boilerplate or private note as title", () => {
+    expect(getSourceTitle("# 拾微原始资料 · lecture.txt\n\n## 我的批注\nprivate note")).toBe("lecture.txt");
+  });
+});

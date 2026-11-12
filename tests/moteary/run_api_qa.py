@@ -37,6 +37,14 @@ with tempfile.TemporaryDirectory(prefix='moteary-live-qa-') as d:
    check('anonymous cannot read '+label,status in (401,403,404),{'status':status})
   listed=client.call('GET','memos?'+urlencode({'filter':'content.contains("铜蓝咖啡") && tag in ["拾微"]'}))
   check('Chinese keyword and source tag retrieve original',any(x['name']==memo['name'] for x in listed.get('memos',[])))
+  scoped='creator == '+json.dumps(created['name'])+' && tag in ["拾微"]'
+  for term,category,expected,label in [
+   ('铜蓝咖啡','reference',True,'Scoped Chinese search returns owned original'),
+   ('铜蓝咖啡','work',False,'Category search does not leak other category'),
+   ('missing") || true || ("','reference',False,'Quoted search cannot broaden CEL scope')]:
+   query=scoped+' && tag in ['+json.dumps(category)+'] && content.contains('+json.dumps(term)+')'
+   found=client.call('GET','memos?'+urlencode({'filter':query})).get('memos',[])
+   check(label,any(x['name']==memo['name'] for x in found)==expected)
   ui_source=(root/'web/src/components/MotearyWorkspace/MotearyWorkspace.tsx').read_text()
   sort=re.search(r'orderBy:\s*"([^"]+)"',ui_source).group(1)
   try:

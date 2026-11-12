@@ -5,7 +5,8 @@
 ## 入口
 - [运行、功能与数据边界](moteary/README.md)
 - [批量导入测试与未验证项](moteary/BATCH_QA_20261112.md)
-- [最新导入隐私与体验改进](moteary/IMPORT_PRIVACY_QA_20261112.md)
+- [关键词检索与实测](moteary/SEARCH_QA_20261112.md)
+- [导入隐私与体验改进](moteary/IMPORT_PRIVACY_QA_20261112.md)
 - [上游来源和固定提交](moteary/UPSTREAM.json)
 - [上游说明](moteary/UPSTREAM_README.md)
 - [MIT 许可证](LICENSE)；新增依赖许可位于 `moteary/licenses/`。

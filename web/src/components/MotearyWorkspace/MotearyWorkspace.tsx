@@ -86,6 +86,8 @@ function SourceCard({ memo }: { memo: Memo }) {
 
 export default function MotearyWorkspace({ userName }: { userName: string }) {
   const { spaces, isLoadingSpaces, isSpacesError } = useSpaceContext();
+  const [searchDraft, setSearchDraft] = useState("");
+  const [search, setSearch] = useState("");
   const [category, setCategory] = useState<CaptureCategory | "all">("all");
   const [spaceName, setSpaceName] = useState("");
   const [capture, setCapture] = useState<{ kind: SourceKind; category: CaptureCategory; space?: string } | null>(null);
@@ -94,7 +96,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
   const [savedName, setSavedName] = useState<string>();
   const listRef = useRef<HTMLElement>(null);
   const query = useInfiniteMemos({
-    filter: buildSourceFilter(userName, category, spaceName || undefined),
+    filter: buildSourceFilter(userName, category, spaceName || undefined, search),
     pageSize: 24,
     state: State.NORMAL,
     orderBy: "create_time desc",
@@ -311,6 +313,42 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
               </Button>
             </div>
           </div>
+          <form
+            className="mb-4 flex flex-wrap gap-2"
+            aria-label="搜索我的资料"
+            onSubmit={(event) => {
+              event.preventDefault();
+              setSearch(searchDraft.trim());
+            }}
+          >
+            <input
+              type="search"
+              aria-label="资料关键词"
+              value={searchDraft}
+              maxLength={200}
+              onChange={(event) => setSearchDraft(event.target.value)}
+              placeholder="查找原文、文件名或我的批注"
+              className="min-w-0 flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm"
+            />
+            <Button type="submit" variant="outline">
+              搜索资料
+            </Button>
+            {(search || searchDraft) && (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => {
+                  setSearch("");
+                  setSearchDraft("");
+                }}
+              >
+                清除搜索
+              </Button>
+            )}
+            <p className="w-full text-xs text-muted-foreground">
+              仅在当前账户和所选分类、空间内搜索已保存正文。不会转写音频或识别图片；关键词不保存在网址或浏览器存储中。
+            </p>
+          </form>
           {isSpacesError && (
             <p role="alert" className="mb-3 text-xs text-destructive">
               空间列表未能读取，暂不可切换。请刷新页面重试；不会把失败当作没有空间。

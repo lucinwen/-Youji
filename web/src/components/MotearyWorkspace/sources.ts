@@ -59,13 +59,14 @@ export function buildCaptureStarter(kind: SourceKind, category: CaptureCategory)
   return `${tags}\n\n${source}## 我的批注（可不填）\n\n`;
 }
 
-export function buildSourceFilter(userName: string, category: CaptureCategory | "all", spaceName?: string): string {
+export function buildSourceFilter(userName: string, category: CaptureCategory | "all", spaceName?: string, search = ""): string {
   if (!userName) throw new Error("A signed-in user is required for the source workspace.");
   return combineCELFilters(
     buildMemoCreatorFilter(userName),
     'tag in ["拾微"]',
     category !== "all" ? `tag in [${JSON.stringify(category)}]` : undefined,
     spaceName ? `space == ${JSON.stringify(spaceName)}` : undefined,
+    search.trim() ? `content.contains(${JSON.stringify(search.trim().slice(0, 200))})` : undefined,
   )!;
 }
 
@@ -74,6 +75,8 @@ export function getSourceKind(memo: Pick<Memo, "tags">): SourceKind | "unknown" 
 }
 
 export function getSourceTitle(content: string): string {
+  const importedTitle = content.match(/^# 拾微原始资料 · (.+)$/m)?.[1];
+  if (importedTitle) return importedTitle.slice(0, 110);
   const candidate = content
     .split(/\r?\n/)
     .map((line) => line.trim())
