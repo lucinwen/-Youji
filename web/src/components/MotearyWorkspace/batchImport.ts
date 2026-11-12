@@ -125,6 +125,29 @@ export async function validateBatchQuota(items: BatchSource[], signal?: AbortSig
   }
 }
 
+export async function checkOtherEntry(item: BatchSource, signal?: AbortSignal): Promise<void> {
+  if (item.id.startsWith("muc-")) return;
+  const filter = `creator == ${JSON.stringify(item.owner)} && tag in ["拾微"] && content.contains(${JSON.stringify(item.sha256)})`;
+  let pageToken = "";
+  for (let page = 0; page < 10; page++) {
+    let result;
+    try {
+      result = await memoServiceClient.listMemos({ filter, pageSize: 100, pageToken }, { signal });
+    } catch {
+      throw new ImportQuotaError("无法完成跨入口原件查重，本项尚未上传。请检查登录与连接后重试。");
+    }
+    for (const memo of result.memos) {
+      if (/^memos\/(mw-|ml-)[a-zA-Z0-9_-]+$/.test(memo.name))
+        throw new ImportQuotaError(
+          `另一入口可能已保存相同原件：${memo.name}。本项尚未上传，请打开原记录核对并使用原入口继续；不会自动合并或删除。`,
+        );
+    }
+    pageToken = result.nextPageToken;
+    if (!pageToken) return;
+  }
+  throw new ImportQuotaError("查重结果超过安全分页上限，本项尚未上传，请先核对原件记录。");
+}
+
 export async function ingestBatchSource(
   item: BatchSource,
   signal: AbortSignal,
@@ -168,6 +191,7 @@ export async function ingestBatchSource(
     return { name, status: "verified" };
   }
   await validateBatchQuota([item], signal);
+  await checkOtherEntry(item, signal);
   const archive = zipSync({ [item.filename]: item.data }, { level: 0 });
   const attachment = await attachmentServiceClient.createAttachment(
     { attachment: { filename: `${item.filename}.original.zip`, type: "application/zip", content: archive } },

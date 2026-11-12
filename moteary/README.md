@@ -110,3 +110,5 @@ python moteary/import_batch.py sources.json --receipt receipt-001.json
 长文本显式 CLI 导入与恢复说明：[LONG_TEXT_20261112.md](LONG_TEXT_20261112.md)。网页超限策略保持不变。
 
 网页已新增显式长文模式：[操作与验收边界](LONG_TEXT_UI_20261112.md)。
+
+网页与CLI跨入口冲突处理：[CROSS_ENTRY_GUARD_20261112.md](CROSS_ENTRY_GUARD_20261112.md)。

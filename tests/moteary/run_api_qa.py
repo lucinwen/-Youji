@@ -63,6 +63,20 @@ with tempfile.TemporaryDirectory(prefix='moteary-live-qa-') as d:
   check('21KB Chinese memo rejected against real 8192-byte quota before upload',rejected)
   check('Quota rejection leaves attachment count unchanged',len(client.call('GET','attachments').get('attachments',[]))==before_attachments)
   check('Quota rejection leaves memo count unchanged',len(client.call('GET','memos').get('memos',[]))==before_memos)
+  # Exercise actual browser guard code via Vitest, with REST-backed list transport.
+  cross_env={**os.environ,'MOTEARY_CROSS_QA':json.dumps({'base':base,'token':token,'owner':created['name'],'sha256':item['sha256']})}
+  cross_run=subprocess.run(['pnpm','exec','vitest','run','tests/moteary-batch.test.tsx','--maxWorkers','1','-t','uses actual REST service'],cwd=root/'web',env=cross_env,capture_output=True,text=True)
+  check('Actual UI guard rejects previously CLI imported SHA',cross_run.returncode==0)
+  gui_source=pathlib.Path(d)/'gui-original.txt';gui_source.write_text('仅GUI先导入的合成资料',encoding='utf8')
+  gui_item=m.prepare(gui_source,'reference')
+  gui_record=client.call('POST','memos?memoId=mui-crossentrysynthetic',{'content':gui_item['content'],'visibility':'PRIVATE'})
+  counts_before=(len(client.call('GET','attachments').get('attachments',[])),len(client.call('GET','memos').get('memos',[])))
+  blocked=False
+  try:client.ingest(gui_item)
+  except ValueError as e:blocked='Possible cross-entry' in str(e)
+  counts_after=(len(client.call('GET','attachments').get('attachments',[])),len(client.call('GET','memos').get('memos',[])))
+  check('CLI rejects possible UI-origin duplicate without claiming equivalence',blocked)
+  check('Cross-entry conflict writes no memo or attachment',counts_before==counts_after)
   # Long-text explicit mode: interruption, resume, private search and original recovery.
   longitem=m.prepare(large,'reference')
   longplan=longtext.plan(longitem,8192)

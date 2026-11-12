@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import BatchImport from "@/components/MotearyWorkspace/BatchImport";
 import {
   buildBatchReceipt,
+  checkOtherEntry,
   ingestBatchSource,
   MAX_FILE,
   prepareBatch,
@@ -15,14 +16,15 @@ import {
 } from "@/components/MotearyWorkspace/batchImport";
 import { Visibility } from "@/types/proto/api/memo_service_pb";
 
-const { getMemo, createMemo, createAttachment, getUserUsage } = vi.hoisted(() => ({
+const { getMemo, createMemo, createAttachment, getUserUsage, listMemos } = vi.hoisted(() => ({
   getMemo: vi.fn(),
   createMemo: vi.fn(),
   createAttachment: vi.fn(),
   getUserUsage: vi.fn(),
+  listMemos: vi.fn(),
 }));
 vi.mock("@/connect", () => ({
-  memoServiceClient: { getMemo, createMemo },
+  memoServiceClient: { getMemo, createMemo, listMemos },
   attachmentServiceClient: { createAttachment },
   userServiceClient: { getUserUsage },
 }));
@@ -37,6 +39,7 @@ const file = (name: string, body = "合成资料") =>
 
 beforeEach(() => {
   vi.stubGlobal("crypto", webcrypto);
+  listMemos.mockReset().mockResolvedValue({ memos: [], nextPageToken: "" });
   getUserUsage.mockReset().mockResolvedValue({ limits: { memoContentBytes: 8192n } });
   getMemo.mockReset().mockRejectedValue(new ConnectError("missing", Code.NotFound));
   createAttachment.mockReset().mockResolvedValue({ name: "attachments/test" });
@@ -280,5 +283,38 @@ describe("explicit long text UI", () => {
     expect(createMemo).toHaveBeenCalledTimes(2);
     expect(createMemo.mock.calls[0][0].memo.visibility).toBe(Visibility.PRIVATE);
     expect(createMemo.mock.calls[1][0].memo.visibility).toBe(Visibility.PRIVATE);
+  });
+});
+
+describe("cross-entry duplicate guard", () => {
+  it("blocks CLI source before attachments and scopes every page to owner", async () => {
+    const [item] = await prepareBatch([file("a.txt")], "reference", "", "users/alice");
+    listMemos
+      .mockResolvedValueOnce({ memos: [], nextPageToken: "next" })
+      .mockResolvedValueOnce({ memos: [{ name: "memos/mw-other" }], nextPageToken: "" });
+    await expect(ingestBatchSource(item, new AbortController().signal)).rejects.toThrow("另一入口");
+    expect(createAttachment).not.toHaveBeenCalled();
+    expect(listMemos.mock.calls[1][0]).toMatchObject({ pageToken: "next" });
+    expect(listMemos.mock.calls[0][0].filter).toContain('creator == "users/alice"');
+  });
+  it("fails closed on lookup failure but skips long child fragments", async () => {
+    const [item] = await prepareBatch([file("a.txt")], "reference", "", "users/alice");
+    listMemos.mockRejectedValue(new Error("private provider detail"));
+    await expect(checkOtherEntry(item)).rejects.toThrow("尚未上传");
+    await expect(checkOtherEntry({ ...item, id: "muc-child" })).resolves.toBeUndefined();
+  });
+  it.skipIf(!process.env.MOTEARY_CROSS_QA)("uses actual REST service to stop UI import after CLI original", async () => {
+    const fixture = JSON.parse(process.env.MOTEARY_CROSS_QA!);
+    listMemos.mockImplementation(async (query) => {
+      const params = new URLSearchParams({ filter: query.filter, pageSize: String(query.pageSize), pageToken: query.pageToken });
+      const response = await fetch(`${fixture.base}/api/memos?${params}`, { headers: { Authorization: `Bearer ${fixture.token}` } });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const result = await response.json();
+      return { memos: result.memos ?? [], nextPageToken: result.nextPageToken ?? "" };
+    });
+    const [item] = await prepareBatch([file("a.txt")], "reference", "", fixture.owner);
+    item.sha256 = fixture.sha256;
+    await expect(checkOtherEntry(item)).rejects.toThrow("另一入口");
+    expect(createAttachment).not.toHaveBeenCalled();
   });
 });

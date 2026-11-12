@@ -280,7 +280,7 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
       )}
       <p className="mt-3 text-xs text-muted-foreground">
         清空队列仅移除本页文件与批注，不删除已保存记录。选择的文件与队列只留在本页内存。中断后重新选择同一文件和相同分类、批注即可复核；此界面与
-        CLI 的导入身份各自独立。
+        CLI 的导入身份各自独立；跨入口发现可能相同原件时会停止，请使用原入口继续。不会自动合并或删除已有记录。
       </p>
     </section>
   );

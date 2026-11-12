@@ -12,6 +12,7 @@ class FakeClient(m.Client):
  def call(self,method,route,body=None):
   if route == "auth/me": return {"user": {"name": "users/synthetic"}}
   if route == "users/synthetic/usage": return {"limits": {"memoContentBytes": "8192"}}
+  if method == "GET" and route.startswith("memos?"): return {"memos": []}
   self.calls.append((method,route,body)); v=self.responses.pop(0)
   if isinstance(v,Exception): raise v
   return v

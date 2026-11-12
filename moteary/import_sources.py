@@ -53,6 +53,24 @@ class Client:
         headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         req = Request(self.base + '/api/' + route, None if body is None else json.dumps(body).encode(), headers, method=method)
         with self.opener.open(req, timeout=60) as r: return json.load(r)
+    def check_other_entry(self, item, username):
+        # Never renumber or merge existing records. Long child parts belong to an index.
+        if item['id'].startswith('mc-'): return
+        filter_ = 'creator == ' + json.dumps(username) + ' && tag in ["拾微"] && content.contains(' + json.dumps(item['sha256']) + ')'
+        token = ''
+        for _ in range(10):
+            result = self.call('GET', 'memos?' + urlencode({'filter':filter_, 'pageSize':100, 'pageToken':token}))
+            for memo in result.get('memos', []):
+                name = memo.get('name', '')
+                uid = name.removeprefix('memos/')
+                if uid.startswith(('mui-', 'mul-')):
+                    # This is a possible cross-entry duplicate, not proof of equivalent content.
+                    raise ValueError('Possible cross-entry original already exists at ' + name +
+                                     '; no file uploaded. Review that record and resume via its original entry. No records merged or deleted.')
+            token = result.get('nextPageToken', '')
+            if not token: return
+        raise ValueError('Cross-entry search exceeded safe bound; no file uploaded')
+
     def ingest(self, item):
         name = 'memos/' + item['id']
         try:
@@ -101,6 +119,7 @@ class Client:
         body_size = len(item['content'].encode('utf-8'))
         if limit > 0 and body_size > limit:
             raise ValueError(f'Memo body is {body_size} UTF-8 bytes; account limit is {limit}. No file uploaded. Split the text or use the original editor attachment flow; content was not truncated.')
+        self.check_other_entry(item, username)
         # All originals are archived: upstream may sniff/re-encode even an image named .bin.
         buffer = io.BytesIO()
         with zipfile.ZipFile(buffer, 'w', compression=zipfile.ZIP_STORED) as z:
