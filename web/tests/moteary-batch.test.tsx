@@ -166,3 +166,41 @@ describe("private local import receipts", () => {
     expect(receipt.items.map((item) => item.status)).toEqual(["needs-review", "needs-review", "not-started"]);
   });
 });
+
+describe("explicit Chinese text encoding", () => {
+  const legacy = {
+    name: "legacy.txt",
+    type: "text/plain",
+    size: 4,
+    arrayBuffer: async () => new Uint8Array([0xd6, 0xd0, 0xce, 0xc4]).buffer,
+  } as File;
+  it("rejects invalid default decoding before network and preserves original bytes with explicit GB18030", async () => {
+    await expect(prepareBatch([legacy], "reference", "", "users/alice")).rejects.toThrow("utf-8");
+    const item = (await prepareBatch([legacy], "reference", "", "users/alice", "gb18030"))[0];
+    expect(item.content).toContain("中文");
+    expect(item.content).toContain("文本解码：gb18030");
+    expect(Array.from(item.data)).toEqual([0xd6, 0xd0, 0xce, 0xc4]);
+    expect(createAttachment).not.toHaveBeenCalled();
+  });
+  it("retains legacy default identities and separates explicit text interpretations", async () => {
+    const text = file("a.txt", "ASCII");
+    const defaultItem = (await prepareBatch([text], "work", "", "users/alice"))[0];
+    const explicit = (await prepareBatch([text], "work", "", "users/alice", "utf-8"))[0];
+    const gb = (await prepareBatch([text], "work", "", "users/alice", "gb18030"))[0];
+    expect(defaultItem).toEqual(explicit);
+    expect(gb.id).not.toBe(defaultItem.id);
+    const binary = file("a.bin");
+    const a = (await prepareBatch([binary], "work", "", "users/alice"))[0];
+    const b = (await prepareBatch([binary], "work", "", "users/alice", "gb18030"))[0];
+    expect(a).toEqual(b);
+  });
+  it("lets the user inspect decoded Chinese before saving", async () => {
+    render(<BatchImport onSaved={vi.fn()} userName="users/alice" />);
+    fireEvent.change(screen.getByLabelText("批量资料文件"), { target: { files: [legacy] } });
+    fireEvent.change(screen.getByLabelText("文本编码"), { target: { value: "gb18030" } });
+    fireEvent.click(screen.getByRole("button", { name: "预检这批资料" }));
+    await screen.findByText("已预检，尚未保存");
+    expect(screen.getByText(/文本解码：gb18030/)).toHaveTextContent("中文");
+    expect(createMemo).not.toHaveBeenCalled();
+  });
+});

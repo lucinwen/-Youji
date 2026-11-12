@@ -1,12 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { downloadFileFromUrl } from "@/lib/browser";
-import { type BatchItemState, type BatchSource, buildBatchReceipt, ingestBatchSource, prepareBatch } from "./batchImport";
+import {
+  type BatchItemState,
+  type BatchSource,
+  buildBatchReceipt,
+  ingestBatchSource,
+  prepareBatch,
+  type TextEncoding,
+} from "./batchImport";
 import { CATEGORY_LABELS, type CaptureCategory } from "./sources";
 
 export default function BatchImport({ onSaved, userName }: { onSaved: () => void; userName: string }) {
   const [files, setFiles] = useState<File[]>([]);
   const [kind, setKind] = useState<CaptureCategory>("reference");
+  const [textEncoding, setTextEncoding] = useState<TextEncoding>("utf-8");
   const [note, setNote] = useState("");
   const [items, setItems] = useState<BatchSource[]>([]);
   const [states, setStates] = useState<Record<string, BatchItemState>>({});
@@ -35,7 +43,7 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
     setBusy(true);
     setError("");
     try {
-      setItems(await prepareBatch(files, kind, note, userName));
+      setItems(await prepareBatch(files, kind, note, userName, textEncoding));
       setStates({});
     } catch (e) {
       setItems([]);
@@ -112,6 +120,23 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
           </select>
         </label>
         <label className="text-sm">
+          文本编码
+          <select
+            aria-label="文本编码"
+            value={textEncoding}
+            onChange={(event) => {
+              setTextEncoding(event.target.value as TextEncoding);
+              reset();
+            }}
+          >
+            <option value="utf-8">UTF-8（默认）</option>
+            <option value="gb18030">GB18030 / GBK（旧版中文文本）</option>
+          </select>
+          <span className="mt-1 block text-xs text-muted-foreground">
+            仅作用于 TXT、Markdown、CSV、JSON；不会猜测编码或修改原件。不同编码的文本请分批导入。
+          </span>
+        </label>
+        <label className="text-sm">
           共同批注
           <textarea
             aria-label="批量共同批注"
@@ -141,6 +166,12 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
                     ? { saving: "正在保存 / 核验", imported: "已保存", verified: "已复核原件", review: "需检查" }[states[item.id]]
                     : "已预检，尚未保存"}
                 </span>
+                <details className="w-full">
+                  <summary className="cursor-pointer text-xs text-muted-foreground">检查将保存的正文（前 800 字）</summary>
+                  <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap break-all rounded bg-muted p-3 text-xs">
+                    {item.content.slice(0, 800)}
+                  </pre>
+                </details>
                 {states[item.id] && states[item.id] !== "saving" && (
                   <a
                     href={`/memos/${encodeURIComponent(item.id)}`}
