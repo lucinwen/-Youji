@@ -33,6 +33,7 @@ import {
   type CaptureCategory,
   getSourceKind,
   getSourceTitle,
+  getSourceVisibility,
   SOURCE_INFO,
   SOURCE_KINDS,
   type SourceKind,
@@ -66,6 +67,9 @@ function SourceCard({ memo }: { memo: Memo }) {
         </span>
         <span>{date}</span>
       </div>
+      <p className="mb-2 text-xs text-muted-foreground" aria-label="记录可见范围">
+        {getSourceVisibility(memo.visibility)}
+      </p>
       <h3 className="mb-4 line-clamp-2 min-h-12 break-words text-[15px] leading-6 font-medium">{getSourceTitle(memo.content)}</h3>
       <div className="mt-auto flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
         <span className="inline-flex items-center gap-1">
@@ -412,11 +416,11 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
                 data-testid="moteary-empty"
               >
                 <SproutIcon className="mx-auto mb-4 size-7 text-[#8a997a]" strokeWidth={1.3} />
-                <h3 className="mb-2 text-sm font-medium">这里，留给你自己的片段</h3>
+                <h3 className="mb-2 text-sm font-medium">{search ? "当前范围未找到匹配资料" : "这里，留给你自己的片段"}</h3>
                 <p className="text-xs leading-6 text-muted-foreground">
-                  这个范围还没有记录。选择上方任一种来源，写下第一条。
-                  <br />
-                  不需要完整，也不需要马上有用。
+                  {search
+                    ? "可以换一个关键词，或清除搜索后检查分类、空间。没有匹配结果不代表资料已丢失。未转写的音频与图片内容暂不能搜索。"
+                    : "这个范围还没有记录。选择上方任一种来源，写下第一条。不需要完整，也不需要马上有用。"}
                 </p>
               </div>
             )

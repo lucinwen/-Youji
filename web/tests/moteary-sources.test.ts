@@ -3,7 +3,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { draftKeyFor } from "@/components/MemoEditor/edit/draftKey";
 import { initialEditorState } from "@/components/MemoEditor/edit/initialState";
 import { cacheService } from "@/components/MemoEditor/edit/services/cacheService";
-import { buildCaptureStarter, buildSourceFilter, getSourceKind, getSourceTitle, SOURCE_KINDS } from "@/components/MotearyWorkspace/sources";
+import {
+  buildCaptureStarter,
+  buildSourceFilter,
+  getSourceKind,
+  getSourceTitle,
+  getSourceVisibility,
+  SOURCE_KINDS,
+} from "@/components/MotearyWorkspace/sources";
 import { AttachmentSchema } from "@/types/proto/api/attachment_service_pb";
 import { MemoSchema, Visibility } from "@/types/proto/api/memo_service_pb";
 
@@ -96,5 +103,17 @@ describe("private workspace keyword search", () => {
   });
   it("shows the imported filename rather than boilerplate or private note as title", () => {
     expect(getSourceTitle("# 拾微原始资料 · lecture.txt\n\n## 我的批注\nprivate note")).toBe("lecture.txt");
+  });
+});
+
+describe("source visibility labels", () => {
+  it.each([
+    [Visibility.PRIVATE, "仅自己可见"],
+    [Visibility.PROTECTED, "实例登录用户可见"],
+    [Visibility.PUBLIC, "公开范围 · 访客访问取决于实例设置"],
+    [Visibility.SPACE, "所属空间成员可见"],
+    [Visibility.VISIBILITY_UNSPECIFIED, "可见范围未知 · 请打开记录核对"],
+  ])("reports the server visibility %s without assuming privacy", (value, label) => {
+    expect(getSourceVisibility(value)).toBe(label);
   });
 });

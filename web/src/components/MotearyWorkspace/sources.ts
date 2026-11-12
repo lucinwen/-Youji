@@ -1,6 +1,6 @@
 import { combineCELFilters } from "@/lib/cel-filter";
 import { buildMemoCreatorFilter } from "@/lib/resource-names";
-import type { Memo } from "@/types/proto/api/memo_service_pb";
+import { type Memo, Visibility } from "@/types/proto/api/memo_service_pb";
 
 export const SOURCE_KINDS = ["text", "link", "podcast", "conversation", "image", "file"] as const;
 export type SourceKind = (typeof SOURCE_KINDS)[number];
@@ -82,4 +82,20 @@ export function getSourceTitle(content: string): string {
     .map((line) => line.trim())
     .find((line) => line && !line.startsWith("#") && !line.startsWith("请通过＋菜单") && !/[:：]$/.test(line));
   return candidate?.slice(0, 110) || "一份尚未命名的片段";
+}
+
+/** Display server policy, not an inference from source tags or the current view. */
+export function getSourceVisibility(visibility: Visibility): string {
+  switch (visibility) {
+    case Visibility.PRIVATE:
+      return "仅自己可见";
+    case Visibility.PROTECTED:
+      return "实例登录用户可见";
+    case Visibility.PUBLIC:
+      return "公开范围 · 访客访问取决于实例设置";
+    case Visibility.SPACE:
+      return "所属空间成员可见";
+    default:
+      return "可见范围未知 · 请打开记录核对";
+  }
 }

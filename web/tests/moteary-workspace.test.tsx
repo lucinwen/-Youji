@@ -152,6 +152,7 @@ it("searches only after submit and clears without storing query in URL", () => {
   expect(useInfiniteMemos.mock.lastCall?.[0].filter).not.toContain("private keyword");
   fireEvent.submit(screen.getByRole("form", { name: "搜索我的资料" }));
   expect(useInfiniteMemos.mock.lastCall?.[0].filter).toContain('content.contains("private keyword")');
+  expect(screen.getByText("当前范围未找到匹配资料")).toBeInTheDocument();
   expect(window.location.search).not.toContain("private");
   fireEvent.click(screen.getByRole("button", { name: "清除搜索" }));
   expect(useInfiniteMemos.mock.lastCall?.[0].filter).not.toContain("content.contains");
