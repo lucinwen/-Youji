@@ -4,7 +4,7 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import { useMemoByName, useUpdateMemo } from "@/hooks/useMemoQueries";
 import type { MemoSuggestion } from "@/lib/memo-suggestions";
 import { cn } from "@/lib/utils";
-import type { Location } from "@/types/proto/api/memo_service_pb";
+import type { Location, Visibility } from "@/types/proto/api/memo_service_pb";
 import { lazyWithReload } from "@/utils/lazy";
 import { convertVisibilityFromString } from "@/utils/memo";
 import { canManageMemo } from "@/utils/user";
@@ -51,6 +51,8 @@ export interface MemoEditorViewProps {
 export interface MemoDraftSeed {
   /** Optional Markdown starter. A saved draft always takes precedence. */
   content?: string;
+  /** Initial audience for a new draft; a restored draft retains its explicit choice. */
+  visibility?: Visibility;
   /** The memo this draft comments on. A comment has no scope, Space or timestamps of its own. */
   parent?: string;
   /**
@@ -182,6 +184,7 @@ const MemoEditorDraft = ({ draft, ...editing }: MemoEditorDraftProps) => {
         defaultSpace={draft.space}
         defaultLocation={draft.location}
         defaultContent={draft.content}
+        seedVisibility={draft.visibility}
         defaultCreateTime={draft.createTime}
         {...editing}
       />
@@ -196,6 +199,7 @@ interface EditingSessionProps extends MemoEditingProps {
   defaultSpace?: string;
   defaultLocation?: Location;
   defaultContent?: string;
+  seedVisibility?: Visibility;
   defaultCreateTime?: Date;
 }
 
@@ -207,6 +211,7 @@ const EditingSession = ({
   defaultSpace,
   defaultLocation,
   defaultContent,
+  seedVisibility,
   defaultCreateTime,
   ...editing
 }: EditingSessionProps) => {
@@ -221,7 +226,8 @@ const EditingSession = ({
       draftKey,
       // A hosted editor starts in focus mode and stays there.
       initialFocusMode: Boolean(editing.onFocusModeExit),
-      defaultVisibility: userGeneralSetting?.memoVisibility ? convertVisibilityFromString(userGeneralSetting.memoVisibility) : undefined,
+      defaultVisibility:
+        seedVisibility ?? (userGeneralSetting?.memoVisibility ? convertVisibilityFromString(userGeneralSetting.memoVisibility) : undefined),
       defaultCreateTime,
       defaultLocation,
       defaultContent,
@@ -235,6 +241,7 @@ const EditingSession = ({
         memo={memo}
         parentMemoName={parentMemoName}
         defaultSpace={defaultSpace}
+        seedVisibility={seedVisibility}
         defaultCreateTime={defaultCreateTime}
         draftKey={draftKey}
         {...editing}

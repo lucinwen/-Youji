@@ -15,4 +15,29 @@ class ImportContract(unittest.TestCase):
  def test_no_directory(self):
   with tempfile.TemporaryDirectory() as d:
    with self.assertRaises(ValueError): m.prepare(d,'work')
+class QuotaPreflight(unittest.TestCase):
+ def test_quota_failure_never_writes(self):
+  from urllib.error import HTTPError
+  calls=[]
+  client=m.Client('http://127.0.0.1:5231','synthetic')
+  def call(method,route,body=None):
+   calls.append((method,route))
+   if route.startswith('memos/'): raise HTTPError('',404,'missing',{},None)
+   if route=='auth/me': return {'user': {'name':'users/qa'}}
+   raise RuntimeError('quota temporarily unavailable')
+  client.call=call
+  with self.assertRaises(RuntimeError):client.ingest({'id':'synthetic'})
+  self.assertFalse(any(method=='POST' for method,_ in calls))
+ def test_missing_limits_never_writes(self):
+  from urllib.error import HTTPError
+  calls=[]
+  client=m.Client('http://127.0.0.1:5231','synthetic')
+  def call(method,route,body=None):
+   calls.append((method,route))
+   if route.startswith('memos/'): raise HTTPError('',404,'missing',{},None)
+   if route=='auth/me': return {'user': {'name':'users/qa'}}
+   return {}
+  client.call=call
+  with self.assertRaises(ValueError):client.ingest({'id':'synthetic'})
+  self.assertFalse(any(method=='POST' for method,_ in calls))
 if __name__=='__main__': unittest.main()

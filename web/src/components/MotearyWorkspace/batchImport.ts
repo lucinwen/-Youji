@@ -1,7 +1,7 @@
 import { Code, ConnectError } from "@connectrpc/connect";
 import { unzipSync, zipSync } from "fflate";
 import { getAccessToken } from "@/auth-state";
-import { attachmentServiceClient, memoServiceClient } from "@/connect";
+import { attachmentServiceClient, memoServiceClient, userServiceClient } from "@/connect";
 import { Visibility } from "@/types/proto/api/memo_service_pb";
 import type { CaptureCategory } from "./sources";
 
@@ -10,6 +10,7 @@ export const MAX_TOTAL = 32 * 1024 * 1024;
 export type TextEncoding = "utf-8" | "gb18030";
 export interface BatchSource {
   id: string;
+  owner: string;
   filename: string;
   data: Uint8Array;
   sha256: string;
@@ -55,7 +56,7 @@ export async function prepareBatch(
     if (isText && textEncoding !== "utf-8") text = `文本解码：${textEncoding}（用户选择，原始字节保留）\n\n${text}`;
     const source = isText ? "text" : file.type.startsWith("image/") ? "image" : "file";
     const content = `# 拾微原始资料 · ${file.name}\n\n#拾微 #${kind} #source/${source}\n\n## 我的批注\n${note}\n\n## 原始内容\n${text}\n\n---\n原件 SHA-256：\`${sha256}\`\n原始字节保存在 .original.zip；归档可能包含原图 EXIF，请先检查再分享。`;
-    items.push({ id, filename: file.name, data, sha256, content });
+    items.push({ id, owner: userName, filename: file.name, data, sha256, content });
   }
   return items;
 }
@@ -97,6 +98,30 @@ export async function readOriginalArchive(response: Response, signal: AbortSigna
     signal.removeEventListener("abort", abort);
     await reader.cancel().catch(() => {});
     reader.releaseLock();
+  }
+}
+
+export class ImportQuotaError extends Error {}
+
+export async function validateBatchQuota(items: BatchSource[], signal?: AbortSignal): Promise<void> {
+  if (!items.length) return;
+  const owner = items[0].owner;
+  if (!/^users\/[a-zA-Z0-9_-]+$/.test(owner) || items.some((item) => item.owner !== owner))
+    throw new ImportQuotaError("无法核对导入账号，本批尚未上传。");
+  let usage;
+  try {
+    usage = await userServiceClient.getUserUsage({ name: `${owner}/usage` }, { signal });
+  } catch {
+    throw new ImportQuotaError("无法读取当前账号配额，本项尚未上传。请检查登录或连接后重试。");
+  }
+  if (!usage.limits) throw new ImportQuotaError("服务未返回账号配额，本项尚未上传。");
+  const limit = usage.limits.memoContentBytes ?? 0n;
+  for (const item of items) {
+    const size = new TextEncoder().encode(item.content).length;
+    if (limit > 0n && BigInt(size) > limit)
+      throw new ImportQuotaError(
+        `正文需要 ${size} UTF-8 字节，当前账号上限 ${limit} 字节。本项尚未上传；请拆分长文本或使用原编辑器添加附件。不会截断原文。`,
+      );
   }
 }
 
@@ -142,6 +167,7 @@ export async function ingestBatchSource(
       throw new Error("原件校验未通过，已停止。");
     return { name, status: "verified" };
   }
+  await validateBatchQuota([item], signal);
   const archive = zipSync({ [item.filename]: item.data }, { level: 0 });
   const attachment = await attachmentServiceClient.createAttachment(
     { attachment: { filename: `${item.filename}.original.zip`, type: "application/zip", content: archive } },

@@ -97,3 +97,7 @@ MemoEditor/
 - `tests/memo-content-view.test.tsx`, `tests/editor.test.tsx`: the surfaces over the binding.
 - `tests/use-memo-init.test.tsx`, `tests/draft-key.test.ts`, `tests/use-auto-save.test.tsx`: drafts and keys.
 - `tests/use-memo-save.test.tsx`, `tests/memo-editor-*.test.ts*`: the session and its save path. Tests that mount the session call `await preloadMemoEditing()` first so it renders without suspending.
+
+### Hosted draft audience seed
+
+`draft.visibility` optionally sets the default audience of a fresh hosted draft and the post-save reset. A restored draft retains its explicit visibility; an existing memo is never changed by this seed. Hosts that omit it keep the user default. Moteary seeds PRIVATE for personal captures and SPACE for a selected Space, and tells users to review restored draft visibility.

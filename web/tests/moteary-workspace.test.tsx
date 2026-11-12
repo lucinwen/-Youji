@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { MemoEditorDraftProps } from "@/components/MemoEditor/MemoEditor";
 import MotearyWorkspace from "@/components/MotearyWorkspace/MotearyWorkspace";
-import { MemoSchema } from "@/types/proto/api/memo_service_pb";
+import { MemoSchema, Visibility } from "@/types/proto/api/memo_service_pb";
 
 const { query, useInfiniteMemos, spaces, editorProps } = vi.hoisted(() => ({
   query: {
@@ -97,6 +97,7 @@ describe("Moteary workspace state boundaries", () => {
       expect.objectContaining({
         scope: "moteary:link:reference",
         space: "spaces/one",
+        visibility: Visibility.SPACE,
         content: expect.stringContaining("#拾微 #reference #source/link"),
       }),
     );
@@ -105,6 +106,12 @@ describe("Moteary workspace state boundaries", () => {
     expect(screen.getByLabelText("新片段分类")).toBeDisabled();
     expect(screen.getByLabelText("来源空间")).toBeDisabled();
     expect(screen.getAllByTestId("original-memo-editor")).toHaveLength(1);
+  });
+  it("starts personal source capture with a private audience seed", () => {
+    mount();
+    fireEvent.click(screen.getByTestId("moteary-capture-text"));
+    expect(editorProps.current?.draft.visibility).toBe(Visibility.PRIVATE);
+    expect(screen.getByText(/新建个人片段默认仅自己可见/)).toBeInTheDocument();
   });
   it("cancel closes without reporting a successful save", () => {
     mount();

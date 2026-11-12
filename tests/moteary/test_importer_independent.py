@@ -10,6 +10,8 @@ class FakeClient(m.Client):
  def __init__(self, responses):
   super().__init__('http://127.0.0.1:5231','synthetic-not-a-real-token'); self.responses=list(responses); self.calls=[]
  def call(self,method,route,body=None):
+  if route == "auth/me": return {"user": {"name": "users/synthetic"}}
+  if route == "users/synthetic/usage": return {"limits": {"memoContentBytes": "8192"}}
   self.calls.append((method,route,body)); v=self.responses.pop(0)
   if isinstance(v,Exception): raise v
   return v

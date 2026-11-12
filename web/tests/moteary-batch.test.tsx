@@ -10,11 +10,21 @@ import {
   MAX_FILE,
   prepareBatch,
   readOriginalArchive,
+  validateBatchQuota,
 } from "@/components/MotearyWorkspace/batchImport";
 import { Visibility } from "@/types/proto/api/memo_service_pb";
 
-const { getMemo, createMemo, createAttachment } = vi.hoisted(() => ({ getMemo: vi.fn(), createMemo: vi.fn(), createAttachment: vi.fn() }));
-vi.mock("@/connect", () => ({ memoServiceClient: { getMemo, createMemo }, attachmentServiceClient: { createAttachment } }));
+const { getMemo, createMemo, createAttachment, getUserUsage } = vi.hoisted(() => ({
+  getMemo: vi.fn(),
+  createMemo: vi.fn(),
+  createAttachment: vi.fn(),
+  getUserUsage: vi.fn(),
+}));
+vi.mock("@/connect", () => ({
+  memoServiceClient: { getMemo, createMemo },
+  attachmentServiceClient: { createAttachment },
+  userServiceClient: { getUserUsage },
+}));
 vi.mock("@/auth-state", () => ({ getAccessToken: () => null }));
 const file = (name: string, body = "合成资料") =>
   ({
@@ -26,6 +36,7 @@ const file = (name: string, body = "合成资料") =>
 
 beforeEach(() => {
   vi.stubGlobal("crypto", webcrypto);
+  getUserUsage.mockReset().mockResolvedValue({ limits: { memoContentBytes: 8192n } });
   getMemo.mockReset().mockRejectedValue(new ConnectError("missing", Code.NotFound));
   createAttachment.mockReset().mockResolvedValue({ name: "attachments/test" });
   createMemo.mockReset().mockResolvedValue({ name: "memos/test" });
@@ -202,5 +213,29 @@ describe("explicit Chinese text encoding", () => {
     await screen.findByText("已预检，尚未保存");
     expect(screen.getByText(/文本解码：gb18030/)).toHaveTextContent("中文");
     expect(createMemo).not.toHaveBeenCalled();
+  });
+});
+
+describe("server memo quota preflight", () => {
+  it("rejects final UTF-8 body bytes before attachment upload", async () => {
+    const item = (await prepareBatch([file("large.txt", "合成测试材料。".repeat(1000))], "reference", "", "users/alice"))[0];
+    await expect(ingestBatchSource(item, new AbortController().signal)).rejects.toThrow("8192");
+    expect(createAttachment).not.toHaveBeenCalled();
+    expect(createMemo).not.toHaveBeenCalled();
+  });
+  it("fails closed when current quota cannot be read", async () => {
+    getUserUsage.mockRejectedValue(new Error("secret provider detail"));
+    const items = await prepareBatch([file("a.txt")], "reference", "", "users/alice");
+    await expect(validateBatchQuota(items)).rejects.toThrow("尚未上传");
+    await expect(ingestBatchSource(items[0], new AbortController().signal)).rejects.toThrow("尚未上传");
+    expect(createAttachment).not.toHaveBeenCalled();
+  });
+  it("honors explicit unlimited quota and rechecks changed quota on save", async () => {
+    const items = await prepareBatch([file("a.txt")], "reference", "", "users/alice");
+    getUserUsage.mockResolvedValue({ limits: { memoContentBytes: 0n } });
+    await validateBatchQuota(items);
+    getUserUsage.mockResolvedValue({ limits: { memoContentBytes: 1n } });
+    await expect(ingestBatchSource(items[0], new AbortController().signal)).rejects.toThrow("上限 1");
+    expect(createAttachment).not.toHaveBeenCalled();
   });
 });

@@ -5,9 +5,11 @@ import {
   type BatchItemState,
   type BatchSource,
   buildBatchReceipt,
+  ImportQuotaError,
   ingestBatchSource,
   prepareBatch,
   type TextEncoding,
+  validateBatchQuota,
 } from "./batchImport";
 import { CATEGORY_LABELS, type CaptureCategory } from "./sources";
 
@@ -43,7 +45,9 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
     setBusy(true);
     setError("");
     try {
-      setItems(await prepareBatch(files, kind, note, userName, textEncoding));
+      const prepared = await prepareBatch(files, kind, note, userName, textEncoding);
+      await validateBatchQuota(prepared);
+      setItems(prepared);
       setStates({});
     } catch (e) {
       setItems([]);
@@ -68,9 +72,13 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
           const result = await ingestBatchSource(item, abort.signal);
           setStates((s) => ({ ...s, [item.id]: result.status === "verified" ? "verified" : "imported" }));
           onSaved();
-        } catch {
+        } catch (error) {
           setStates((s) => ({ ...s, [item.id]: "review" }));
-          setError("已停止。当前项可能已写入，请先检查记录；再次点击保存会复核原件，不覆盖已改正文。可能存在未关联附件，不会自动删除。");
+          setError(
+            error instanceof ImportQuotaError
+              ? error.message
+              : "已停止。当前项可能已写入，请先检查记录；再次点击保存会复核原件，不覆盖已改正文。可能存在未关联附件，不会自动删除。",
+          );
           break;
         }
       }

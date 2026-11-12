@@ -49,6 +49,7 @@ export const EditSession: React.FC<EditSessionProps> = ({
   parentMemoName,
   suggestions = [],
   defaultSpace,
+  seedVisibility,
   autoFocus,
   onFocusModeExit,
   onFocusModeChange,
@@ -96,7 +97,8 @@ export const EditSession: React.FC<EditSessionProps> = ({
   }, [aiSetting.providers, aiSetting.transcription?.providerId]);
 
   // Get default visibility from user settings
-  const defaultVisibility = userGeneralSetting?.memoVisibility ? convertVisibilityFromString(userGeneralSetting.memoVisibility) : undefined;
+  const defaultVisibility =
+    seedVisibility ?? (userGeneralSetting?.memoVisibility ? convertVisibilityFromString(userGeneralSetting.memoVisibility) : undefined);
 
   // Source mode only changes how the text is edited, so every composer offers it.
   const [editorMode, setEditorMode] = useSourceMode();

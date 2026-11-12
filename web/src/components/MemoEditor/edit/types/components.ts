@@ -20,6 +20,7 @@ export interface EditSessionProps {
   suggestions?: readonly MemoSuggestion[];
   /** Assigns a newly created top-level memo to this Space. Ignored for edits and comments. */
   defaultSpace?: string;
+  seedVisibility?: Visibility;
   /** A callback can decide whether focus is still appropriate after draft restoration. */
   autoFocus?: boolean | (() => boolean);
   /**

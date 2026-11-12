@@ -24,7 +24,7 @@ import { useInfiniteMemos } from "@/hooks/useMemoQueries";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/router/routes";
 import { State } from "@/types/proto/api/common_pb";
-import type { Memo } from "@/types/proto/api/memo_service_pb";
+import { type Memo, Visibility } from "@/types/proto/api/memo_service_pb";
 import BatchImport from "./BatchImport";
 import {
   buildCaptureStarter,
@@ -250,13 +250,14 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
                 </h3>
                 <p className="text-xs leading-6 text-muted-foreground">{SOURCE_INFO[capture.kind].instruction}</p>
                 <p className="mt-1 text-[11px] leading-5 text-muted-foreground">
-                  若有未完成的草稿，会优先恢复原草稿。草稿不是已保存记录；保存成功才会出现在下方列表。取消会保留草稿。
+                  若有未完成的草稿，会优先恢复原草稿。草稿不是已保存记录；保存成功才会出现在下方列表。取消会保留草稿。新建个人片段默认仅自己可见，空间片段默认空间成员可见；恢复草稿保留原可见范围，请保存前核对。
                 </p>
               </div>
               <MemoEditor
                 draft={{
                   scope: `moteary:${capture.kind}:${capture.category}`,
                   space: capture.space,
+                  visibility: capture.space ? Visibility.SPACE : Visibility.PRIVATE,
                   content: buildCaptureStarter(capture.kind, capture.category),
                 }}
                 autoFocus

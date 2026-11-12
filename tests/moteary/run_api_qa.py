@@ -51,6 +51,15 @@ with tempfile.TemporaryDirectory(prefix='moteary-live-qa-') as d:
    listed=client.call('GET','memos?'+urlencode({'filter':'creator == '+json.dumps(created['name'])+' && tag in ["拾微"]','orderBy':sort}))
    check('UI exact account scoped list query',any(x['name']==memo['name'] for x in listed.get('memos',[])),{'orderBy':sort})
   except urllib.error.HTTPError as e:check('UI exact account scoped list query',False,{'orderBy':sort,'status':e.code})
+  before_attachments=len(client.call('GET','attachments').get('attachments',[]))
+  before_memos=len(client.call('GET','memos').get('memos',[]))
+  large=pathlib.Path(d)/'oversized-chinese.txt';large.write_text('合成测试材料。'*1000,encoding='utf8')
+  rejected=False
+  try:client.ingest(m.prepare(large,'reference'))
+  except ValueError as e:rejected='No file uploaded' in str(e) and '8192' in str(e)
+  check('21KB Chinese memo rejected against real 8192-byte quota before upload',rejected)
+  check('Quota rejection leaves attachment count unchanged',len(client.call('GET','attachments').get('attachments',[]))==before_attachments)
+  check('Quota rejection leaves memo count unchanged',len(client.call('GET','memos').get('memos',[]))==before_memos)
   # Batch CLI uses the real isolated service, not a mock.
   batch_files=[]
   for filename,kind,body in [('batch-diary.txt','diary','批量合成日记'),('batch-work.md','work','批量合成工作资料')]:

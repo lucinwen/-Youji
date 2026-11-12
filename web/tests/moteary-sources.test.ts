@@ -64,6 +64,12 @@ describe("optional editor starter", () => {
     expect(restored.content).toBe("my unfinished thought");
     expect(restored.metadata.visibility).toBe(Visibility.PRIVATE);
   });
+  it("does not silently privatize a restored draft with an explicit audience", () => {
+    cacheService.saveNow(key, { content: "explicit public draft", attachments: [], visibility: Visibility.PUBLIC });
+    const restored = initialEditorState({ draftKey: key, defaultVisibility: Visibility.PRIVATE });
+    expect(restored.metadata.visibility).toBe(Visibility.PUBLIC);
+    expect(restored.content).toBe("explicit public draft");
+  });
   it("does not replace the intentionally empty content of an attachment-only draft", () => {
     const attachment = create(AttachmentSchema, { name: "attachments/test", filename: "source.txt" });
     cacheService.saveNow(key, { content: "", attachments: [attachment] });

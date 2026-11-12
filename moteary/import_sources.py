@@ -89,6 +89,18 @@ class Client:
             if not matched:
                 raise ValueError('Original attachment integrity mismatch; refusing to claim a completed import')
             return {'status': 'already-imported', 'name': name, 'sha256': item['sha256']}
+        # Read the actual account quota before creating any original or preview attachment.
+        user = self.call('GET', 'auth/me').get('user', {})
+        username = user.get('name', '')
+        if not username.startswith('users/') or len(username.split('/')) != 2:
+            raise ValueError('Cannot verify authenticated account; no file uploaded')
+        usage = self.call('GET', username + '/usage')
+        if not isinstance(usage.get('limits'), dict):
+            raise ValueError('Cannot verify current quota; no file uploaded')
+        limit = int(usage['limits'].get('memoContentBytes', 0))
+        body_size = len(item['content'].encode('utf-8'))
+        if limit > 0 and body_size > limit:
+            raise ValueError(f'Memo body is {body_size} UTF-8 bytes; account limit is {limit}. No file uploaded. Split the text or use the original editor attachment flow; content was not truncated.')
         # All originals are archived: upstream may sniff/re-encode even an image named .bin.
         buffer = io.BytesIO()
         with zipfile.ZipFile(buffer, 'w', compression=zipfile.ZIP_STORED) as z:
