@@ -198,3 +198,42 @@ export function buildBatchReceipt(items: BatchSource[], states: Record<string, B
     })),
   };
 }
+
+// Explicit long-text mode has its own versioned identity; never silently changes short imports.
+export async function prepareLongBatch(files: File[], kind: CaptureCategory, note: string, userName: string): Promise<BatchSource[]> {
+  if (files.length !== 1 || !/\.(txt|md)$/i.test(files[0].name) || files[0].size > 256 * 1024)
+    throw new Error("长文模式每次仅支持一个 UTF-8 TXT/Markdown，最大 256 KiB。");
+  const [source] = await prepareBatch(files, kind, note, userName, "utf-8");
+  const text = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(source.data);
+  if (!text) throw new Error("长文不能为空。");
+  const rootId = `mul-${(await hash(new TextEncoder().encode(`long-v1:${source.id}`))).slice(0, 30)}`;
+  const parts: string[] = [];
+  let current = "";
+  let size = 0;
+  for (const char of text) {
+    const width = new TextEncoder().encode(char).length;
+    if (size + width > 4096) {
+      parts.push(current);
+      current = "";
+      size = 0;
+    }
+    current += char;
+    size += width;
+  }
+  if (current) parts.push(current);
+  const chunks: BatchSource[] = [];
+  for (const [i, body] of parts.entries()) {
+    const id = `muc-${(await hash(new TextEncoder().encode(`${rootId}:${i}`))).slice(0, 30)}`;
+    const data = new TextEncoder().encode(body);
+    chunks.push({
+      id,
+      owner: userName,
+      filename: `part-${i + 1}.txt`,
+      data,
+      sha256: await hash(data),
+      content: `# 拾微长文分段 ${i + 1}/${parts.length}\n\n#拾微 #${kind} #source/text\n\n原件：${source.filename}\n索引：[完整原件](/memos/${rootId})\n原件 SHA-256：\`${source.sha256}\`\n\n## 我的批注\n${note}\n\n## 分段原文\n${body}`,
+    });
+  }
+  const content = `# 拾微长文索引 · ${source.filename}\n\n#拾微 #${kind} #source/text\n\n原件 SHA-256：\`${source.sha256}\`\n\n## 我的批注\n${note}\n\n完整原始字节在附件 ZIP。以下为计划链接，索引存在不代表全部完成；中断后可用相同文件与设置复核重试。删除索引不删除分段，显式重导会补回缺失段。未做 AI 理解；跨段关键词可能查不到。\n\n${chunks.map((x, i) => `- [${i + 1}/${chunks.length}](/memos/${x.id})`).join("\n")}`;
+  return [{ ...source, id: rootId, content }, ...chunks];
+}

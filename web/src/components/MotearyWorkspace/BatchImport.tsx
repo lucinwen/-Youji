@@ -8,12 +8,15 @@ import {
   ImportQuotaError,
   ingestBatchSource,
   prepareBatch,
+  prepareLongBatch,
   type TextEncoding,
   validateBatchQuota,
 } from "./batchImport";
 import { CATEGORY_LABELS, type CaptureCategory } from "./sources";
 
 export default function BatchImport({ onSaved, userName }: { onSaved: () => void; userName: string }) {
+  const [longMode, setLongMode] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [kind, setKind] = useState<CaptureCategory>("reference");
   const [textEncoding, setTextEncoding] = useState<TextEncoding>("utf-8");
@@ -36,6 +39,7 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
   }, [busy]);
   const reset = () => {
     setItems([]);
+    setConfirmed(false);
     setStates({});
     setError("");
   };
@@ -45,7 +49,9 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
     setBusy(true);
     setError("");
     try {
-      const prepared = await prepareBatch(files, kind, note, userName, textEncoding);
+      const prepared = longMode
+        ? await prepareLongBatch(files, kind, note, userName)
+        : await prepareBatch(files, kind, note, userName, textEncoding);
       await validateBatchQuota(prepared);
       setItems(prepared);
       setStates({});
@@ -58,7 +64,7 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
     }
   };
   const upload = async () => {
-    if (lock.current || !items.length) return;
+    if (lock.current || !items.length || (longMode && !confirmed)) return;
     lock.current = true;
     setBusy(true);
     setError("");
@@ -97,6 +103,17 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
       </p>
       <fieldset disabled={busy} className="flex flex-col gap-3 disabled:opacity-60">
         <label className="text-sm">
+          <input
+            type="checkbox"
+            checked={longMode}
+            onChange={(e) => {
+              setLongMode(e.target.checked);
+              reset();
+            }}
+          />
+          长文分段模式（单个 UTF-8 TXT/Markdown，最多 256 KiB）
+        </label>
+        <label className="text-sm">
           选择多个资料
           <input
             ref={fileInput}
@@ -131,7 +148,8 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
           文本编码
           <select
             aria-label="文本编码"
-            value={textEncoding}
+            disabled={longMode}
+            value={longMode ? "utf-8" : textEncoding}
             onChange={(event) => {
               setTextEncoding(event.target.value as TextEncoding);
               reset();
@@ -194,7 +212,21 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
               </li>
             ))}
           </ul>
-          <Button type="button" onClick={upload} disabled={busy}>
+          {longMode && (
+            <label className="my-3 block text-sm">
+              <input type="checkbox" checked={confirmed} disabled={busy} onChange={(e) => setConfirmed(e.target.checked)} />
+              我确认保存完整原件与 {items.length - 1} 条私有分段，约占两份文本空间；这是多次写入，中断可能部分完成。
+              删除索引不会删除分段，重新导入会补回缺失段。
+            </label>
+          )}
+          <p role="status" className="my-2 text-sm">
+            已保存或核验 {items.filter((item) => states[item.id] === "imported" || states[item.id] === "verified").length}/{items.length}{" "}
+            条。
+            {items.some((item) => states[item.id] === "review")
+              ? "部分完成或状态待核对，请检查后重试。"
+              : "请以全部记录核验完成为准，不以索引存在判定成功。"}
+          </p>
+          <Button type="button" onClick={upload} disabled={busy || (longMode && !confirmed)}>
             保存为私有记录 / 复核重试
           </Button>
           <Button

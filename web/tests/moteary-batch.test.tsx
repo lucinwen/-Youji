@@ -9,6 +9,7 @@ import {
   ingestBatchSource,
   MAX_FILE,
   prepareBatch,
+  prepareLongBatch,
   readOriginalArchive,
   validateBatchQuota,
 } from "@/components/MotearyWorkspace/batchImport";
@@ -237,5 +238,47 @@ describe("server memo quota preflight", () => {
     getUserUsage.mockResolvedValue({ limits: { memoContentBytes: 1n } });
     await expect(ingestBatchSource(items[0], new AbortController().signal)).rejects.toThrow("上限 1");
     expect(createAttachment).not.toHaveBeenCalled();
+  });
+});
+
+describe("explicit long text UI", () => {
+  it("preserves all unicode and BOM, account identities and source links", async () => {
+    const text = "\ufeff" + "中文😀\r\n".repeat(1200);
+    const a = await prepareLongBatch([file("long.txt", text)], "diary", "note", "users/alice");
+    const b = await prepareLongBatch([file("long.txt", text)], "diary", "note", "users/bob");
+    expect(a[0].id).not.toBe(b[0].id);
+    expect(
+      a
+        .slice(1)
+        .map((x) => x.content.split("## 分段原文\n")[1])
+        .join(""),
+    ).toBe(text);
+    expect(a[1].content).toContain(`/memos/${a[0].id}`);
+    expect(a[0].content).toContain(`/memos/${a[1].id}`);
+    expect(Array.from(a[0].data)).toEqual(Array.from(new TextEncoder().encode(text)));
+    await validateBatchQuota(a);
+  });
+  it("rejects unsupported and oversized input without writes", async () => {
+    await expect(prepareLongBatch([file("x.json")], "reference", "", "users/alice")).rejects.toThrow();
+    await expect(prepareLongBatch([file("x.txt", "a".repeat(262145))], "reference", "", "users/alice")).rejects.toThrow();
+    expect(createAttachment).not.toHaveBeenCalled();
+  });
+  it("requires explicit confirmation and shows partial progress after failed part", async () => {
+    render(<BatchImport onSaved={vi.fn()} userName="users/alice" />);
+    fireEvent.click(screen.getByLabelText(/长文分段模式/));
+    fireEvent.change(screen.getByLabelText("批量资料文件"), { target: { files: [file("x.txt", "字".repeat(3000))] } });
+    fireEvent.click(screen.getByRole("button", { name: "预检这批资料" }));
+    const confirm = await screen.findByLabelText(/我确认保存完整原件/);
+    const save = screen.getByRole("button", { name: "保存为私有记录 / 复核重试" });
+    expect(save).toBeDisabled();
+    expect(createMemo).not.toHaveBeenCalled();
+    fireEvent.click(confirm);
+    createMemo.mockResolvedValueOnce({ name: "memos/index" }).mockRejectedValueOnce(new Error("synthetic"));
+    fireEvent.click(save);
+    await screen.findByText("需检查");
+    expect(screen.getByText(/部分完成或状态待核对/)).toHaveTextContent("1/4");
+    expect(createMemo).toHaveBeenCalledTimes(2);
+    expect(createMemo.mock.calls[0][0].memo.visibility).toBe(Visibility.PRIVATE);
+    expect(createMemo.mock.calls[1][0].memo.visibility).toBe(Visibility.PRIVATE);
   });
 });
