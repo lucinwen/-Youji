@@ -142,3 +142,21 @@ export async function ingestBatchSource(
   );
   return { name: result.name, status: "imported" };
 }
+
+export type BatchItemState = "saving" | "imported" | "verified" | "review";
+
+/** A local receipt is evidence of UI observations, never a server recovery authority. */
+export function buildBatchReceipt(items: BatchSource[], states: Record<string, BatchItemState>) {
+  return {
+    schema: "moteary-ui-import-receipt-v1",
+    warning: "回执不包含正文或批注，但文件名可能敏感。回执不是服务端完成证明；重试仍需核验原件。",
+    items: items.map((item) => ({
+      filename: item.filename,
+      sha256: item.sha256,
+      bytes: item.data.length,
+      record: `memos/${item.id}`,
+      status:
+        states[item.id] === "saving" ? "needs-review" : states[item.id] === "review" ? "needs-review" : (states[item.id] ?? "not-started"),
+    })),
+  };
+}

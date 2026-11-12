@@ -4,7 +4,13 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { unzipSync } from "fflate";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import BatchImport from "@/components/MotearyWorkspace/BatchImport";
-import { ingestBatchSource, MAX_FILE, prepareBatch, readOriginalArchive } from "@/components/MotearyWorkspace/batchImport";
+import {
+  buildBatchReceipt,
+  ingestBatchSource,
+  MAX_FILE,
+  prepareBatch,
+  readOriginalArchive,
+} from "@/components/MotearyWorkspace/batchImport";
 import { Visibility } from "@/types/proto/api/memo_service_pb";
 
 const { getMemo, createMemo, createAttachment } = vi.hoisted(() => ({ getMemo: vi.fn(), createMemo: vi.fn(), createAttachment: vi.fn() }));
@@ -72,6 +78,7 @@ describe("batch sources", () => {
     fireEvent.click(save);
     await screen.findByText("已保存");
     expect(createMemo).toHaveBeenCalledOnce();
+    expect(screen.getByRole("link", { name: "查看记录 a.txt" })).toHaveAttribute("target", "_blank");
   });
   it("stops on uncertain save and does not process following files", async () => {
     createMemo.mockRejectedValue(new Error("private details"));
@@ -140,5 +147,22 @@ describe("bounded original download", () => {
     expect(screen.getByLabelText("批量共同批注")).toHaveValue("");
     expect(createMemo).not.toHaveBeenCalled();
     expect(createAttachment).not.toHaveBeenCalled();
+  });
+});
+
+describe("private local import receipts", () => {
+  it("never copies source content or notes into the receipt", async () => {
+    const items = await prepareBatch([file("a.txt", "secret original")], "diary", "secret note", "users/alice");
+    const receipt = buildBatchReceipt(items, { [items[0].id]: "imported" });
+    expect(receipt.items[0]).toMatchObject({ filename: "a.txt", status: "imported", sha256: items[0].sha256 });
+    const serialized = JSON.stringify(receipt);
+    expect(serialized).not.toContain("secret original");
+    expect(serialized).not.toContain("secret note");
+    expect(serialized).not.toContain("users/alice");
+  });
+  it("does not present pending or uncertain writes as completed", async () => {
+    const items = await prepareBatch([file("a.txt"), file("b.txt"), file("c.txt")], "reference", "", "users/alice");
+    const receipt = buildBatchReceipt(items, { [items[0].id]: "saving", [items[1].id]: "review" });
+    expect(receipt.items.map((item) => item.status)).toEqual(["needs-review", "needs-review", "not-started"]);
   });
 });

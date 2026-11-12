@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { type BatchSource, ingestBatchSource, prepareBatch } from "./batchImport";
+import { downloadFileFromUrl } from "@/lib/browser";
+import { type BatchItemState, type BatchSource, buildBatchReceipt, ingestBatchSource, prepareBatch } from "./batchImport";
 import { CATEGORY_LABELS, type CaptureCategory } from "./sources";
 
 export default function BatchImport({ onSaved, userName }: { onSaved: () => void; userName: string }) {
@@ -8,7 +9,7 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
   const [kind, setKind] = useState<CaptureCategory>("reference");
   const [note, setNote] = useState("");
   const [items, setItems] = useState<BatchSource[]>([]);
-  const [states, setStates] = useState<Record<string, string>>({});
+  const [states, setStates] = useState<Record<string, BatchItemState>>({});
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const controller = useRef<AbortController | null>(null);
@@ -54,13 +55,13 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
     try {
       for (const item of items) {
         if (abort.signal.aborted) break;
-        setStates((s) => ({ ...s, [item.id]: "正在保存 / 核验" }));
+        setStates((s) => ({ ...s, [item.id]: "saving" }));
         try {
           const result = await ingestBatchSource(item, abort.signal);
-          setStates((s) => ({ ...s, [item.id]: result.status === "verified" ? "已复核原件" : "已保存" }));
+          setStates((s) => ({ ...s, [item.id]: result.status === "verified" ? "verified" : "imported" }));
           onSaved();
         } catch {
-          setStates((s) => ({ ...s, [item.id]: "需检查" }));
+          setStates((s) => ({ ...s, [item.id]: "review" }));
           setError("已停止。当前项可能已写入，请先检查记录；再次点击保存会复核原件，不覆盖已改正文。可能存在未关联附件，不会自动删除。");
           break;
         }
@@ -135,13 +136,45 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
                 <span className="break-all">
                   {item.filename} · {(item.data.length / 1024).toFixed(1)} KiB
                 </span>
-                <span>{states[item.id] ?? "已预检，尚未保存"}</span>
+                <span>
+                  {states[item.id]
+                    ? { saving: "正在保存 / 核验", imported: "已保存", verified: "已复核原件", review: "需检查" }[states[item.id]]
+                    : "已预检，尚未保存"}
+                </span>
+                {states[item.id] && states[item.id] !== "saving" && (
+                  <a
+                    href={`/memos/${encodeURIComponent(item.id)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                    aria-label={`查看记录 ${item.filename}`}
+                  >
+                    查看记录
+                  </a>
+                )}
               </li>
             ))}
           </ul>
           <Button type="button" onClick={upload} disabled={busy}>
             保存为私有记录 / 复核重试
           </Button>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={busy}
+            className="ms-2"
+            onClick={() => {
+              const blob = new Blob([JSON.stringify(buildBatchReceipt(items, states), null, 2)], { type: "application/json" });
+              const url = URL.createObjectURL(blob);
+              downloadFileFromUrl(url, "moteary-import-receipt.json");
+              window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+            }}
+          >
+            下载本批回执
+          </Button>
+          <p className="mt-2 text-xs text-muted-foreground">
+            回执仅含文件名、校验值和状态，不含正文、批注或令牌；文件名也可能敏感，请谨慎分享。需检查的记录可能尚不存在。
+          </p>
         </>
       )}
       {files.length > 0 && !busy && (
