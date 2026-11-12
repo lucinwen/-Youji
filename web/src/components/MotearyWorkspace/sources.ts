@@ -40,7 +40,8 @@ export const SOURCE_INFO: Record<SourceKind, { label: string; description: strin
   file: {
     label: "音频 / 文档",
     description: "先存材料，再决定怎样用",
-    instruction: "在编辑器的＋菜单添加文件。只有保存成功后才形成记录；提取、转写与原件保存是不同状态。",
+    instruction:
+      "在编辑器的＋菜单添加文件。只有保存成功后才形成记录；不会自动提取 PDF、转写音频或做 AI 理解。请把材料名称和批注写入正文便于检索；附件内部内容暂不可搜索。",
     category: "work",
   },
 };

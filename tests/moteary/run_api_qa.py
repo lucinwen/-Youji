@@ -141,6 +141,22 @@ with tempfile.TemporaryDirectory(prefix='moteary-live-qa-') as d:
   rawBytes=req('/file/'+rawAttachment['name']+'/'+quote(rawAttachment['filename'],safe=''),token=token).read()
   if rawAttachment['filename'].endswith('.original.zip'):rawBytes=zipfile.ZipFile(io.BytesIO(rawBytes)).read(rawitem['filename'])
   check('Unknown-extension original byte preservation',hashlib.sha256(rawBytes).hexdigest()==rawitem['sha256'],{'beforeBytes':len(rawitem['data']),'afterBytes':len(rawBytes)})
+  # Binary sources remain retrievable, not falsely searchable as parsed content.
+  material_files=[]
+  for filename,data in [('synthetic-paper.pdf',b'%PDF-1.4\nUNPARSED_PDF_MARKER\n%%EOF'),('synthetic-lecture.wav',b'RIFF'+b'UNTRANSCRIBED_AUDIO_MARKER'+b'WAVE')]:
+   source=pathlib.Path(d)/filename;source.write_bytes(data)
+   material=m.prepare(source,'reference','可检索的合成批注')
+   saved_material=client.ingest(material);record=client.call('GET',saved_material['name'])
+   check(filename+' is PRIVATE with not-run processing',record['visibility']=='PRIVATE' and saved_material['processing']['transcription']=='not-run' and saved_material['processing']['ocr']=='not-run')
+   found=client.call('GET','memos?'+urlencode({'filter':scoped+' && content.contains('+json.dumps(filename)+')'})).get('memos',[])
+   check(filename+' findable by saved filename',any(x['name']==record['name'] for x in found))
+   check(filename+' no parsed body invented',data.decode() not in record['content'] and '未进行转写' in record['content'])
+   marker='UNPARSED_PDF_MARKER' if filename.endswith('.pdf') else 'UNTRANSCRIBED_AUDIO_MARKER'
+   hidden=client.call('GET','memos?'+urlencode({'filter':scoped+' && content.contains('+json.dumps(marker)+')'})).get('memos',[])
+   check(filename+' binary internal marker not falsely searchable',not any(x['name']==record['name'] for x in hidden))
+   a=record['attachments'][0];route='/file/'+a['name']+'/'+quote(a['filename'],safe='')
+   with zipfile.ZipFile(io.BytesIO(req(route,token=token).read())) as z:check(filename+' exact original retrieved',z.read(filename)==data)
+   material_files.append(route)
   other_password=secrets.token_urlsafe(25);other_user='qa'+secrets.token_hex(5)
   client.call('POST','users',{'username':other_user,'password':other_password,'displayName':'Other synthetic QA','role':'USER'})
   other_token=json.load(req('/api/auth/signin',{'passwordCredentials':{'username':other_user,'password':other_password}}))['accessToken']
@@ -148,6 +164,10 @@ with tempfile.TemporaryDirectory(prefix='moteary-live-qa-') as d:
    try:req(route,token=other_token).close();status=200
    except urllib.error.HTTPError as e:status=e.code
    check('other account cannot read private '+label,status in (401,403,404),{'status':status})
+  for route in material_files:
+   try:req(route,token=other_token).close();status=200
+   except urllib.error.HTTPError as e:status=e.code
+   check('other account cannot fetch binary material archive',status in (401,403,404))
   for lm in longmemos:
    try:req('/api/'+lm['name'],token=other_token).close();status=200
    except urllib.error.HTTPError as e:status=e.code

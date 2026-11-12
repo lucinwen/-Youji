@@ -71,6 +71,21 @@ function SourceCard({ memo }: { memo: Memo }) {
         {getSourceVisibility(memo.visibility)}
       </p>
       <h3 className="mb-4 line-clamp-2 min-h-12 break-words text-[15px] leading-6 font-medium">{getSourceTitle(memo.content)}</h3>
+      {memo.attachments.length > 0 && (
+        <div className="mb-3 text-xs leading-5 text-muted-foreground" aria-label="附件与检索范围">
+          <p>附件已关联，不代表内容已解析。PDF、音频、图片不会自动提取、转写或 OCR。</p>
+          <p>可搜索已保存正文、批注及正文中的文件名；不能搜索未解析附件内部内容。</p>
+          <ul className="mt-1 break-all">
+            {memo.attachments.map((attachment) => (
+              <li key={attachment.name}>
+                {attachment.filename}
+                {attachment.filename.endsWith(".original.zip") ? " · 原件归档" : ""}
+              </li>
+            ))}
+          </ul>
+          <span className="underline">打开记录查看附件并取回原件</span>
+        </div>
+      )}
       <div className="mt-auto flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
         <span className="inline-flex items-center gap-1">
           <CheckIcon className="size-3" />
@@ -351,7 +366,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
               </Button>
             )}
             <p className="w-full text-xs text-muted-foreground">
-              仅在当前账户和所选分类、空间内搜索已保存正文。不会转写音频或识别图片；关键词不保存在网址或浏览器存储中。
+              仅在当前账户和所选分类、空间内搜索已保存正文。PDF、音频和图片的附件内部内容尚不可搜索；可以搜索已填写到正文的文件名或批注。关键词不保存在网址或浏览器存储中。
             </p>
           </form>
           {isSpacesError && (
@@ -420,7 +435,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
                 <h3 className="mb-2 text-sm font-medium">{search ? "当前范围未找到匹配资料" : "这里，留给你自己的片段"}</h3>
                 <p className="text-xs leading-6 text-muted-foreground">
                   {search
-                    ? "可以换一个关键词，或清除搜索后检查分类、空间。没有匹配结果不代表资料已丢失。未转写的音频与图片内容暂不能搜索。"
+                    ? "可以换一个关键词，或清除搜索后检查分类、空间。没有匹配结果不代表资料已丢失。未解析的 PDF、音频与图片内部内容暂不能搜索，请尝试文件名或批注。"
                     : "这个范围还没有记录。选择上方任一种来源，写下第一条。不需要完整，也不需要马上有用。"}
                 </p>
               </div>

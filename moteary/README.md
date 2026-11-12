@@ -112,3 +112,5 @@ python moteary/import_batch.py sources.json --receipt receipt-001.json
 网页已新增显式长文模式：[操作与验收边界](LONG_TEXT_UI_20261112.md)。
 
 网页与CLI跨入口冲突处理：[CROSS_ENTRY_GUARD_20261112.md](CROSS_ENTRY_GUARD_20261112.md)。
+
+PDF/音频原件、检索与取回边界：[BINARY_MATERIALS_20261112.md](BINARY_MATERIALS_20261112.md)。

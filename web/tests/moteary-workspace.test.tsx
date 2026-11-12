@@ -166,3 +166,26 @@ it("searches only after submit and clears without storing query in URL", () => {
   expect(screen.getByLabelText("资料关键词")).toHaveValue("");
   cleanup();
 });
+
+it("shows original filenames and honest PDF/audio retrieval boundaries", () => {
+  useInfiniteMemos.mockReturnValue(query);
+  query.isPending = false;
+  query.isFetching = false;
+  query.hasNextPage = false;
+  query.isError = false;
+  query.data.pages[0].memos = [
+    create(MemoSchema, {
+      name: "memos/asset",
+      content: "# 拾微原始资料 · lecture.pdf",
+      tags: ["拾微", "source/file"],
+      visibility: Visibility.PRIVATE,
+      attachments: [{ name: "attachments/pdf", filename: "lecture.pdf.original.zip" }],
+    }),
+  ];
+  mount();
+  expect(screen.getByLabelText("附件与检索范围")).toHaveTextContent("不能搜索未解析附件内部内容");
+  expect(screen.getByText(/lecture.pdf.original.zip/)).toBeInTheDocument();
+  expect(screen.getByTestId("moteary-source-record")).toHaveAttribute("href", "/memos/asset");
+  expect(screen.getByText("打开记录查看附件并取回原件")).toBeInTheDocument();
+  cleanup();
+});
