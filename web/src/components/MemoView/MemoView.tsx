@@ -1,0 +1,227 @@
+import { forwardRef, memo, Suspense, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useColumnGridUntrapped } from "@/components/ColumnGrid/ColumnGridContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useResolvedUser } from "@/contexts/MentionResolutionContext";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import { isMemoBlurred } from "@/lib/tag";
+import { cn } from "@/lib/utils";
+import { State } from "@/types/proto/api/common_pb";
+import { lazyWithReload } from "@/utils/lazy";
+import { canManageMemo } from "@/utils/user";
+import { MemoBody, MemoCommentListView, MemoHeader } from "./components";
+import MemoPinnedMark from "./components/MemoPinnedMark";
+import { MEMO_CARD_BASE_CLASSES } from "./constants";
+import { useImagePreview } from "./hooks";
+import { computeCommentAmount, MemoViewContext } from "./MemoViewContext";
+import { isMemoDetailPath, resolveMemoParentPage } from "./navigation";
+import type { MemoViewHandle, MemoViewProps } from "./types";
+
+const MemoShareImageDialog = lazyWithReload(() => import("../MemoActionMenu/MemoShareImageDialog"));
+const PreviewImageDialog = lazyWithReload(() => import("../PreviewImageDialog"));
+
+const MemoView = forwardRef<MemoViewHandle, MemoViewProps>((props, ref) => {
+  const {
+    memo: memoData,
+    className,
+    parentPage: parentPageProp,
+    compact,
+    timeDisplay,
+    showCreator,
+    showVisibility,
+    showPinned,
+    showSpace,
+  } = props;
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [cardWidth, setCardWidth] = useState(0);
+
+  const currentUser = useCurrentUser();
+  const { userTagsSetting } = useAuth();
+  const creator = useResolvedUser(memoData.creator, { enabled: Boolean(showCreator || props.shareImageDialogOpen) });
+  const isArchived = memoData.state === State.ARCHIVED;
+  const readonly = !canManageMemo(memoData, currentUser);
+  const location = useLocation();
+  const parentPage = resolveMemoParentPage({
+    explicitParentPage: parentPageProp,
+    pathname: location.pathname,
+    search: location.search,
+    memoName: memoData.name,
+  });
+
+  // Blur content when any tag has blur_content enabled in the current user's tag settings.
+  // The detail page controls the reveal so the sidebar outline can follow it.
+  const [localShowBlurredContent, setLocalShowBlurredContent] = useState(false);
+  const blurControlled = props.showBlurredContent !== undefined;
+  const showBlurredContent = props.showBlurredContent ?? localShowBlurredContent;
+  const onShowBlurredContentChange = props.onShowBlurredContentChange;
+  const blurred = isMemoBlurred(memoData, userTagsSetting);
+  const toggleBlurVisibility = useCallback(() => {
+    const next = !showBlurredContent;
+    if (!blurControlled) {
+      setLocalShowBlurredContent(next);
+    }
+    onShowBlurredContentChange?.(next);
+  }, [blurControlled, onShowBlurredContentChange, showBlurredContent]);
+
+  const { previewState, openPreview, setPreviewOpen } = useImagePreview();
+
+  const focusMountedEditor = useCallback(() => {
+    const editorRoot = cardRef.current?.querySelector<HTMLElement>('.memo-editor-root[contenteditable="true"]');
+    const fallbackInput = cardRef.current?.querySelector<HTMLElement>("textarea, input");
+    (editorRoot ?? fallbackInput)?.focus();
+  }, []);
+
+  // The body edits in place: the card, its header and its frame stay, and the memo's
+  // own editing session takes the body's place until it saves or cancels.
+  const openEditor = useCallback(() => {
+    if (isEditing) {
+      focusMountedEditor();
+      return;
+    }
+    setIsEditing(true);
+  }, [focusMountedEditor, isEditing]);
+  const closeEditor = useCallback(() => setIsEditing(false), []);
+
+  // The grid keys tiles by memo name (see getMemoKey), so the focused editor
+  // identifies its own tile by name and untraps it for the duration.
+  const { setUntrappedKey, clearUntrappedKey } = useColumnGridUntrapped();
+  const handleFocusModeChange = useCallback(
+    (isFocusMode: boolean) => {
+      if (isFocusMode) {
+        setUntrappedKey(memoData.name);
+      } else {
+        clearUntrappedKey(memoData.name);
+      }
+    },
+    [memoData.name, setUntrappedKey, clearUntrappedKey],
+  );
+  // Release the slot when the editor closes or this card unmounts. Both calls
+  // are ownership-scoped, so mounting cards never clobber another card's slot.
+  useEffect(() => {
+    if (!isEditing) {
+      clearUntrappedKey(memoData.name);
+    }
+  }, [isEditing, memoData.name, clearUntrappedKey]);
+  useEffect(() => () => clearUntrappedKey(memoData.name), [memoData.name, clearUntrappedKey]);
+
+  useImperativeHandle(ref, () => ({ openEditor }), [openEditor]);
+
+  const isInMemoDetailPage = isMemoDetailPath(location.pathname, memoData.name);
+  const showCommentPreview = !isInMemoDetailPage && computeCommentAmount(memoData) > 0;
+
+  // The card width is only needed by the share-image dialog. Keep feed cards
+  // free of a permanent ResizeObserver and measure only while that dialog is open.
+  useLayoutEffect(() => {
+    if (!props.shareImageDialogOpen) {
+      return;
+    }
+
+    const card = cardRef.current;
+    if (!card) {
+      return;
+    }
+
+    const updateWidth = (nextWidth?: number) => {
+      const width = Math.round(nextWidth ?? card.getBoundingClientRect().width);
+      setCardWidth((prev) => (prev === width ? prev : width));
+    };
+
+    updateWidth();
+
+    if (typeof ResizeObserver === "undefined") {
+      const handleResize = () => updateWidth();
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      updateWidth(entries[0]?.contentRect.width);
+    });
+
+    resizeObserver.observe(card);
+    return () => resizeObserver.disconnect();
+  }, [props.shareImageDialogOpen]);
+
+  const contextValue = useMemo(
+    () => ({
+      memo: memoData,
+      creator,
+      currentUser,
+      parentPage,
+      cardWidth,
+      isArchived,
+      readonly,
+      showBlurredContent,
+      blurred,
+      isEditing,
+      openEditor,
+      closeEditor,
+      onEditorFocusModeChange: handleFocusModeChange,
+      toggleBlurVisibility,
+      openPreview,
+    }),
+    [
+      memoData,
+      creator,
+      currentUser,
+      parentPage,
+      cardWidth,
+      isArchived,
+      readonly,
+      showBlurredContent,
+      blurred,
+      isEditing,
+      openEditor,
+      closeEditor,
+      handleFocusModeChange,
+      toggleBlurVisibility,
+      openPreview,
+    ],
+  );
+
+  const article = (
+    <article
+      className={cn(MEMO_CARD_BASE_CLASSES, "group/memo", showCommentPreview ? "mb-0 rounded-b-none" : "mb-2", className)}
+      ref={cardRef}
+      tabIndex={readonly ? -1 : 0}
+    >
+      {showPinned && memoData.pinned && <MemoPinnedMark />}
+      <MemoHeader timeDisplay={timeDisplay} showCreator={showCreator} showVisibility={showVisibility} showSpace={showSpace} />
+
+      <MemoBody compact={compact} />
+
+      {previewState.items.length > 0 && (
+        <Suspense fallback={null}>
+          <PreviewImageDialog
+            open={previewState.open}
+            onOpenChange={setPreviewOpen}
+            items={previewState.items}
+            initialIndex={previewState.index}
+          />
+        </Suspense>
+      )}
+
+      {props.onShareImageDialogOpenChange && props.shareImageDialogOpen && (
+        <Suspense fallback={null}>
+          <MemoShareImageDialog open onOpenChange={props.onShareImageDialogOpenChange} />
+        </Suspense>
+      )}
+    </article>
+  );
+
+  const memoDisplay = showCommentPreview ? (
+    <div className="w-full mb-2">
+      {article}
+      <MemoCommentListView />
+    </div>
+  ) : (
+    article
+  );
+
+  return <MemoViewContext.Provider value={contextValue}>{memoDisplay}</MemoViewContext.Provider>;
+});
+
+MemoView.displayName = "MemoView";
+
+export default memo(MemoView);

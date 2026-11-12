@@ -1,0 +1,324 @@
+syntax = "proto3";
+
+package memos.store;
+
+import "google/type/color.proto";
+
+option go_package = "gen/store";
+
+enum InstanceSettingKey {
+  INSTANCE_SETTING_KEY_UNSPECIFIED = 0;
+  // BASIC is the key for basic settings.
+  BASIC = 1;
+  // GENERAL is the key for general settings.
+  GENERAL = 2;
+  // STORAGE is the key for storage settings.
+  STORAGE = 3;
+  // MEMO_RELATED is the key for memo related settings.
+  MEMO_RELATED = 4;
+  // TAGS is the key for tag metadata.
+  TAGS = 5;
+  // NOTIFICATION is the key for notification transport settings.
+  NOTIFICATION = 6;
+  // AI is the key for AI provider settings.
+  AI = 7;
+  // ACCESS is the key for instance access policy settings.
+  ACCESS = 8;
+  // USAGE_LIMITS is the key for the ordered usage limits list, read and
+  // replaced whole through the instance settings API.
+  USAGE_LIMITS = 9;
+  // CONFIGURATION_STATE is the key for the declarative configuration state
+  // record. It is state, not a setting: the instance settings API never reads
+  // or writes it, and configuration files cannot declare it.
+  CONFIGURATION_STATE = 10;
+}
+
+message InstanceSetting {
+  InstanceSettingKey key = 1;
+  oneof value {
+    InstanceBasicSetting basic_setting = 2;
+    InstanceGeneralSetting general_setting = 3;
+    InstanceStorageSetting storage_setting = 4;
+    InstanceMemoRelatedSetting memo_related_setting = 5;
+    InstanceTagsSetting tags_setting = 6;
+    InstanceNotificationSetting notification_setting = 7;
+    InstanceAISetting ai_setting = 8;
+    InstanceAccessSetting access_setting = 9;
+    InstanceUsageLimitsSetting usage_limits_setting = 10;
+  }
+}
+
+message InstanceBasicSetting {
+  // The secret key for instance. Mainly used for session management.
+  string secret_key = 1;
+  // The current schema version of database.
+  string schema_version = 2;
+  // The memopayload.Version every memo's content-derived payload has been
+  // rebuilt to. A lower value makes the server rebuild them in the background.
+  int32 payload_version = 3;
+}
+
+message InstanceGeneralSetting {
+  // disallow_user_registration disallows user registration.
+  bool disallow_user_registration = 1;
+  // disallow_password_auth disallows password authentication.
+  bool disallow_password_auth = 2;
+  // additional_script is the additional script.
+  string additional_script = 3;
+  // additional_style is the additional style.
+  string additional_style = 4;
+  // custom_profile is the custom profile.
+  InstanceCustomProfile custom_profile = 5;
+  // week_start_day_offset is the week start day offset from Sunday.
+  // 0: Sunday, 1: Monday, 2: Tuesday, 3: Wednesday, 4: Thursday, 5: Friday, 6: Saturday
+  // Default is Sunday.
+  int32 week_start_day_offset = 6;
+  // disallow_change_username disallows changing username.
+  bool disallow_change_username = 7;
+  // disallow_change_nickname disallows changing nickname.
+  bool disallow_change_nickname = 8;
+}
+
+message InstanceCustomProfile {
+  string title = 1;
+  string description = 2;
+  string logo_url = 3;
+}
+
+enum StorageType {
+  STORAGE_TYPE_UNSPECIFIED = 0;
+  // DATABASE stores attachment content in the application database.
+  STORAGE_TYPE_DATABASE = 1;
+  // LOCAL stores attachment content on the local filesystem.
+  STORAGE_TYPE_LOCAL = 2;
+  // S3 stores attachment content in an S3-compatible object store.
+  STORAGE_TYPE_S3 = 3;
+}
+
+// Storage is a configured attachment storage instance.
+message Storage {
+  // id is the stable identifier referenced by attachments.
+  string id = 1;
+  // name is the human-readable storage name.
+  string name = 2;
+  StorageType type = 3;
+
+  oneof config {
+    StorageS3Config s3_config = 4;
+  }
+}
+
+message InstanceStorageSetting {
+  // Legacy storage type enum retained for compatibility with existing settings.
+  enum StorageType {
+    STORAGE_TYPE_UNSPECIFIED = 0;
+    // STORAGE_TYPE_DATABASE is the database storage type.
+    DATABASE = 1;
+    // STORAGE_TYPE_LOCAL is the local storage type.
+    LOCAL = 2;
+    // STORAGE_TYPE_S3 is the S3 storage type.
+    S3 = 3;
+  }
+  // Legacy compatibility field. New code uses default_storage_id.
+  StorageType storage_type = 1;
+  // The template of file path.
+  // e.g. assets/{timestamp}_{filename}
+  string filepath_template = 2;
+  // Legacy compatibility field. New code uses storages.
+  StorageS3Config s3_config = 3;
+  // storages contains configured storage instances, including inactive instances
+  // that may still be referenced by existing attachments.
+  repeated Storage storages = 4;
+  // default_storage_id identifies the storage used for new attachments.
+  string default_storage_id = 5;
+}
+
+// Reference: https://developers.cloudflare.com/r2/examples/aws/aws-sdk-go/
+message StorageS3Config {
+  string access_key_id = 1;
+  string access_key_secret = 2;
+  string endpoint = 3;
+  string region = 4;
+  string bucket = 5;
+  bool use_path_style = 6;
+  // insecure_skip_tls_verify disables TLS certificate verification when connecting
+  // to the S3 endpoint. Only enable this for trusted endpoints that use a self-signed
+  // certificate; it removes protection against man-in-the-middle attacks.
+  bool insecure_skip_tls_verify = 7;
+}
+
+message InstanceMemoRelatedSetting {
+  // reactions is the list of reactions.
+  repeated string reactions = 1;
+}
+
+message InstanceTagMetadata {
+  // Optional background color for the tag label.
+  // When unset, the default tag color is used.
+  google.type.Color background_color = 1;
+  // Whether memos with this tag should have their content blurred.
+  bool blur_content = 2;
+}
+
+// Active tag metadata is stored in per-user tag settings.
+// This message remains for backward compatibility with existing clients and migrations.
+message InstanceTagsSetting {
+  // Map of tag name pattern to tag metadata.
+  // Each key is treated as an anchored regular expression (^pattern$),
+  // so a single entry like "project/.*" matches all tags under that prefix.
+  // Exact tag names are also valid (they are trivially valid regex patterns).
+  map<string, InstanceTagMetadata> tags = 1;
+}
+
+message InstanceNotificationSetting {
+  EmailSetting email = 1;
+
+  message EmailSetting {
+    bool enabled = 1;
+    string smtp_host = 2;
+    int32 smtp_port = 3;
+    string smtp_username = 4;
+    string smtp_password = 5;
+    string from_email = 6;
+    string from_name = 7;
+    string reply_to = 8;
+    bool use_tls = 9;
+    bool use_ssl = 10;
+  }
+}
+
+message InstanceAISetting {
+  // providers is the list of AI provider configurations available instance-wide.
+  repeated AIProviderConfig providers = 1;
+
+  // transcription is the speech-to-text feature configuration.
+  // When unset or transcription.provider_id is empty, transcription is disabled.
+  TranscriptionConfig transcription = 2;
+}
+
+message AIProviderConfig {
+  string id = 1;
+  string title = 2;
+  AIProviderType type = 3;
+  string endpoint = 4;
+  // api_key is write-only at the API layer and is required by the server to call providers.
+  string api_key = 5;
+}
+
+enum AIProviderType {
+  AI_PROVIDER_TYPE_UNSPECIFIED = 0;
+  OPENAI = 1;
+  GEMINI = 2;
+}
+
+// TranscriptionConfig configures the speech-to-text feature.
+message TranscriptionConfig {
+  // provider_id references an entry in InstanceAISetting.providers[].id.
+  // Empty string means transcription is disabled.
+  string provider_id = 1;
+
+  // model is the provider-specific model identifier.
+  // Empty string falls back to the engine default.
+  // OPENAI examples:
+  //   - whisper-1 (legacy, lower cost)
+  //   - gpt-4o-transcribe, gpt-4o-mini-transcribe (higher quality)
+  //   - gpt-4o-transcribe-diarize (includes speaker labels)
+  // GEMINI examples:
+  //   - gemini-2.5-flash (default, multimodal call)
+  //   - gemini-2.5-pro
+  string model = 2;
+
+  // language is the default ISO 639-1 language hint sent to the provider.
+  // Empty string lets the provider auto-detect.
+  string language = 3;
+
+  // prompt is a default spelling/vocabulary hint passed to the provider.
+  // Used as the OpenAI Whisper "prompt" parameter (a soft hint that the model
+  // may ignore) and folded into the Gemini generation prompt as a "Context and
+  // spelling hints" block (which the LLM will treat more literally).
+  string prompt = 4;
+}
+
+enum InstanceAccessMode {
+  INSTANCE_ACCESS_MODE_UNSPECIFIED = 0;
+  INSTANCE_ACCESS_MODE_PRIVATE = 1;
+  INSTANCE_ACCESS_MODE_PUBLIC = 2;
+}
+
+message InstanceAccessSetting {
+  InstanceAccessMode access_mode = 1;
+}
+
+// InstanceUsageLimitsSetting is an ordered list of limit sets. The first
+// entry that names a user is that user's limit set, whole. The last entry
+// has all_users set and is the default. An unset value is unlimited, as is 0.
+message InstanceUsageLimitsSetting {
+  repeated UsageLimit limits = 1;
+
+  message UsageLimit {
+    // The users this entry applies to. Positive IDs, not repeated.
+    repeated int32 user_ids = 1;
+    // Field 2 is kept for labels: users holding any listed label would match.
+    // all_users makes the entry the default. Exactly one entry has it, and it
+    // is the last entry. An entry has user_ids or all_users, never both.
+    bool all_users = 3;
+    // memo_count limits the number of memos a user created, comments included.
+    optional int64 memo_count = 4;
+    // memo_content_bytes limits the UTF-8 size of one memo's content.
+    optional int64 memo_content_bytes = 5;
+    // storage_bytes limits the total size of a user's uploads. External links
+    // do not count.
+    optional int64 storage_bytes = 6;
+    // upload_bytes limits the size of one uploaded file.
+    optional int64 upload_bytes = 7;
+  }
+}
+
+// InstanceConfigurationState is the declarative configuration state record: which
+// resources the configuration manages and when it was last applied. It holds no
+// configured value.
+message InstanceConfigurationState {
+  // serial increases by one with every apply that changes something.
+  int64 serial = 1;
+  // config_digest identifies the applied configuration, with sensitive and
+  // write-only values masked before hashing.
+  string config_digest = 2;
+  // applied_ts is the Unix time of the last apply that changed something.
+  int64 applied_ts = 3;
+  // applied_by names the apply path ("cli" or "startup") and the host.
+  string applied_by = 4;
+  // version is the Memos version that applied.
+  string version = 5;
+  // resources are the managed resources.
+  repeated ManagedResource resources = 6;
+
+  // ManagedResource is one resource the configuration manages.
+  message ManagedResource {
+    // name is the API resource name, such as identity-providers/company-sso.
+    string name = 1;
+    // kind is IdentityProvider, InstanceSetting, User, or LinkedIdentity.
+    string kind = 2;
+    // source is the configuration file that declares the resource.
+    string source = 3;
+    // managed_fields are the JSON-name field paths the configuration manages;
+    // "*" means the whole resource.
+    repeated string managed_fields = 4;
+    // write_only_version is the lifecycle write_only_version last applied.
+    int32 write_only_version = 5;
+    // applied_ts is the Unix time the resource was last written by an apply.
+    int64 applied_ts = 6;
+    // ignored_fields are the lifecycle ignore_changes paths: covered by
+    // managed_fields, but neither written after creation nor protected.
+    repeated string ignored_fields = 7;
+    // digest identifies the declared value last applied, with sensitive and
+    // write-only values masked, so a later plan can tell drift from a file change.
+    string digest = 8;
+    // prevent_destroy is the lifecycle prevent_destroy last applied. A removed
+    // entry cannot destroy the resource until an apply has cleared it.
+    bool prevent_destroy = 9;
+    // references are the resource names the declaration names, such as the
+    // users a usage-limits setting lists. The API cannot rename or delete them
+    // while the resource is managed, since the next plan could not resolve them.
+    repeated string references = 10;
+  }
+}

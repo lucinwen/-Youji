@@ -1,0 +1,10 @@
+{
+  "name": "Memos",
+  "repository": "https://github.com/usememos/memos",
+  "tag": "26.11.0",
+  "commit": "b40d8a7b573774c52b022c8d6537d6baf2129dc0",
+  "license": "MIT",
+  "reuse": "Complete upstream application, not a newly implemented replacement",
+  "moteary_additions": ["Source capture workspace", "Explicit local source importer", "Private original integrity and replay tests"],
+  "not_verified": ["Cloud model processing", "Native device offline synchronization", "Live microphone on real mobile devices"]
+}
