@@ -1,0 +1,14 @@
+=== RUN   TestUploadAttachmentChunksAndRetries
+2026/11/15 11:54:21 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/15 11:54:21 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestUploadAttachmentChunksAndRetries (0.01s)
+=== RUN   TestUploadAttachmentDefaultFileSizeLimit
+2026/11/15 11:54:21 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/15 11:54:21 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestUploadAttachmentDefaultFileSizeLimit (0.00s)
+=== RUN   TestYoujiLargeAudioOriginal
+2026/11/15 11:54:21 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/15 11:54:21 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiLargeAudioOriginal (0.11s)
+PASS
+ok  	github.com/usememos/memos/server/api	0.154s

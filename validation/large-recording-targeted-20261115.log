@@ -1,0 +1,9 @@
+
+ RUN  v4.1.5 /workspace/scratch/10a41183bc23/youji-dev/web
+
+
+ Test Files  2 passed (2)
+      Tests  33 passed | 1 skipped (34)
+   Start at  11:51:37
+   Duration  10.65s (transform 2.70s, setup 2.14s, import 4.65s, tests 5.62s, environment 3.97s)
+

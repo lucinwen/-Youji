@@ -1,0 +1,2 @@
+PASS: real CLI rejects synthetic WAV >16MiB before networking; local original SHA256 unchanged.
+Size: 17825836 bytes; no credentials supplied; dry-run only.

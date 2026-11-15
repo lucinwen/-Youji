@@ -99,7 +99,8 @@ export default function BatchImport({ onSaved, userName }: { onSaved: () => void
       <h2 className="text-lg font-semibold">一次收好一组材料</h2>
       <p className="my-2 text-xs leading-5 text-muted-foreground">
         选择本机文件，先预检再保存。全部私有，原件以 ZIP 保留；不会调用 AI。每批最多 32 个文件、32 MiB，单文件最多 16
-        MiB。批量记录不加入空间。PDF/音频仅归档原件，文件名和批注可检索，附件内部内容不会自动解析。
+        MiB。批量记录不加入空间。PDF/音频仅归档原件，文件名和批注可检索，附件内部内容不会自动解析。 超过 16 MiB
+        的长录音请保留本机原件，改用原生笔记编辑器添加附件，并在保存前确认仅自己可见；文件大小受账号配额限制。
       </p>
       <fieldset disabled={busy} className="flex flex-col gap-3 disabled:opacity-60">
         <label className="text-sm">

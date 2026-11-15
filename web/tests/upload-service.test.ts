@@ -49,6 +49,38 @@ describe("chunked attachment uploads", () => {
     expect(requests.slice(1).map((request) => request.finishWrite)).toEqual([false, false, true]);
   });
 
+  it("streams a synthetic 17 MiB WAV payload in bounded chunks without changing bytes", async () => {
+    const bytes = new Uint8Array(17 * 1024 * 1024 + 44);
+    bytes.set(new TextEncoder().encode("RIFF"));
+    bytes.set(new TextEncoder().encode("WAVEfmt "), 8);
+    bytes[bytes.length - 1] = 123;
+    const local = { ...localFile(""), file: new File([bytes], "synthetic-long.wav", { type: "audio/wav" }) };
+    const wholeFileRead = vi.spyOn(local.file, "arrayBuffer").mockRejectedValue(new Error("unbounded read"));
+    const received: Uint8Array[] = [];
+    uploadAttachment.mockImplementation(async (request) => {
+      if (request.data) received.push(new Uint8Array(request.data));
+      return {
+        uploadId: "large-file-id",
+        maxChunkSize: 2 * 1024 * 1024,
+        committedSize: request.data ? request.writeOffset + BigInt(request.data.length) : 0n,
+        attachment: request.finishWrite ? attachment : undefined,
+      };
+    });
+    await expect(uploadService.uploadFile(local)).resolves.toEqual(attachment);
+    expect(wholeFileRead).not.toHaveBeenCalled();
+    expect(received).toHaveLength(9);
+    expect(received.every((chunk) => chunk.length <= 2 * 1024 * 1024)).toBe(true);
+    const actual = new Uint8Array(bytes.length);
+    let offset = 0;
+    for (const chunk of received) {
+      actual.set(chunk, offset);
+      offset += chunk.length;
+    }
+    expect(offset).toBe(bytes.length);
+    // Compare bytes without expanding 17 MiB into an assertion failure payload.
+    expect(actual.every((value, index) => value === bytes[index])).toBe(true);
+  });
+
   it("finalizes an empty file", async () => {
     await expect(uploadService.uploadFile(localFile(""))).resolves.toEqual(attachment);
     expect(uploadAttachment).toHaveBeenCalledTimes(2);
