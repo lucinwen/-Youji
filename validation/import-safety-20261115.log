@@ -1,0 +1,54 @@
+test_duplicate_identity_rejected (test_import_batch.BatchContract.test_duplicate_identity_rejected) ... ok
+test_failure_stops_and_records_uncertainty (test_import_batch.BatchContract.test_failure_stops_and_records_uncertainty) ... ok
+test_manifest_symlink_rejected (test_import_batch.BatchContract.test_manifest_symlink_rejected) ... ok
+test_multiple_inputs_relative_to_manifest (test_import_batch.BatchContract.test_multiple_inputs_relative_to_manifest) ... ok
+test_preflight_entire_batch (test_import_batch.BatchContract.test_preflight_entire_batch) ... ok
+test_receipt_omits_content_and_notes (test_import_batch.BatchContract.test_receipt_omits_content_and_notes) ... ok
+test_reject_empty_or_overlarge (test_import_batch.BatchContract.test_reject_empty_or_overlarge) ... ok
+test_reject_unknown_fields_and_wrong_types (test_import_batch.BatchContract.test_reject_unknown_fields_and_wrong_types) ... ok
+test_retry_revalidates_sources_via_client (test_import_batch.BatchContract.test_retry_revalidates_sources_via_client) ... ok
+test_separate_purpose_kept (test_import_batch.BatchContract.test_separate_purpose_kept) ... ok
+test_concurrent_claims_have_only_one_winner (test_import_safety.ImportSafety.test_concurrent_claims_have_only_one_winner) ... ok
+test_dangling_symlink_preserved (test_import_safety.ImportSafety.test_dangling_symlink_preserved) ... ok
+test_exact_limit_is_accepted (test_import_safety.ImportSafety.test_exact_limit_is_accepted) ... ok
+test_existing_receipt_preserved (test_import_safety.ImportSafety.test_existing_receipt_preserved) ... ok
+test_read_is_bounded_before_rejecting_oversized_file (test_import_safety.ImportSafety.test_read_is_bounded_before_rejecting_oversized_file) ... ok
+test_second_claim_cannot_replace_first (test_import_safety.ImportSafety.test_second_claim_cannot_replace_first) ... ok
+test_source_as_receipt_preserved (test_import_safety.ImportSafety.test_source_as_receipt_preserved) ... ok
+test_contract (test_import_sources.ImportContract.test_contract) ... ok
+test_no_directory (test_import_sources.ImportContract.test_no_directory) ... ok
+test_privacy (test_import_sources.ImportContract.test_privacy) ... ok
+test_missing_limits_never_writes (test_import_sources.QuotaPreflight.test_missing_limits_never_writes) ... ok
+test_quota_failure_never_writes (test_import_sources.QuotaPreflight.test_quota_failure_never_writes) ... ok
+test_403_not_misread_as_missing (test_importer_independent.IndependentImporter.test_403_not_misread_as_missing) ... ok
+test_all_uploads_archive_exact_original (test_importer_independent.IndependentImporter.test_all_uploads_archive_exact_original) ... ok
+test_archive_corrupt_container_rejected (test_importer_independent.IndependentImporter.test_archive_corrupt_container_rejected) ... ok
+test_archive_extra_entry_rejected (test_importer_independent.IndependentImporter.test_archive_extra_entry_rejected) ... ok
+test_archive_uncompressed_size_cap_rejected (test_importer_independent.IndependentImporter.test_archive_uncompressed_size_cap_rejected) ... ok
+test_archive_wrong_path_rejected (test_importer_independent.IndependentImporter.test_archive_wrong_path_rejected) ... ok
+test_changed_existing_memo_rejected (test_importer_independent.IndependentImporter.test_changed_existing_memo_rejected) ... ok
+test_create_is_private_and_keeps_attachment (test_importer_independent.IndependentImporter.test_create_is_private_and_keeps_attachment) ... ok
+test_existing_original_download_integrity (test_importer_independent.IndependentImporter.test_existing_original_download_integrity) ... ok
+test_existing_public_memo_must_not_report_private_success (test_importer_independent.IndependentImporter.test_existing_public_memo_must_not_report_private_success) ... ok
+test_existing_unrelated_attachment_must_not_claim_original_saved (test_importer_independent.IndependentImporter.test_existing_unrelated_attachment_must_not_claim_original_saved) ... ok
+test_missing_attachment_does_not_recreate_existing_memo (test_importer_independent.IndependentImporter.test_missing_attachment_does_not_recreate_existing_memo) ... ok
+test_no_network_during_prepare (test_importer_independent.IndependentImporter.test_no_network_during_prepare) ... ok
+test_no_redirect_for_any_status (test_importer_independent.IndependentImporter.test_no_redirect_for_any_status) ... ok
+test_original_bytes_and_identity_stable (test_importer_independent.IndependentImporter.test_original_bytes_and_identity_stable) ... ok
+test_real_http_redirect_never_reaches_other_origin (test_importer_independent.IndependentImporter.test_real_http_redirect_never_reaches_other_origin) ... ok
+test_remote_plain_http_rejected (test_importer_independent.IndependentImporter.test_remote_plain_http_rejected) ... ok
+test_same_filename_wrong_bytes_rejected (test_importer_independent.IndependentImporter.test_same_filename_wrong_bytes_rejected) ... ok
+test_symlink_rejected (test_importer_independent.IndependentImporter.test_symlink_rejected) ... ok
+test_uncertain_write_never_deletes_original (test_importer_independent.IndependentImporter.test_uncertain_write_never_deletes_original) ... ok
+test_account_isolated_ids (test_long_text.LongTextPlan.test_account_isolated_ids) ... ok
+test_empty_rejected (test_long_text.LongTextPlan.test_empty_rejected) ... ok
+test_exact_multibyte_reconstruction (test_long_text.LongTextPlan.test_exact_multibyte_reconstruction) ... ok
+test_max_size_index_fits_default_quota (test_long_text.LongTextPlan.test_max_size_index_fits_default_quota) ... ok
+test_quota_change_does_not_change_identity (test_long_text.LongTextPlan.test_quota_change_does_not_change_identity) ... ok
+test_size_bound (test_long_text.LongTextPlan.test_size_bound) ... ok
+test_small_quota_fails_before_writes (test_long_text.LongTextPlan.test_small_quota_fails_before_writes) ... ok
+
+----------------------------------------------------------------------
+Ran 49 tests in 1.199s
+
+OK
