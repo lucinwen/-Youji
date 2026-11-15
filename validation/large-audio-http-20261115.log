@@ -1,0 +1,8 @@
+=== RUN   TestYoujiLargeAudioHTTPDownloadAndExport
+2026/11/15 12:53:22 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/15 12:53:22 INFO database initialized successfully schemaVersion=26.10.1
+    youji_large_audio_test.go:88: anonymous download status: 401
+    youji_large_audio_test.go:117: 17MiB WAV: authenticated HTTP download SHA256 matches; Range=206; member export=403; admin export contains byte-identical original
+--- PASS: TestYoujiLargeAudioHTTPDownloadAndExport (0.22s)
+PASS
+ok  	github.com/usememos/memos/server/fileserver	0.250s
