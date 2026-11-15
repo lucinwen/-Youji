@@ -31,8 +31,11 @@ export async function prepareBatch(
   if (textEncoding !== "utf-8" && textEncoding !== "gb18030") throw new Error("不支持的文本编码。");
   if (!/^users\/[a-zA-Z0-9_-]+$/.test(userName)) throw new Error("请先登录再导入。");
   if (!files.length || files.length > 32) throw new Error("一次请选择 1–32 个文件。");
-  if (files.some((f) => f.size > MAX_FILE) || files.reduce((n, f) => n + f.size, 0) > MAX_TOTAL)
-    throw new Error("单文件最多 16 MiB，每批合计最多 32 MiB。");
+  if (files.some((f) => f.size > MAX_FILE))
+    throw new Error(
+      "本批量原件入口单文件最多 16 MiB，尚未上传任何文件。长录音请保留本机原件，改用原生笔记编辑器添加附件（受账号配额限制）；此入口不会自动转写。",
+    );
+  if (files.reduce((n, f) => n + f.size, 0) > MAX_TOTAL) throw new Error("每批合计最多 32 MiB，尚未上传任何文件。请分成多批导入。");
   if (files.some((f) => !f.name || /[\\/]/.test(f.name) || Array.from(f.name).some((c) => c.charCodeAt(0) < 32)))
     throw new Error("文件名包含不支持的字符。");
   const items: BatchSource[] = [];

@@ -56,6 +56,16 @@ describe("batch sources", () => {
     await expect(prepareBatch(Array(33).fill(file("a.txt")), "diary", "", "users/alice")).rejects.toThrow();
     await expect(prepareBatch([{ ...file("a.txt"), size: 17 * 1024 * 1024 } as File], "diary", "", "users/alice")).rejects.toThrow();
   });
+  it("rejects a real synthetic large recording before reading or writing it, with recovery guidance", async () => {
+    const recording = new File([new Uint8Array(17 * 1024 * 1024)], "synthetic-long.wav", { type: "audio/wav" });
+    const read = vi.spyOn(recording, "arrayBuffer");
+    await expect(prepareBatch([recording], "diary", "", "users/alice")).rejects.toThrow("尚未上传任何文件");
+    await expect(prepareBatch([recording], "diary", "", "users/alice")).rejects.toThrow("原生笔记编辑器");
+    expect(read).not.toHaveBeenCalled();
+    expect(createAttachment).not.toHaveBeenCalled();
+    expect(createMemo).not.toHaveBeenCalled();
+    expect(recording.size).toBe(17 * 1024 * 1024);
+  });
   it("rejects duplicate sources and retains kind and note in identity", async () => {
     await expect(prepareBatch([file("a.txt"), file("a.txt")], "diary", "", "users/alice")).rejects.toThrow("重复");
     const a = (await prepareBatch([file("a.txt")], "diary", "", "users/alice"))[0];
