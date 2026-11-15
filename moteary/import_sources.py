@@ -8,6 +8,8 @@ from urllib.parse import urlparse, urlencode, quote
 from urllib.request import Request, build_opener, HTTPRedirectHandler
 from urllib.error import HTTPError
 
+MAX_SOURCE_BYTES = 16 * 1024 * 1024
+
 KINDS = {'diary', 'idea', 'work', 'lecture', 'conversation', 'reference'}
 
 def prepare(path, kind, note='', source_url=''):
@@ -16,8 +18,10 @@ def prepare(path, kind, note='', source_url=''):
     p = Path(path)
     if not p.is_file() or p.is_symlink():
         raise ValueError('Provide one regular file, not a symlink or directory')
-    data = p.read_bytes()
-    if len(data) > 16 * 1024 * 1024:
+    # Bound allocation even for huge files or files growing after the stat check.
+    with p.open('rb') as source:
+        data = source.read(MAX_SOURCE_BYTES + 1)
+    if len(data) > MAX_SOURCE_BYTES:
         raise ValueError('Demo importer limit is 16 MiB; use the upstream chunked uploader for larger files')
     if source_url and urlparse(source_url).scheme not in ('http', 'https'):
         raise ValueError('Source URL must be HTTP(S)')

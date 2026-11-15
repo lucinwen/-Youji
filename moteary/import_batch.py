@@ -51,7 +51,7 @@ def summary(items):
              'bytes': len(i['data']), 'sha256': i['sha256']} for i in items]
 
 
-def write_receipt(path, records):
+def write_receipt(path, records, *, exclusive=False):
     # Atomic replacement prevents a process interruption truncating the receipt.
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -61,7 +61,12 @@ def write_receipt(path, records):
             json.dump({'version': 1, 'records': records}, out, ensure_ascii=False, indent=2)
             out.flush()
             os.fsync(out.fileno())
-        os.replace(tmp, path)
+        if exclusive:
+            # Atomically claim a new destination. exists() alone races with another run
+            # and misses dangling symlinks. Never replace a prior recovery receipt.
+            os.link(tmp, path)
+        else:
+            os.replace(tmp, path)
     finally:
         if os.path.exists(tmp):
             os.unlink(tmp)
@@ -71,7 +76,7 @@ def run_batch(items, client, receipt):
     records = summary(items)
     for record in records:
         record['status'] = 'not-started'
-    write_receipt(receipt, records)  # Fail before remote writes if output is not writable.
+    write_receipt(receipt, records, exclusive=True)  # Claim before any remote write.
     for item, record in zip(items, records):
         record['status'] = 'in-progress'
         write_receipt(receipt, records)
