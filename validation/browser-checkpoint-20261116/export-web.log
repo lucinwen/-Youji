@@ -1,0 +1,9 @@
+
+ RUN  v4.1.5 /workspace/scratch/10a41183bc23/youji-e2e/web
+
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  11:18:11
+   Duration  1.92s (transform 306ms, setup 211ms, import 450ms, tests 39ms, environment 955ms)
+

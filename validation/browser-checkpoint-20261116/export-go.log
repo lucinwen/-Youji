@@ -1,0 +1,13 @@
+go: downloading github.com/stretchr/testify v1.11.1
+go: downloading github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
+go: downloading github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
+=== RUN   TestRoundTrip
+--- PASS: TestRoundTrip (0.00s)
+=== RUN   TestGoldenArchives
+=== RUN   TestGoldenArchives/1.0/golden.zip
+=== RUN   TestGoldenArchives/1.0/legacy.zip
+--- PASS: TestGoldenArchives (0.00s)
+    --- PASS: TestGoldenArchives/1.0/golden.zip (0.00s)
+    --- PASS: TestGoldenArchives/1.0/legacy.zip (0.00s)
+PASS
+ok  	github.com/usememos/memos/core/memoexport	0.006s
