@@ -1,0 +1,6 @@
+2026-11-17: Real Chromium launch attempted through Python Playwright.
+Executable: /usr/bin/chromium; launch args: --no-sandbox.
+Result: TargetClosedError before any application UI interaction.
+Chromium diagnostic: FATAL:chrome/browser/process_singleton_posix.cc:297
+Check failed: . socket() failed: Operation not permitted (1)
+Process exited with SIGABRT. Browser decoding, downloads and mobile-width interaction NOT VERIFIED.

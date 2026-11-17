@@ -189,3 +189,22 @@ it("shows original filenames and honest PDF/audio retrieval boundaries", () => {
   expect(screen.getByText("打开记录查看附件并取回原件")).toBeInTheDocument();
   cleanup();
 });
+
+it("keeps audio recovery controls outside the record navigation link", () => {
+  useInfiniteMemos.mockReturnValue(query);
+  query.isPending = false;
+  query.isError = false;
+  query.data.pages[0].memos = [
+    create(MemoSchema, {
+      name: "memos/audio",
+      content: `原件 SHA-256：\`${"a".repeat(64)}\``,
+      tags: ["拾微", "source/file"],
+      attachments: [{ name: "attachments/audio", filename: "synthetic.wav.original.zip" }],
+    }),
+  ];
+  mount();
+  const button = screen.getByRole("button", { name: "校验并试听原件" });
+  expect(button.closest("a")).toBeNull();
+  expect(screen.getByTestId("moteary-source-record")).toHaveAttribute("href", "/memos/audio");
+  cleanup();
+});

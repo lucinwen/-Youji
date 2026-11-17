@@ -26,6 +26,7 @@ import { ROUTES } from "@/router/routes";
 import { State } from "@/types/proto/api/common_pb";
 import { type Memo, Visibility } from "@/types/proto/api/memo_service_pb";
 import BatchImport from "./BatchImport";
+import OriginalAudioPreview, { getOriginalAudio } from "./OriginalAudioPreview";
 import {
   buildCaptureStarter,
   buildSourceFilter,
@@ -51,55 +52,61 @@ const categories = Object.entries(CATEGORY_LABELS) as [CaptureCategory, string][
 const memoPath = (name: string) => `/memos/${encodeURIComponent(name.split("/").at(-1) ?? "")}`;
 
 function SourceCard({ memo }: { memo: Memo }) {
+  const originalAudio = getOriginalAudio(memo);
   const kind = getSourceKind(memo);
   const Icon = kind === "unknown" ? BookOpenIcon : SOURCE_ICONS[kind];
   const date = memo.createTime ? new Date(Number(memo.createTime.seconds) * 1000).toLocaleDateString("zh-CN") : "日期未提供";
   return (
-    <Link
-      to={memoPath(memo.name)}
-      data-testid="moteary-source-record"
-      className="group flex min-w-0 flex-col rounded-xl border border-border/70 bg-card p-5 transition-colors hover:border-emerald-700/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-    >
-      <div className="mb-4 flex items-center justify-between gap-2 text-xs text-muted-foreground">
-        <span className="flex min-w-0 items-center gap-2">
-          <Icon className="size-3.5 shrink-0" />
-          {kind === "unknown" ? "来源未标记" : SOURCE_INFO[kind].label}
-        </span>
-        <span>{date}</span>
-      </div>
-      <p className="mb-2 text-xs text-muted-foreground" aria-label="记录可见范围">
-        {getSourceVisibility(memo.visibility)}
-      </p>
-      <h3 className="mb-4 line-clamp-2 min-h-12 break-words text-[15px] leading-6 font-medium">{getSourceTitle(memo.content)}</h3>
-      {memo.attachments.length > 0 && (
-        <div className="mb-3 text-xs leading-5 text-muted-foreground" aria-label="附件与检索范围">
-          <p>附件已关联，不代表内容已解析。PDF、音频、图片不会自动提取、转写或 OCR。</p>
-          <p>可搜索已保存正文、批注及正文中的文件名；不能搜索未解析附件内部内容。</p>
-          <ul className="mt-1 break-all">
-            {memo.attachments.map((attachment) => (
-              <li key={attachment.name}>
-                {attachment.filename}
-                {attachment.filename.endsWith(".original.zip") ? " · 原件归档" : ""}
-              </li>
-            ))}
-          </ul>
-          <span className="underline">打开记录查看附件并取回原件</span>
-        </div>
-      )}
-      <div className="mt-auto flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
-        <span className="inline-flex items-center gap-1">
-          <CheckIcon className="size-3" />
-          服务端记录
-        </span>
-        {memo.attachments.length > 0 && (
-          <span className="inline-flex items-center gap-1">
-            <PaperclipIcon className="size-3" />
-            {memo.attachments.length} 个关联附件
+    <div className="flex min-w-0 flex-col rounded-xl border border-border/70 bg-card">
+      <Link
+        to={memoPath(memo.name)}
+        data-testid="moteary-source-record"
+        className="group flex min-w-0 flex-1 flex-col rounded-xl p-5 transition-colors hover:border-emerald-700/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      >
+        <div className="mb-4 flex items-center justify-between gap-2 text-xs text-muted-foreground">
+          <span className="flex min-w-0 items-center gap-2">
+            <Icon className="size-3.5 shrink-0" />
+            {kind === "unknown" ? "来源未标记" : SOURCE_INFO[kind].label}
           </span>
+          <span>{date}</span>
+        </div>
+        <p className="mb-2 text-xs text-muted-foreground" aria-label="记录可见范围">
+          {getSourceVisibility(memo.visibility)}
+        </p>
+        <h3 className="mb-4 line-clamp-2 min-h-12 break-words text-[15px] leading-6 font-medium">{getSourceTitle(memo.content)}</h3>
+        {memo.attachments.length > 0 && (
+          <div className="mb-3 text-xs leading-5 text-muted-foreground" aria-label="附件与检索范围">
+            <p>附件已关联，不代表内容已解析。PDF、音频、图片不会自动提取、转写或 OCR。</p>
+            <p>可搜索已保存正文、批注及正文中的文件名；不能搜索未解析附件内部内容。</p>
+            <ul className="mt-1 break-all">
+              {memo.attachments.map((attachment) => (
+                <li key={attachment.name}>
+                  {attachment.filename}
+                  {attachment.filename.endsWith(".original.zip") ? " · 原件归档" : ""}
+                </li>
+              ))}
+            </ul>
+            <span className="underline">打开记录查看附件并取回原件</span>
+          </div>
         )}
-        <ArrowRightIcon className="ms-auto size-3.5 transition-transform group-hover:translate-x-0.5" />
-      </div>
-    </Link>
+        <div className="mt-auto flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+          <span className="inline-flex items-center gap-1">
+            <CheckIcon className="size-3" />
+            服务端记录
+          </span>
+          {memo.attachments.length > 0 && (
+            <span className="inline-flex items-center gap-1">
+              <PaperclipIcon className="size-3" />
+              {memo.attachments.length} 个关联附件
+            </span>
+          )}
+          <ArrowRightIcon className="ms-auto size-3.5 transition-transform group-hover:translate-x-0.5" />
+        </div>
+      </Link>
+      {originalAudio && (
+        <OriginalAudioPreview key={`${originalAudio.name}:${originalAudio.filename}:${originalAudio.sha256}`} original={originalAudio} />
+      )}
+    </div>
   );
 }
 
