@@ -104,6 +104,27 @@ export async function readOriginalArchive(response: Response, signal: AbortSigna
   }
 }
 
+/** Verify the one bounded original before exposing bytes to playback, download or retry. */
+export async function verifyOriginalArchive(bytes: Uint8Array, filename: string, expectedHash: string): Promise<Uint8Array> {
+  if (bytes.length > MAX_FILE + 1024 * 1024 || !/^[a-f0-9]{64}$/.test(expectedHash)) throw new Error("原件校验信息无效。");
+  let entryCount = 0;
+  const entries = unzipSync(bytes, {
+    filter: (entry) => {
+      entryCount++;
+      return entry.originalSize <= MAX_FILE;
+    },
+  });
+  if (
+    entryCount !== 1 ||
+    Object.keys(entries).length !== 1 ||
+    !Object.hasOwn(entries, filename) ||
+    entries[filename].length > MAX_FILE ||
+    (await hash(entries[filename])) !== expectedHash
+  )
+    throw new Error("原件校验未通过，已停止。");
+  return entries[filename];
+}
+
 export class ImportQuotaError extends Error {}
 
 export async function validateBatchQuota(items: BatchSource[], signal?: AbortSignal): Promise<void> {
@@ -177,20 +198,7 @@ export async function ingestBatchSource(
     if (!response.ok) throw new Error("无法读取原件，已停止。");
     const bytes = await readOriginalArchive(response, signal);
     if (bytes.length > MAX_FILE + 1024 * 1024) throw new Error("原件归档异常，已停止。");
-    let entryCount = 0;
-    const entries = unzipSync(bytes, {
-      filter: (f) => {
-        entryCount++;
-        return f.originalSize <= MAX_FILE;
-      },
-    });
-    if (
-      entryCount !== 1 ||
-      Object.keys(entries).length !== 1 ||
-      !Object.hasOwn(entries, item.filename) ||
-      (await hash(entries[item.filename])) !== item.sha256
-    )
-      throw new Error("原件校验未通过，已停止。");
+    await verifyOriginalArchive(bytes, item.filename, item.sha256);
     return { name, status: "verified" };
   }
   await validateBatchQuota([item], signal);

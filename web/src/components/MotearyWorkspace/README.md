@@ -52,3 +52,27 @@ The upstream `filtered-memo-stats.test.ts` uses UTC-midnight fixtures and fixed 
 expectations, so the aggregate test command explicitly uses UTC. This does not change the
 application's timezone handling. Browser/API verification uses isolated synthetic accounts and
 must be recorded separately from component tests.
+
+## Verified batch-audio recovery
+
+Batch audio archives with one local `.original.zip` attachment and one recorded SHA-256
+now expose an explicit **校验并试听原件** action on the source card. It fetches only the
+same-instance attachment after a click, bounds the archive stream to 17 MiB and decoded
+original to 16 MiB, requires exactly one matching ZIP entry, and compares the original hash
+before creating a temporary audio Blob URL. Playback is not automatic. The user can download
+the verified raw audio, close/release it, or cancel an in-flight read. Closing/unmounting stops
+the media, aborts the request and revokes the object URL. Attachment/hash changes remount the
+preview; account changes remount the entire workspace.
+
+WAV, MP3, OGG, M4A, FLAC and WebM extensions are recognized, but actual codec support depends
+on the browser; a decoding failure keeps the verified download available. A user-editable hash
+checks consistency with the record, not source authenticity. This performs no ASR, OCR, model
+call, persistent browser storage or remote URL fetch. Other archives retain the existing memo
+attachment flow. No change to the native editor's separate large-file upload path.
+
+`tests/moteary-audio-preview.test.tsx` covers archive/hash bounds, authentication request shape,
+no prefetch, failed reads/retry, cancellation, media cleanup and original Blob bytes with jsdom
+and mocked fetch. It is **not browser media-decoder evidence**. The separate
+`scripts/youji_browser_smoke.py` exercises real Chromium decoding, original download and a
+390×844 layout when a suitable browser runtime is available; see the dated QA report for its
+actual execution status.

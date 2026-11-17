@@ -101,7 +101,22 @@ def run(binary, chromium, output):
                     passed("refresh persistence and body annotation filename searches")
                     page.get_by_role("button", name="清除搜索", exact=True).click()
                     expect(page.get_by_test_id("moteary-source-record")).to_have_count(2)
+                    preview = page.get_by_role("region", name="音频原件 synthetic-silence.wav", exact=True)
+                    preview.get_by_role("button", name="校验并试听原件", exact=True).click()
+                    player = preview.get_by_label("试听 synthetic-silence.wav", exact=True)
+                    expect(player).to_be_visible()
+                    # Exercise the actual browser media decoder, not a mocked play() promise.
+                    player.evaluate("audio => audio.play()")
+                    page.wait_for_function("() => { const a = document.querySelector('audio[aria-label=\"试听 synthetic-silence.wav\"]'); return a && a.currentTime > 0 && a.readyState >= 2 && !a.error; }")
+                    player.evaluate("audio => audio.pause()")
+                    with page.expect_download() as audio_download:
+                        preview.get_by_role("link", name="下载已校验音频原件", exact=True).click()
+                    recovered = Path(audio_download.value.path()).read_bytes()
+                    assert recovered == wav.getvalue()
+                    passed("browser decodes synthetic WAV and downloads verified original", sha256=hashlib.sha256(recovered).hexdigest())
                     page.screenshot(path=str(output / "desktop.png"), full_page=True)
+                    preview.get_by_role("button", name="关闭试听并释放", exact=True).click()
+                    expect(player).to_have_count(0)
                     for item, (name, data, _) in zip(receipt["items"], files):
                         page.goto(url + "/" + item["record"])
                         link = page.locator('a[href*="/file/attachments/"]').filter(has_text=name + ".original.zip").first
@@ -131,7 +146,13 @@ def run(binary, chromium, output):
                     phone.get_by_role("button", name="搜索资料", exact=True).click()
                     expect(phone.get_by_test_id("moteary-source-record")).to_have_count(1)
                     assert phone.evaluate("document.documentElement.scrollWidth <= innerWidth"), "mobile horizontal overflow"
+                    phone.get_by_role("button", name="清除搜索", exact=True).click()
+                    mobile_preview = phone.get_by_role("region", name="音频原件 synthetic-silence.wav", exact=True)
+                    mobile_preview.get_by_role("button", name="校验并试听原件", exact=True).click()
+                    expect(mobile_preview.get_by_label("试听 synthetic-silence.wav", exact=True)).to_be_visible()
+                    assert phone.evaluate("document.documentElement.scrollWidth <= innerWidth"), "mobile audio controls overflow"
                     phone.screenshot(path=str(output / "mobile.png"), full_page=True)
+                    mobile_preview.get_by_role("button", name="关闭试听并释放", exact=True).click()
                     passed("independent mobile-sized browser login sync and search", viewport="390x844", physical_device=False)
                     assert not errors, errors
                     passed("no uncaught desktop JavaScript errors")
