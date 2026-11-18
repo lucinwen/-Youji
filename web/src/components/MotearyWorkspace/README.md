@@ -116,3 +116,5 @@ after exact account/original filename/hash validation. It never persists body te
 in localStorage or uploads during restore. A nonempty correction cannot be replaced;
 confirmation resets. See `moteary/LOCAL_AUDIO.md` for sensitivity and trust limits,
 and `moteary/DEMO_RUNBOOK.md` for a model-disabled fresh-instance demonstration.
+
+`ChatImport` / `chatImport.ts` 提供有界的 Telegram 单聊天 JSON 预览、显式 PRIVATE 保存与原件回溯。文字仅作为文本展示；复用已有单原件保存/校验/重试协议，不调用 ASR。兼容与隐私边界见 `moteary/LOCAL_CHAT.md`。
