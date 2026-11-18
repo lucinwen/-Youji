@@ -1,0 +1,26 @@
+{
+  "base_commit": "41162cfb7eec18c208764d3443bd7d1efa3104b9",
+  "source_checkpoint": "7c857f117b132f9451e14553d15f44afb8348b18",
+  "binary_sha256": "caa35d155c97094cf029a9dc82fcee99131b8b603640d601479ffae015d509d4",
+  "frontend_tests": {
+    "passed": 1960,
+    "skipped": 6
+  },
+  "store_unit_passed": 29,
+  "draft_ui_passed": 19,
+  "previous_manual_ui_passed": 14,
+  "lint": "passed",
+  "frontend_build": "passed",
+  "go_build": "passed",
+  "real_http_groups_passed": 4,
+  "real_http_module_test_passed": 1,
+  "fresh_demo_checks_passed": 10,
+  "browser": "blocked: sandbox enabled; socket EPERM",
+  "browser_refresh_crash": "not tested",
+  "mobile": "not tested",
+  "user_task_timing": "not measured",
+  "competitor_comparison": "not tested",
+  "storage": "opt-in plaintext per origin and owner; no encryption or physical-device security guarantee",
+  "server_concurrent_upload_idempotency": "not fixed; all known session attachment IDs retained",
+  "model_executed": false
+}
