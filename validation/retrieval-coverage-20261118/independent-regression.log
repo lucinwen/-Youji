@@ -1,0 +1,40 @@
+{
+  "model": "intfloat/multilingual-e5-small",
+  "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "fixture_sha256": "a9fa7a8915cc93fe73ec1a2d5b754012cb484e1232102468073b19ce462c8f8a",
+  "worker_sha256": "6a45b8dbf046118c7c9b009434dc7fd86f2e117fad190395451823027d7b565a",
+  "worker_unchanged_since_preregistration": false,
+  "groups": {
+    "literal": {
+      "total": 6,
+      "top1": 6,
+      "top5": 6
+    },
+    "paraphrase": {
+      "total": 24,
+      "top1": 23,
+      "top5": 24
+    },
+    "cross_language": {
+      "total": 24,
+      "top1": 0,
+      "top5": 8
+    }
+  },
+  "negative_queries": 12,
+  "negative_queries_returning_candidates": 12,
+  "negative_top_score_range": [
+    0.770107978875454,
+    0.8603571777557777
+  ],
+  "load_seconds": 3.5537829429958947,
+  "warm_query_median_seconds": 0.1333057750016451,
+  "blocked_network_attempts": 0,
+  "threshold_fitted": false,
+  "limitations": [
+    "Synthetic challenge, not real-user accuracy",
+    "Local warm encoder timing, not server SLA",
+    "Python network guard is not OS isolation",
+    "Negative queries are ranked, not classified as unanswerable"
+  ]
+}

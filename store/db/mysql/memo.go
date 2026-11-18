@@ -214,6 +214,10 @@ func (d *DB) ListMemos(ctx context.Context, find *store.FindMemo) ([]*store.Memo
 	}
 	// Add id as final tie-breaker
 	orderBy = append(orderBy, "`id` DESC")
+	payloadColumn := "`memo`.`payload` AS `payload`"
+	if find.ExcludePayload {
+		payloadColumn = "'{}' AS `payload`"
+	}
 	fields := []string{
 		"`memo`.`id` AS `id`",
 		"`memo`.`uid` AS `uid`",
@@ -223,7 +227,7 @@ func (d *DB) ListMemos(ctx context.Context, find *store.FindMemo) ([]*store.Memo
 		"`memo`.`row_status` AS `row_status`",
 		"`memo`.`visibility` AS `visibility`",
 		"`memo`.`pinned` AS `pinned`",
-		"`memo`.`payload` AS `payload`",
+		payloadColumn,
 		"`memo`.`space_id` AS `space_id`",
 		`(SELECT parent_memo.uid
 			FROM memo_relation AS parent_relation

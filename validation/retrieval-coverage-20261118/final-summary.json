@@ -1,0 +1,40 @@
+{
+  "base_commit": "922b5a787ce488025dd9f13b282f47fa416a21d5",
+  "frontend": {
+    "files": 199,
+    "passed": 1749,
+    "skipped": 2,
+    "exit_code": 0
+  },
+  "static_checks": "TypeScript/Biome689 files passed",
+  "production_build": "passed with Rayon2/Node heap1024MiB after one exit137; original failed log retained",
+  "python": {
+    "total": 83,
+    "passed": 82,
+    "skipped": 1,
+    "retrieval_venv_worker_tests_passed": 12
+  },
+  "go": {
+    "passing_packages": 22,
+    "expanded_exit_code": 1,
+    "remaining_failure": "existing Webhook DNS lookup cannot reach sandbox UDP resolver",
+    "targeted_retrieval_gateway_pdf_and_sqlite_metadata": "passed"
+  },
+  "real_http": {
+    "groups_passed": 7,
+    "seeded_owner_records": 126,
+    "binary_sha256": "cd987906072a4d9c6905e09ace501cb74ffec7d8f8db8f026f77ecbf45060522",
+    "note": "controlled pause for concurrent-edit test explicitly labeled"
+  },
+  "browser": "normal sandbox launch blocked before page; no UI interaction",
+  "retrieval_challenge": {
+    "documents": 24,
+    "queries": 66,
+    "threshold_fitted": false,
+    "source": "independent-model.json",
+    "regression_replay": "independent-regression.json"
+  },
+  "asr": "isolated real tiny/base evaluation; not product integration; Chinese synthetic samples unacceptable",
+  "model_directory": "read-only mode bits checked, not an ownership/mount guarantee",
+  "worker_sha256": "6a45b8dbf046118c7c9b009434dc7fd86f2e117fad190395451823027d7b565a"
+}

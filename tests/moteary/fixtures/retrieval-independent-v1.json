@@ -1,0 +1,607 @@
+{
+  "description": "New synthetic held-out topics written before inference; no score threshold fitted.",
+  "documents": [
+    {
+      "id": "new-01",
+      "text": "雨棚修好以后，院子里的自行车座垫不再被夜雨淋湿。"
+    },
+    {
+      "id": "new-02",
+      "text": "社区图书馆周三闭馆清点藏书，借来的书可以投入门外还书箱。"
+    },
+    {
+      "id": "new-03",
+      "text": "种在北窗的薄荷长得很慢，挪到南阳台两周后出现了新叶。"
+    },
+    {
+      "id": "new-04",
+      "text": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+    },
+    {
+      "id": "new-05",
+      "text": "打印机卡纸时先断电，再打开后盖检查滚轮；此条只是合成设备日志。"
+    },
+    {
+      "id": "new-06",
+      "text": "读书会决定先讨论结尾，再回头比较不同人物对同一事件的描述。"
+    },
+    {
+      "id": "new-07",
+      "text": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+    },
+    {
+      "id": "new-08",
+      "text": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+    },
+    {
+      "id": "new-09",
+      "text": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+    },
+    {
+      "id": "new-10",
+      "text": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+    },
+    {
+      "id": "new-11",
+      "text": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+    },
+    {
+      "id": "new-12",
+      "text": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+    },
+    {
+      "id": "new-13",
+      "text": "The synthetic museum visit notes say the pottery gallery is upstairs and photography is prohibited in that room."
+    },
+    {
+      "id": "new-14",
+      "text": "For the fictional neighborhood concert, volunteers collect reusable cups at the exits and wash them for the next event."
+    },
+    {
+      "id": "new-15",
+      "text": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+    },
+    {
+      "id": "new-16",
+      "text": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+    },
+    {
+      "id": "new-17",
+      "text": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+    },
+    {
+      "id": "new-18",
+      "text": "During the mock workshop, participants write questions anonymously before the facilitator groups similar concerns on a board."
+    },
+    {
+      "id": "new-19",
+      "text": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+    },
+    {
+      "id": "new-20",
+      "text": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+    },
+    {
+      "id": "new-21",
+      "text": "The imaginary train station moved the bicycle parking racks beside the east entrance, underneath the covered walkway."
+    },
+    {
+      "id": "new-22",
+      "text": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+    },
+    {
+      "id": "new-23",
+      "text": "For the fictional film club, captions are enabled by default and seats near the speakers are left optional rather than assigned."
+    },
+    {
+      "id": "new-24",
+      "text": "The design review removed a surprise auto-play sound and replaced it with a visible play button that users choose to press."
+    }
+  ],
+  "queries": [
+    {
+      "id": "p01",
+      "type": "paraphrase",
+      "query": "自行车在院子里怎样防雨",
+      "expected": [
+        "new-01"
+      ]
+    },
+    {
+      "id": "x01",
+      "type": "cross_language",
+      "query": "keeping bicycles dry outdoors",
+      "expected": [
+        "new-01"
+      ]
+    },
+    {
+      "id": "p02",
+      "type": "paraphrase",
+      "query": "图书馆关门时归还借书",
+      "expected": [
+        "new-02"
+      ]
+    },
+    {
+      "id": "x02",
+      "type": "cross_language",
+      "query": "returning library books when the building is closed",
+      "expected": [
+        "new-02"
+      ]
+    },
+    {
+      "id": "p03",
+      "type": "paraphrase",
+      "query": "薄荷搬到光照更好的地方",
+      "expected": [
+        "new-03"
+      ]
+    },
+    {
+      "id": "x03",
+      "type": "cross_language",
+      "query": "moving mint to a sunnier location",
+      "expected": [
+        "new-03"
+      ]
+    },
+    {
+      "id": "p04",
+      "type": "paraphrase",
+      "query": "复盘如何区分观察和推测",
+      "expected": [
+        "new-04"
+      ]
+    },
+    {
+      "id": "x04",
+      "type": "cross_language",
+      "query": "separating observations from assumptions in a retrospective",
+      "expected": [
+        "new-04"
+      ]
+    },
+    {
+      "id": "p05",
+      "type": "paraphrase",
+      "query": "打印设备堵纸的处理记录",
+      "expected": [
+        "new-05"
+      ]
+    },
+    {
+      "id": "x05",
+      "type": "cross_language",
+      "query": "printer paper jam maintenance notes",
+      "expected": [
+        "new-05"
+      ]
+    },
+    {
+      "id": "p06",
+      "type": "paraphrase",
+      "query": "读书小组比较人物视角",
+      "expected": [
+        "new-06"
+      ]
+    },
+    {
+      "id": "x06",
+      "type": "cross_language",
+      "query": "comparing character perspectives in a reading group",
+      "expected": [
+        "new-06"
+      ]
+    },
+    {
+      "id": "p07",
+      "type": "paraphrase",
+      "query": "湖边路线关闭后的绕行选择",
+      "expected": [
+        "new-07"
+      ]
+    },
+    {
+      "id": "x07",
+      "type": "cross_language",
+      "query": "alternative walking route after a lakeside path closure",
+      "expected": [
+        "new-07"
+      ]
+    },
+    {
+      "id": "p08",
+      "type": "paraphrase",
+      "query": "演示时保持数据稳定",
+      "expected": [
+        "new-08"
+      ]
+    },
+    {
+      "id": "x08",
+      "type": "cross_language",
+      "query": "using a frozen dataset for a customer demonstration",
+      "expected": [
+        "new-08"
+      ]
+    },
+    {
+      "id": "p09",
+      "type": "paraphrase",
+      "query": "旧容器去掉贴纸再利用",
+      "expected": [
+        "new-09"
+      ]
+    },
+    {
+      "id": "x09",
+      "type": "cross_language",
+      "query": "removing labels from jars before reusing them",
+      "expected": [
+        "new-09"
+      ]
+    },
+    {
+      "id": "p10",
+      "type": "paraphrase",
+      "query": "自行车路线绕开修桥工地",
+      "expected": [
+        "new-10"
+      ]
+    },
+    {
+      "id": "x10",
+      "type": "cross_language",
+      "query": "cycling detour around a bridge construction site",
+      "expected": [
+        "new-10"
+      ]
+    },
+    {
+      "id": "p11",
+      "type": "paraphrase",
+      "query": "用实物帮助理解长度测量",
+      "expected": [
+        "new-11"
+      ]
+    },
+    {
+      "id": "x11",
+      "type": "cross_language",
+      "query": "teaching length measurement with building blocks",
+      "expected": [
+        "new-11"
+      ]
+    },
+    {
+      "id": "p12",
+      "type": "paraphrase",
+      "query": "报表生成不要阻塞界面",
+      "expected": [
+        "new-12"
+      ]
+    },
+    {
+      "id": "x12",
+      "type": "cross_language",
+      "query": "background report export with a download link when ready",
+      "expected": [
+        "new-12"
+      ]
+    },
+    {
+      "id": "p13",
+      "type": "paraphrase",
+      "query": "camera restrictions in the ceramics exhibition",
+      "expected": [
+        "new-13"
+      ]
+    },
+    {
+      "id": "x13",
+      "type": "cross_language",
+      "query": "陶器展厅不允许拍照",
+      "expected": [
+        "new-13"
+      ]
+    },
+    {
+      "id": "p14",
+      "type": "paraphrase",
+      "query": "reusing drink containers after a community music event",
+      "expected": [
+        "new-14"
+      ]
+    },
+    {
+      "id": "x14",
+      "type": "cross_language",
+      "query": "社区音乐会回收清洗杯子",
+      "expected": [
+        "new-14"
+      ]
+    },
+    {
+      "id": "p15",
+      "type": "paraphrase",
+      "query": "improving the speed of invoice date queries",
+      "expected": [
+        "new-15"
+      ]
+    },
+    {
+      "id": "x15",
+      "type": "cross_language",
+      "query": "给发票日期字段加索引提速",
+      "expected": [
+        "new-15"
+      ]
+    },
+    {
+      "id": "p16",
+      "type": "paraphrase",
+      "query": "finding cables easily during a trip",
+      "expected": [
+        "new-16"
+      ]
+    },
+    {
+      "id": "x16",
+      "type": "cross_language",
+      "query": "旅行时把充电线集中收纳",
+      "expected": [
+        "new-16"
+      ]
+    },
+    {
+      "id": "p17",
+      "type": "paraphrase",
+      "query": "turning leftover loaves into another ingredient",
+      "expected": [
+        "new-17"
+      ]
+    },
+    {
+      "id": "x17",
+      "type": "cross_language",
+      "query": "把隔夜面包做成面包屑",
+      "expected": [
+        "new-17"
+      ]
+    },
+    {
+      "id": "p18",
+      "type": "paraphrase",
+      "query": "collecting workshop questions without names",
+      "expected": [
+        "new-18"
+      ]
+    },
+    {
+      "id": "x18",
+      "type": "cross_language",
+      "query": "匿名收集研讨会问题并归类",
+      "expected": [
+        "new-18"
+      ]
+    },
+    {
+      "id": "p19",
+      "type": "paraphrase",
+      "query": "giving birds water away from new plants",
+      "expected": [
+        "new-19"
+      ]
+    },
+    {
+      "id": "x19",
+      "type": "cross_language",
+      "query": "把鸟饮水处放在幼苗远处",
+      "expected": [
+        "new-19"
+      ]
+    },
+    {
+      "id": "p20",
+      "type": "paraphrase",
+      "query": "protecting offline edits from overwriting newer content",
+      "expected": [
+        "new-20"
+      ]
+    },
+    {
+      "id": "x20",
+      "type": "cross_language",
+      "query": "断网草稿避免覆盖服务器新版本",
+      "expected": [
+        "new-20"
+      ]
+    },
+    {
+      "id": "p21",
+      "type": "paraphrase",
+      "query": "where to park a bicycle at the station",
+      "expected": [
+        "new-21"
+      ]
+    },
+    {
+      "id": "x21",
+      "type": "cross_language",
+      "query": "车站东入口有遮雨自行车停车位",
+      "expected": [
+        "new-21"
+      ]
+    },
+    {
+      "id": "p22",
+      "type": "paraphrase",
+      "query": "why two changing measurements do not prove one causes the other",
+      "expected": [
+        "new-22"
+      ]
+    },
+    {
+      "id": "x22",
+      "type": "cross_language",
+      "query": "相关关系不等于因果关系",
+      "expected": [
+        "new-22"
+      ]
+    },
+    {
+      "id": "p23",
+      "type": "paraphrase",
+      "query": "making a screening easier to follow with subtitles",
+      "expected": [
+        "new-23"
+      ]
+    },
+    {
+      "id": "x23",
+      "type": "cross_language",
+      "query": "电影放映默认开启字幕",
+      "expected": [
+        "new-23"
+      ]
+    },
+    {
+      "id": "p24",
+      "type": "paraphrase",
+      "query": "requiring permission before playing audio",
+      "expected": [
+        "new-24"
+      ]
+    },
+    {
+      "id": "x24",
+      "type": "cross_language",
+      "query": "播放声音前让用户主动点击",
+      "expected": [
+        "new-24"
+      ]
+    },
+    {
+      "id": "l01",
+      "type": "literal",
+      "query": "好以后，院子里的自行车",
+      "expected": [
+        "new-01"
+      ]
+    },
+    {
+      "id": "l02",
+      "type": "literal",
+      "query": "书馆周三闭馆清点藏书，",
+      "expected": [
+        "new-02"
+      ]
+    },
+    {
+      "id": "l03",
+      "type": "literal",
+      "query": "窗的薄荷长得很慢，挪到",
+      "expected": [
+        "new-03"
+      ]
+    },
+    {
+      "id": "l04",
+      "type": "literal",
+      "query": "队复盘把事实时间线和每",
+      "expected": [
+        "new-04"
+      ]
+    },
+    {
+      "id": "l05",
+      "type": "literal",
+      "query": "卡纸时先断电，再打开后",
+      "expected": [
+        "new-05"
+      ]
+    },
+    {
+      "id": "l06",
+      "type": "literal",
+      "query": "决定先讨论结尾，再回头",
+      "expected": [
+        "new-06"
+      ]
+    },
+    {
+      "id": "n01",
+      "type": "absent",
+      "query": "火星探测器发动机测试",
+      "expected": []
+    },
+    {
+      "id": "n02",
+      "type": "absent",
+      "query": "鲸鱼迁徙的卫星路线",
+      "expected": []
+    },
+    {
+      "id": "n03",
+      "type": "absent",
+      "query": "结婚宴会座位安排",
+      "expected": []
+    },
+    {
+      "id": "n04",
+      "type": "absent",
+      "query": "古代金币拍卖价格",
+      "expected": []
+    },
+    {
+      "id": "n05",
+      "type": "absent",
+      "query": "医院急诊值班名单",
+      "expected": []
+    },
+    {
+      "id": "n06",
+      "type": "absent",
+      "query": "云端密码重置验证码",
+      "expected": []
+    },
+    {
+      "id": "n07",
+      "type": "absent",
+      "query": "volcano seismic sensor calibration",
+      "expected": []
+    },
+    {
+      "id": "n08",
+      "type": "absent",
+      "query": "chess tournament tie break rules",
+      "expected": []
+    },
+    {
+      "id": "n09",
+      "type": "absent",
+      "query": "satellite launch insurance contract",
+      "expected": []
+    },
+    {
+      "id": "n10",
+      "type": "absent",
+      "query": "recipe for chocolate ice cream",
+      "expected": []
+    },
+    {
+      "id": "n11",
+      "type": "absent",
+      "query": "ocean submarine pressure valve",
+      "expected": []
+    },
+    {
+      "id": "n12",
+      "type": "absent",
+      "query": "airport lost passport procedure",
+      "expected": []
+    }
+  ]
+}

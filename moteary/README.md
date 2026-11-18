@@ -197,3 +197,7 @@ YOUJI_PDF_PYTHON="$PWD/.venv-pdf/bin/python" python tests/moteary/run_pdf_web_e2
 ### Optional experimental semantic retrieval
 
 The workbench now provides a separate local-model ranking panel with original passages and source links; default keyword search remains available. See [local retrieval setup, provenance and limitations](LOCAL_RETRIEVAL.md). It requires explicitly provisioned model files and does not download models or send records to an external inference provider during use.
+
+The related-passage panel supports explicit continuation beyond the newest 100 records, with coverage counts and change detection. See [coverage, isolation and independent retrieval QA](RETRIEVAL_COVERAGE_QA_20261118.md) for tested limits and the weak cross-language results.
+
+[Offline transcription assessment](asr-evaluation/README.md) contains real local tiny/base model experiments on synthetic audio. It is **not an enabled product transcription feature**: standard VAD removed the tested silence hallucination, while the Chinese samples remained unacceptable.

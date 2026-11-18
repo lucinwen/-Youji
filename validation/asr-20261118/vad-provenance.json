@@ -1,0 +1,25 @@
+{
+  "asset": "faster_whisper/assets/silero_vad_v6.onnx",
+  "source_package": "faster-whisper 1.2.1",
+  "bytes": 1245151,
+  "sha256": "4cbf549b8326f60f80f2536d9eefeb450a9abe83365a098031c89719f1be17d2",
+  "verified_git_blob": "9febab9bc0aa5ae2b27e69243d813427212bfb36",
+  "upstream_blob": "https://github.com/SYSTRAN/faster-whisper/blob/v1.2.1/faster_whisper/assets/silero_vad_v6.onnx",
+  "downloaded_for_vad_run": false,
+  "license": "MIT; upstream Silero license and faster-whisper distribution",
+  "license_sources": [
+    "https://github.com/snakers4/silero-vad/blob/master/LICENSE",
+    "https://github.com/SYSTRAN/faster-whisper/blob/v1.2.1/LICENSE"
+  ],
+  "parameters": {
+    "threshold": 0.5,
+    "neg_threshold": null,
+    "min_speech_duration_ms": 0,
+    "max_speech_duration_s": "infinity",
+    "min_silence_duration_ms": 2000,
+    "speech_pad_ms": 400
+  },
+  "parameters_overridden": false,
+  "runtime": "onnxruntime 1.32.0 CPUExecutionProvider; upstream VAD sets intra/inter op threads to 1",
+  "missing_asset_behavior": "Reject before model loading; no fallback download"
+}

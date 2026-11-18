@@ -1,6 +1,8 @@
 """Local retrieval contract tests; inference quality is measured separately."""
 import importlib.util
 import json
+import os
+import socket
 from pathlib import Path
 import subprocess
 import sys
@@ -91,6 +93,55 @@ class RetrievalWorkerContract(unittest.TestCase):
             self.assertEqual(result.returncode, 2)
             self.assertEqual(json.loads(result.stdout), {'error': 'retrieval_unavailable'})
             self.assertEqual(result.stderr, b'')
+
+    def test_native_network_is_denied_by_os_filter(self):
+        code = """import ctypes, errno, importlib.util, json, sys
+s=importlib.util.spec_from_file_location('worker',sys.argv[1]);m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+libc=ctypes.CDLL(None,use_errno=True)
+fd=libc.socket(2,1,0)
+assert fd >= 0, 'baseline native socket unavailable in this environment'
+libc.close(fd)
+m.restrict_native_network()
+for family in (2,10,1):
+ ctypes.set_errno(0)
+ assert libc.socket(family,1,0) == -1
+ assert ctypes.get_errno() == errno.EPERM
+print(json.dumps({'baseline_ipv4_socket':True,'native_ipv4_ipv6_unix_denied':True}))
+"""
+        result = subprocess.run([sys.executable, '-c', code, str(WORKER)], capture_output=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(json.loads(result.stdout)['native_ipv4_ipv6_unix_denied'])
+
+    def test_inherited_socket_is_closed_and_filter_inherits(self):
+        code = """import ctypes, errno, importlib.util, json, os, subprocess, sys, threading
+s=importlib.util.spec_from_file_location('worker',sys.argv[1]);m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+fd=int(sys.argv[2]);os.fstat(fd)
+m.restrict_native_network()
+try: os.fstat(fd)
+except OSError as error: assert error.errno == errno.EBADF
+else: raise AssertionError('inherited descriptor survived')
+results=[]
+def probe():
+ libc=ctypes.CDLL(None,use_errno=True)
+ results.append(libc.socket(2,1,0)==-1 and ctypes.get_errno()==errno.EPERM)
+t=threading.Thread(target=probe);t.start();t.join();assert results==[True]
+child=subprocess.run([sys.executable,'-c','import ctypes,errno;c=ctypes.CDLL(None,use_errno=True);assert c.socket(2,1,0)==-1 and ctypes.get_errno()==errno.EPERM'],capture_output=True)
+assert child.returncode==0, child.stderr
+print(json.dumps({'inherited_socket_closed':True,'thread_and_child_denied':True}))
+"""
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as inherited:
+            os.set_inheritable(inherited.fileno(), True)
+            result = subprocess.run([sys.executable, '-c', code, str(WORKER), str(inherited.fileno())],
+                                    pass_fds=(inherited.fileno(),), input=b'', capture_output=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(json.loads(result.stdout)['inherited_socket_closed'])
+
+    def test_socket_standard_input_is_rejected_before_model_load(self):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as inherited:
+            result = subprocess.run([sys.executable, str(WORKER), '--model-dir', '/missing-synthetic-model'],
+                                    stdin=inherited, capture_output=True, timeout=15)
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(json.loads(result.stdout), {'error': 'retrieval_unavailable'})
 
     def test_cli_disables_socket_before_loading_encoder(self):
         # A probe replaces only the encoder in a child process; no real model

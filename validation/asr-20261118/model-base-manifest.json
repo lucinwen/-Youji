@@ -1,0 +1,42 @@
+{
+  "repo": "Systran/faster-whisper-base",
+  "revision": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66",
+  "license": "MIT as declared by pinned model card; converted from OpenAI Whisper base MIT weights",
+  "files": [
+    {
+      "file": "README.md",
+      "bytes": 1991,
+      "sha256": "b922acef3616e27b1d416260b63ba7114c732f0315012006781af2da69cd1ebf",
+      "upstream_git_blob": "cddfec65ffb3e3df45d2234f09f3d261bf9a9c0a",
+      "url": "https://huggingface.co/Systran/faster-whisper-base/resolve/ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66/README.md"
+    },
+    {
+      "file": "config.json",
+      "bytes": 2309,
+      "sha256": "56a6d8110d311f19c8f0471e562832c7527f146b567275bfca59fcf7c184da9a",
+      "upstream_git_blob": "867cf1a0fece1394e01d55e287ba2f09a577c046",
+      "url": "https://huggingface.co/Systran/faster-whisper-base/resolve/ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66/config.json"
+    },
+    {
+      "file": "model.bin",
+      "bytes": 145217532,
+      "sha256": "d01c3014881c9c6f3133c182f3d2887eb6ca1c789a7538c5c007196857a0a6a9",
+      "upstream_git_blob": "433870823f3f64fd6baaec3f61319124ba5033fd",
+      "url": "https://huggingface.co/Systran/faster-whisper-base/resolve/ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66/model.bin"
+    },
+    {
+      "file": "tokenizer.json",
+      "bytes": 2203239,
+      "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab",
+      "upstream_git_blob": "7818adb6de9fa3064d3ff81226fdd675be1f6344",
+      "url": "https://huggingface.co/Systran/faster-whisper-base/resolve/ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66/tokenizer.json"
+    },
+    {
+      "file": "vocabulary.txt",
+      "bytes": 459861,
+      "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913",
+      "upstream_git_blob": "c9074644d9d1205686f16d411564729461324b75",
+      "url": "https://huggingface.co/Systran/faster-whisper-base/resolve/ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66/vocabulary.txt"
+    }
+  ]
+}

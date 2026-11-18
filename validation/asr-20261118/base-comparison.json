@@ -1,0 +1,40 @@
+{
+  "design": "Seen-sample component comparison, not unseen accuracy; same unmodified WAVs, explicit language hints and standard VAD defaults",
+  "tiny_revision": "d90ca5fe260221311c53c58e660288d3deb8d356",
+  "base_revision": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66",
+  "cases": [
+    {
+      "id": "synthetic-zh",
+      "same_audio_sha256": true,
+      "tiny_error_rate": 1.03125,
+      "base_error_rate": 3.46875,
+      "tiny_inference_seconds": 1.9890172890009126,
+      "base_inference_seconds": 8.972140021011,
+      "tiny_transcript": "Kintian 下午我才懂 又能散步彩虹 彩虹 彩虹 彩虹 彩虹 彩虹天沙啞啞木曦華",
+      "base_transcript": "堅弦,啲喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭喇叭"
+    },
+    {
+      "id": "synthetic-en",
+      "same_audio_sha256": true,
+      "tiny_error_rate": 0.0,
+      "base_error_rate": 0.05555555555555555,
+      "tiny_inference_seconds": 0.7028771600016626,
+      "base_inference_seconds": 1.6439662670018151,
+      "tiny_transcript": "This is a synthetic recording, tomorrow morning we will review the project plan and organize our reading notes.",
+      "base_transcript": "This is a synthetic recording. Tomorrow morning we will review the project plan and order our reading notes."
+    },
+    {
+      "id": "synthetic-silence",
+      "same_audio_sha256": true,
+      "tiny_error_rate": null,
+      "base_error_rate": null,
+      "tiny_inference_seconds": 0.029560873997979797,
+      "base_inference_seconds": 0.035566079008276574,
+      "tiny_transcript": "",
+      "base_transcript": ""
+    }
+  ],
+  "base_peak_rss_kib_linux": 434256,
+  "base_load_seconds": 1.3784466099896235,
+  "conclusion": "Base did not improve these synthetic examples. Severe Chinese repetition persists; English has one substitution; VAD suppresses this zero-PCM silence. Synthetic voice quality and model ability are confounded. End this bounded evaluation; no larger model downloaded or parameter tuning performed."
+}

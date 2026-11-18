@@ -1,0 +1,12 @@
+{
+  "compared_with": "922b5a787ce488025dd9f13b282f47fa416a21d5",
+  "unchanged": true,
+  "recipe_sha256": "66257fb0c9a16031b9c8c9112c46b9fce459cf03244c4a97979603713569d897",
+  "scope": [
+    "Encoder",
+    "validate",
+    "passages"
+  ],
+  "note": "Only launcher/network isolation changed after new challenge was first run; no ranking or threshold tuning.",
+  "all_66_rankings_and_scores_identical_after_launcher_change": true
+}

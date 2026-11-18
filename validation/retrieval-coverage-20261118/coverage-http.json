@@ -1,0 +1,85 @@
+{
+  "kind": "real SQLite/HTTP and ONNX, controlled pause explicitly labeled; no browser",
+  "checks": [
+    {
+      "check": "anonymous health/search rejected; complete hashes pass for configured read-only model",
+      "passed": true
+    },
+    {
+      "check": "126 real records: target older than first100 reachable in second batch with exact coverage",
+      "passed": true
+    },
+    {
+      "check": "continuation cannot cross account or query; forged creator remains empty",
+      "passed": true
+    },
+    {
+      "check": "insert and delete invalidate old continuation; fresh start sees current count",
+      "passed": true
+    },
+    {
+      "check": "real ONNX after controlled candidate-capture pause rejects concurrent edit even outside top hits",
+      "passed": true
+    },
+    {
+      "check": "restart retains continuation behavior; deleted old target cannot reappear on later batch",
+      "passed": true
+    },
+    {
+      "check": "complete model hash check rejects tampered config in GET and POST; stored records remain readable",
+      "passed": true
+    }
+  ],
+  "requests": [
+    {
+      "offset": 0,
+      "scanned": 100,
+      "total": 126,
+      "seconds": 4.069
+    },
+    {
+      "offset": 100,
+      "scanned": 126,
+      "total": 126,
+      "seconds": 2.493
+    },
+    {
+      "offset": 0,
+      "scanned": 0,
+      "total": 0,
+      "seconds": 0.139
+    },
+    {
+      "offset": 0,
+      "scanned": 100,
+      "total": 127,
+      "seconds": 2.895
+    },
+    {
+      "offset": 0,
+      "scanned": 100,
+      "total": 126,
+      "seconds": 2.707
+    },
+    {
+      "offset": 100,
+      "scanned": 126,
+      "total": 126,
+      "seconds": 2.749
+    },
+    {
+      "offset": 0,
+      "scanned": 100,
+      "total": 125,
+      "seconds": 2.803
+    },
+    {
+      "offset": 100,
+      "scanned": 125,
+      "total": 125,
+      "seconds": 2.319
+    }
+  ],
+  "binary_sha256": "cd987906072a4d9c6905e09ace501cb74ffec7d8f8db8f026f77ecbf45060522",
+  "limit_note": "126 real records;5000 metadata cap exercised by unit tests, not a 5000-record load benchmark"
+}

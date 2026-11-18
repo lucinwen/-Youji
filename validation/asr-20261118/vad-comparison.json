@@ -1,0 +1,42 @@
+{
+  "cases": [
+    {
+      "id": "synthetic-zh",
+      "same_audio_sha256": true,
+      "baseline_transcript": "Kintian 下午我才懂 又能散步彩虹 彩虹 彩虹 彩虹 彩虹 彩虹天沙啞啞木曦華",
+      "vad_transcript": "Kintian 下午我才懂 又能散步彩虹 彩虹 彩虹 彩虹 彩虹 彩虹天沙啞啞木曦華",
+      "baseline_error_rate": 1.03125,
+      "vad_error_rate": 1.03125,
+      "baseline_seconds": 1.8817733430041699,
+      "vad_seconds": 1.9890172890009126,
+      "vad_retained_audio_seconds": 11.2595625
+    },
+    {
+      "id": "synthetic-en",
+      "same_audio_sha256": true,
+      "baseline_transcript": "This is a synthetic recording, tomorrow morning we will review the project plan and organize our reading notes.",
+      "vad_transcript": "This is a synthetic recording, tomorrow morning we will review the project plan and organize our reading notes.",
+      "baseline_error_rate": 0.0,
+      "vad_error_rate": 0.0,
+      "baseline_seconds": 0.7494068889936898,
+      "vad_seconds": 0.7028771600016626,
+      "vad_retained_audio_seconds": 7.185875
+    },
+    {
+      "id": "synthetic-silence",
+      "same_audio_sha256": true,
+      "baseline_transcript": "You",
+      "vad_transcript": "",
+      "baseline_error_rate": null,
+      "vad_error_rate": null,
+      "baseline_seconds": 0.6108331660070689,
+      "vad_seconds": 0.029560873997979797,
+      "vad_retained_audio_seconds": 0.0
+    }
+  ],
+  "baseline_preserved": "results.json",
+  "vad_result": "results-vad.json",
+  "same_model_revision": true,
+  "parameters": "Only vad_filter enabled; upstream defaults; no transcript edits",
+  "conclusion": "Synthetic English retained and this zero-PCM silence suppressed; Chinese unchanged and severely incorrect. Not evidence of general human-speech accuracy."
+}

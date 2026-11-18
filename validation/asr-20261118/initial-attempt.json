@@ -1,0 +1,9 @@
+{
+  "status": "failed-before-inference",
+  "stage": "import faster_whisper",
+  "error": "TypeError: function() argument 'code' must be code, not str",
+  "cause": "The first evaluation script replaced socket.socket with a function; ssl.SSLSocket needs to subclass that symbol during import.",
+  "fix": "Use a rejecting socket subclass instead, keeping the Python network guard enabled.",
+  "native_diagnostic": "CTranslate2 UCX reported failed to create VFS socket: Operation not permitted. Host restriction was not bypassed.",
+  "asr_success_claimed": false
+}
