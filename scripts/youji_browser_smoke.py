@@ -103,6 +103,7 @@ def run(binary, chromium, output):
                         w.setframerate(8000)
                         w.writeframes(b"\x00\x00" * 8000 * 4)
                     files = [("synthetic-note.txt", text, "text/plain"), ("synthetic-silence.wav", wav.getvalue(), "audio/wav")]
+                    page.get_by_text("批量文字与其他原件", exact=True).click()
                     page.get_by_label("批量资料文件").set_input_files([
                         {"name": name, "mimeType": mime, "buffer": data} for name, data, mime in files])
                     page.get_by_label("批量共同批注").fill("SyntheticAnnotationNeedle 合成批注")
@@ -128,6 +129,7 @@ def run(binary, chromium, output):
                     page.reload()
                     expect(page.get_by_test_id("moteary-source-record")).to_have_count(2)
                     expect(page.get_by_label("记录可见范围")).to_have_text(["仅自己可见", "仅自己可见"])
+                    page.get_by_text("更多筛选（来源和日期）", exact=True).click()
                     page.get_by_label("找回来源类型", exact=True).select_option("file")
                     today = page.evaluate("() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }")
                     page.get_by_label("保存起始日期", exact=True).fill(today)

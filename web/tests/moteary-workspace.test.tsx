@@ -58,6 +58,46 @@ describe("Moteary workspace state boundaries", () => {
     useInfiniteMemos.mockReturnValue(query);
   });
   afterEach(cleanup);
+  it("puts quick capture before folded import panels and opens audio through the shortcut", () => {
+    mount();
+    const quick = screen.getByTestId("moteary-capture-text");
+    const audio = document.getElementById("audio-import") as HTMLDetailsElement;
+    expect(quick.compareDocumentPosition(audio) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(audio.open).toBe(false);
+    // Closed details retains the mounted form; jsdom does not model native collapsed visibility.
+    expect(screen.getByLabelText("人工校订稿")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("link", { name: "音频与校订" }));
+    expect(audio.open).toBe(true);
+    expect(screen.getByRole("button", { name: "保存音频与校订稿" })).toBeInTheDocument();
+  });
+  it("keeps edited audio text mounted while its panel is folded", () => {
+    mount();
+    fireEvent.click(screen.getByRole("link", { name: "音频与校订" }));
+    const text = screen.getByLabelText("人工校订稿");
+    fireEvent.change(text, { target: { value: "尚未保存的合成校订" } });
+    const panel = document.getElementById("audio-import") as HTMLDetailsElement;
+    panel.open = false;
+    fireEvent(panel, new Event("toggle"));
+    expect(text).toHaveValue("尚未保存的合成校订");
+    fireEvent.click(screen.getByRole("link", { name: "音频与校订" }));
+    expect(screen.getByLabelText("人工校订稿")).toBe(text);
+  });
+  it("keeps source and dates when submitting a keyword with advanced controls folded", () => {
+    mount();
+    const summary = screen.getByText("更多筛选（来源和日期）");
+    fireEvent.click(summary);
+    fireEvent.change(screen.getByLabelText("找回来源类型"), { target: { value: "podcast" } });
+    fireEvent.change(screen.getByLabelText("保存起始日期"), { target: { value: "2026-11-01" } });
+    fireEvent.submit(screen.getByRole("form", { name: "搜索我的资料" }));
+    fireEvent.click(summary);
+    fireEvent.change(screen.getByLabelText("资料关键词"), { target: { value: "新关键词" } });
+    fireEvent.submit(screen.getByRole("form", { name: "搜索我的资料" }));
+    expect(useInfiniteMemos.mock.lastCall?.[0].filter).toContain('tag in ["source/podcast"]');
+    expect(useInfiniteMemos.mock.lastCall?.[0].filter).toContain("created_ts >= timestamp(");
+    expect(useInfiniteMemos.mock.lastCall?.[0].filter).toContain("新关键词");
+    expect(screen.getByLabelText("已应用找回条件")).toHaveTextContent("播客片段");
+  });
+
   it("queries only the current creator, with supported sort and real pagination", () => {
     mount();
     expect(useInfiniteMemos).toHaveBeenCalledWith(

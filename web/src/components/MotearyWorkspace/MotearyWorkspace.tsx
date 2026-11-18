@@ -179,13 +179,31 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
           </Link>
         </header>
 
+        <nav aria-label="工作台快捷入口" className="mb-5 flex flex-wrap gap-2 text-sm">
+          <a href="#quick-capture" className="min-h-11 rounded-lg border border-border px-3 py-3">
+            快速记录
+          </a>
+          <a
+            href="#audio-import"
+            className="min-h-11 rounded-lg border border-border px-3 py-3"
+            onClick={() => {
+              document.getElementById("audio-import")?.setAttribute("open", "");
+            }}
+          >
+            音频与校订
+          </a>
+          <a href="#source-collection" className="min-h-11 rounded-lg border border-border px-3 py-3">
+            查找资料
+          </a>
+        </nav>
+
         <section className="mb-9 grid gap-7 lg:grid-cols-[1.45fr_1fr] lg:items-end" aria-labelledby="moteary-heading">
           <div>
             <p className="mb-4 flex items-center gap-2 text-[10px] tracking-[0.18em] text-[#897149] dark:text-amber-200/75">
               <span className="h-px w-5 bg-current" />
               从一个片段开始
             </p>
-            <h1 id="moteary-heading" className="max-w-xl text-3xl leading-[1.45] font-medium tracking-tight sm:text-4xl">
+            <h1 id="moteary-heading" className="max-w-xl text-2xl leading-[1.45] font-medium tracking-tight sm:text-4xl">
               让过去留下的片段，
               <br />
               <span className="text-[#6b7c65] dark:text-emerald-200/70">再次对自己有用</span>
@@ -226,17 +244,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
           </aside>
         </section>
 
-        <AudioImport key={`audio:${userName}`} userName={userName} onSaved={() => void query.refetch()} />
-        <PDFImport key={`pdf:${userName}`} userName={userName} onSaved={() => void query.refetch()} />
-        <BatchImport
-          key={userName}
-          userName={userName}
-          onSaved={() => {
-            void query.refetch();
-          }}
-        />
-
-        <section aria-labelledby="capture-heading" className="mb-9">
+        <section id="quick-capture" aria-labelledby="capture-heading" className="mb-9 scroll-mt-4">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="mb-1 text-[10px] tracking-[0.15em] text-muted-foreground">CAPTURE</p>
@@ -278,7 +286,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
                     active ? "border-emerald-800/50 disabled:opacity-100" : "border-border/70",
                   )}
                 >
-                  <Icon className="mb-5 size-5 text-[#6b7c65] dark:text-emerald-200/70" strokeWidth={1.5} />
+                  <Icon className="mb-2 size-5 text-[#6b7c65] sm:mb-5 dark:text-emerald-200/70" strokeWidth={1.5} />
                   <span className="text-sm font-medium">{SOURCE_INFO[kind].label}</span>
                   <span className="mt-1 text-[11px] leading-5 text-muted-foreground">{SOURCE_INFO[kind].description}</span>
                 </button>
@@ -339,7 +347,29 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
           )}
         </section>
 
-        <section ref={listRef} className="scroll-mt-5" aria-labelledby="sources-heading">
+        <div className="mb-9 space-y-3" aria-label="原件导入入口">
+          <p className="text-xs text-muted-foreground">按需要展开一种导入方式。收起面板保留填写内容，也不会取消正在进行的操作。</p>
+          <details
+            id="audio-import"
+            className="scroll-mt-4 rounded-xl border border-border p-3"
+            onToggle={(event) => {
+              if (!event.currentTarget.open) for (const audio of event.currentTarget.querySelectorAll("audio")) audio.pause();
+            }}
+          >
+            <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium">音频原件与校订稿</summary>
+            <AudioImport key={`audio:${userName}`} userName={userName} onSaved={() => void query.refetch()} />
+          </details>
+          <details id="pdf-import" className="scroll-mt-4 rounded-xl border border-border p-3">
+            <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium">PDF 原件与逐页正文</summary>
+            <PDFImport key={`pdf:${userName}`} userName={userName} onSaved={() => void query.refetch()} />
+          </details>
+          <details id="batch-import" className="scroll-mt-4 rounded-xl border border-border p-3">
+            <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium">批量文字与其他原件</summary>
+            <BatchImport key={userName} userName={userName} onSaved={() => void query.refetch()} />
+          </details>
+        </div>
+
+        <section id="source-collection" ref={listRef} className="scroll-mt-5" aria-labelledby="sources-heading">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="mb-1 text-[10px] tracking-[0.15em] text-muted-foreground">COLLECTION</p>
@@ -382,47 +412,6 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
               }
             }}
           >
-            <div className="grid w-full min-w-0 gap-3 sm:grid-cols-3">
-              <label className="min-w-0 text-xs">
-                来源类型
-                <select
-                  aria-label="找回来源类型"
-                  value={retrievalDraft.kind ?? "all"}
-                  onChange={(event) => setRetrievalDraft({ ...retrievalDraft, kind: event.target.value as SourceKind | "all" })}
-                  className="mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-border bg-card px-3"
-                >
-                  <option value="all">所有类型（本工作台内）</option>
-                  {SOURCE_KINDS.map((kind) => (
-                    <option key={kind} value={kind}>
-                      {SOURCE_INFO[kind].label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="min-w-0 text-xs">
-                保存起始日期
-                <input
-                  aria-label="保存起始日期"
-                  type="date"
-                  value={retrievalDraft.from ?? ""}
-                  onChange={(event) => setRetrievalDraft({ ...retrievalDraft, from: event.target.value })}
-                  className="mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-border bg-card px-3"
-                />
-              </label>
-              <label className="min-w-0 text-xs">
-                保存结束日期
-                <input
-                  aria-label="保存结束日期"
-                  type="date"
-                  value={retrievalDraft.through ?? ""}
-                  onChange={(event) => setRetrievalDraft({ ...retrievalDraft, through: event.target.value })}
-                  className="mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-border bg-card px-3"
-                />
-              </label>
-            </div>
-            <p className="w-full text-xs text-muted-foreground">
-              日期按当前设备时区，包含结束日，依据记录创建时间，不代表事情发生或录音日期。来源按手动标签筛选，不会识别附件内容。修改后点击“搜索资料”应用。
-            </p>
             <input
               type="search"
               aria-label="资料关键词"
@@ -430,11 +419,55 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
               maxLength={200}
               onChange={(event) => setSearchDraft(event.target.value)}
               placeholder="查找原文、文件名或我的批注"
-              className="min-w-0 flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm"
+              className="min-h-11 min-w-0 flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm"
             />
-            <Button type="submit" variant="outline">
+            <Button type="submit" variant="outline" className="min-h-11">
               搜索资料
             </Button>
+            <details className="w-full rounded-lg border border-border px-3">
+              <summary className="min-h-11 cursor-pointer py-3 text-xs">更多筛选（来源和日期）</summary>
+              <div className="grid w-full min-w-0 gap-3 sm:grid-cols-3">
+                <label className="min-w-0 text-xs">
+                  来源类型
+                  <select
+                    aria-label="找回来源类型"
+                    value={retrievalDraft.kind ?? "all"}
+                    onChange={(event) => setRetrievalDraft({ ...retrievalDraft, kind: event.target.value as SourceKind | "all" })}
+                    className="mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-border bg-card px-3"
+                  >
+                    <option value="all">所有类型（本工作台内）</option>
+                    {SOURCE_KINDS.map((kind) => (
+                      <option key={kind} value={kind}>
+                        {SOURCE_INFO[kind].label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="min-w-0 text-xs">
+                  保存起始日期
+                  <input
+                    aria-label="保存起始日期"
+                    type="date"
+                    value={retrievalDraft.from ?? ""}
+                    onChange={(event) => setRetrievalDraft({ ...retrievalDraft, from: event.target.value })}
+                    className="mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-border bg-card px-3"
+                  />
+                </label>
+                <label className="min-w-0 text-xs">
+                  保存结束日期
+                  <input
+                    aria-label="保存结束日期"
+                    type="date"
+                    value={retrievalDraft.through ?? ""}
+                    onChange={(event) => setRetrievalDraft({ ...retrievalDraft, through: event.target.value })}
+                    className="mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-border bg-card px-3"
+                  />
+                </label>
+              </div>
+              <p className="w-full text-xs text-muted-foreground">
+                日期按当前设备时区，包含结束日，依据记录创建时间，不代表事情发生或录音日期。来源按手动标签筛选，不会识别附件内容。修改后点击“搜索资料”应用。
+              </p>
+            </details>
             {(search || searchDraft) && (
               <Button
                 type="button"

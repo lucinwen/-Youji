@@ -1,7 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { type AudioReceipt, type AudioTranscript, audioWithTranscript, prepareAudio, saveAudio, transcribeAudio } from "./audioImport";
+import {
+  type AudioReceipt,
+  type AudioTranscript,
+  audioWithTranscript,
+  encodeAudioDraft,
+  prepareAudio,
+  restoreAudioDraft,
+  saveAudio,
+  transcribeAudio,
+} from "./audioImport";
 
 export default function AudioImport({ userName, onSaved }: { userName: string; onSaved: () => void }) {
   const [file, setFile] = useState<File>();
@@ -48,8 +57,9 @@ export default function AudioImport({ userName, onSaved }: { userName: string; o
       releaseAudio();
     };
   }, [userName, releaseAudio]);
-  const run = async (action: "转写" | "保存" | "读稿", transcript?: File) => {
+  const run = async (action: "转写" | "保存" | "读稿" | "备份" | "恢复", transcript?: File) => {
     if (controller.current || !file || (action === "保存" && !confirmed)) return;
+    if (action === "恢复" && (!transcript || text.length > 0)) return;
     const abort = new AbortController();
     controller.current = abort;
     const active = () => controller.current === abort && !abort.signal.aborted;
@@ -66,7 +76,21 @@ export default function AudioImport({ userName, onSaved }: { userName: string; o
       } else {
         const item = await prepareAudio(file, userName);
         abort.signal.throwIfAborted();
-        if (action === "转写") {
+        if (action === "备份") {
+          const draft = encodeAudioDraft(item, text, machine);
+          if (active()) {
+            downloadJSON(draft, "youji-audio-draft.json");
+            setMessage("已生成草稿下载，含敏感正文，请确认文件已保存。原音频未打包；恢复时先选同一音频，再导入草稿。");
+          }
+        } else if (action === "恢复" && transcript) {
+          const draft = await restoreAudioDraft(transcript, item);
+          if (active()) {
+            setText(draft.edited);
+            setMachine(draft.machine);
+            setConfirmed(false);
+            setMessage("草稿已恢复到本页，未上传、未转写、未保存记录。请核对原声并重新确认；JSON 信息不是服务端权限或模型真实性证明。");
+          }
+        } else if (action === "转写") {
           const result = await transcribeAudio(item, abort.signal);
           if (active()) {
             setMachine(result);
@@ -96,14 +120,16 @@ export default function AudioImport({ userName, onSaved }: { userName: string; o
       }
     }
   };
-  const downloadReceipt = () => {
-    if (!receipt) return;
-    const url = URL.createObjectURL(new Blob([JSON.stringify({ ...receipt, events: receipts }, null, 2)], { type: "application/json" }));
+  const downloadJSON = (text: string, filename: string) => {
+    const url = URL.createObjectURL(new Blob([text], { type: "application/json" }));
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = "youji-audio-receipt.json";
+    anchor.download = filename;
     anchor.click();
     URL.revokeObjectURL(url);
+  };
+  const downloadReceipt = () => {
+    if (receipt) downloadJSON(JSON.stringify({ ...receipt, events: receipts }, null, 2), "youji-audio-receipt.json");
   };
   return (
     <section aria-label="音频与转写稿" className="mb-9 rounded-xl border border-border bg-card p-4">
@@ -268,6 +294,31 @@ export default function AudioImport({ userName, onSaved }: { userName: string; o
         <input type="checkbox" checked={confirmed} disabled={!!busy} onChange={(event) => setConfirmed(event.target.checked)} />
         我已核对人工稿，并确认以仅自己可见保存原件与稿件
       </label>
+      <div className="my-3 space-y-2 rounded border border-border p-3 text-xs" aria-label="音频校订草稿备份与恢复">
+        <p>刷新前可下载 JSON 草稿，含人工稿和可选机器稿等敏感正文，请妥善保管。原音频不打包，不自动保存，也不写入浏览器存储。</p>
+        <Button variant="outline" disabled={!file || !!busy || (!text && !machine)} onClick={() => void run("备份")}>
+          下载校订草稿 JSON
+        </Button>
+        <label className="block">
+          恢复校订草稿 JSON
+          <input
+            aria-label="恢复校订草稿 JSON"
+            type="file"
+            accept=".json,application/json"
+            disabled={!file || !!busy || text.length > 0}
+            className="block max-w-full"
+            onChange={(event) => {
+              const selected = event.target.files?.[0];
+              if (selected) void run("恢复", selected);
+              event.target.value = "";
+            }}
+          />
+        </label>
+        <p>
+          恢复步骤：重新选择同一原音频 → 人工校订区保持空白 → 导入草稿。已有人工稿时禁止覆盖，请先备份并自行清空。仅核对文件与账户标识，不把
+          JSON 当权限或真实性证明；恢复后仍需重新确认保存。
+        </p>
+      </div>
       <Button disabled={!file || !text.trim() || !confirmed || !!busy} onClick={() => void run("保存")}>
         保存音频与校订稿
       </Button>

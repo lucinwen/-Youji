@@ -1,0 +1,11 @@
+{
+  "status": "blocked",
+  "method": "supported CUA cloud Chromium",
+  "url": "http://127.0.0.1:5238",
+  "server": "isolated temporary SQLite instance, optional processors disabled; startup observed",
+  "browser_error": "net::ERR_CONNECTION_REFUSED",
+  "ui_assertions_passed": 0,
+  "sandbox_disabled": false,
+  "server_stopped": true,
+  "asr_executed": false
+}
