@@ -1,0 +1,22 @@
+{
+  "status": "failed",
+  "kind": "real HTTP/SQLite with actual frontend module; not browser",
+  "model_executed": false,
+  "binary_sha256": "05cc29f10789731e66df91e8a097cd8d6c1fd14ec43995254283223e03d42cbe",
+  "checks": [
+    {
+      "check": "anonymous memo API denied",
+      "status": "passed"
+    },
+    {
+      "check": "actual TypeScript module and real HTTP",
+      "status": "failed",
+      "error": "Manual text module HTTP test failed; see sanitized log"
+    }
+  ],
+  "limitations": [
+    "Connect-to-REST test adapter; browser interactions untested",
+    "Response loss injected at client boundary after real commits, not actual network outage",
+    "Deletion checks live rows/files, not physical erasure or backup removal"
+  ]
+}

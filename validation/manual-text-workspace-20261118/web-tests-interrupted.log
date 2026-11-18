@@ -1,0 +1,5 @@
+$ vitest run --maxWorkers=1
+
+ RUN  v4.1.5 /workspace/scratch/10a41183bc23/youji-next/web
+
+[vitest-pool]: Timeout terminating forks worker for test files /workspace/scratch/10a41183bc23/youji-next/web/tests/app-sidebar-logo.test.tsx.

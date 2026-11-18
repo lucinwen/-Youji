@@ -1,0 +1,22 @@
+{
+  "base_commit": "9c505ca395ce3462e2b96799c3cc99f105aa9505",
+  "source_checkpoint": "332275f1d152854194acc72d5e959b68c87c5496",
+  "binary_sha256": "05cc29f10789731e66df91e8a097cd8d6c1fd14ec43995254283223e03d42cbe",
+  "frontend_tests": {
+    "passed": 1912,
+    "skipped": 6,
+    "exit_code": 0
+  },
+  "http_checks": 4,
+  "http_passed": 4,
+  "http_module_tests_passed": 1,
+  "lint": "passed",
+  "frontend_build": "passed",
+  "go_build": "passed",
+  "demo_preflight": "passed",
+  "browser": "not tested; previous environment blocked",
+  "mobile": "not tested",
+  "asr": "paused; model_executed=false",
+  "private_data_used": false,
+  "new_dependencies": false
+}
