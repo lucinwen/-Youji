@@ -195,6 +195,9 @@ func (s *APIService) NewHandler(ctx context.Context) (http.Handler, error) {
 	if err := registerYoujiPDFRoutes(gwMux); err != nil {
 		return nil, err
 	}
+	if err := s.registerYoujiRetrievalRoutes(gwMux); err != nil {
+		return nil, err
+	}
 	if err := apipb.RegisterInstanceServiceHandlerServer(ctx, gwMux, s); err != nil {
 		return nil, err
 	}

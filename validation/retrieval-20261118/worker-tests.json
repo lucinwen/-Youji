@@ -1,0 +1,24 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 /tmp/youji-retrieval-venv/bin/python -m unittest discover -s tests/moteary -p 'test_retrieval_worker.py' -v",
+  "status": "passed",
+  "tests_run": 9,
+  "failures": 0,
+  "errors": 0,
+  "scope": "Worker contract unit tests and isolated CLI subprocess tests. Real model quality is recorded separately in worker-benchmark.json.",
+  "checks": [
+    "Independent single-input inference batches (mock session contract; real stability tested separately)",
+    "Missing model rejected",
+    "Corrupt model hashes rejected",
+    "Invalid requests rejected",
+    "Exact original plain-text windows preserved",
+    "400-segment round-robin cap and truncation boundary",
+    "Empty corpus avoids encoding",
+    "CLI rejects malformed or oversized input without echoing input",
+    "CLI disables Python socket constructors before encoder initialization"
+  ],
+  "limits": [
+    "No browser or physical mobile validation",
+    "Network guard test uses a probe encoder, not inference",
+    "Python socket blocking does not establish OS-level network isolation"
+  ]
+}

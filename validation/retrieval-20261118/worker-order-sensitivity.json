@@ -1,0 +1,2353 @@
+{
+  "model": "intfloat/multilingual-e5-small",
+  "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "cases_sha256": "910f545f2c1e64dca1b5b84b01c44b4038958497f0a59aec49233149f51cbf8c",
+  "controlled_changes": "Only candidate document order reversed. IDs, text, queries and model unchanged; same Encoder instance. Forward repeated after reverse.",
+  "runs": [
+    {
+      "order": "forward",
+      "document_ids": [
+        "s01",
+        "s02",
+        "s03",
+        "s04",
+        "s05",
+        "s06",
+        "s07",
+        "s08",
+        "s09",
+        "s10",
+        "s11",
+        "s12",
+        "s13",
+        "s14",
+        "s15",
+        "s16",
+        "s17",
+        "s18",
+        "s19",
+        "s20"
+      ],
+      "groups": {
+        "literal": {
+          "count": 12,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0
+        },
+        "paraphrase": {
+          "count": 4,
+          "recall_at_1": 0.5,
+          "recall_at_5": 0.75
+        },
+        "cross_language": {
+          "count": 2,
+          "recall_at_1": 0.0,
+          "recall_at_5": 0.5
+        }
+      },
+      "cases": [
+        {
+          "id": "s01",
+          "type": "literal",
+          "expected": [
+            "s01"
+          ],
+          "hits": [
+            {
+              "id": "s01",
+              "score": 0.8955309736733276,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            },
+            {
+              "id": "s15",
+              "score": 0.8287266372870763,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s04",
+              "score": 0.8241554901358004,
+              "excerpt": "朋友讨论：不要把安慰等同于解决所有问题。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8236469439144551,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s19",
+              "score": 0.8217398148480028,
+              "excerpt": "合成日记：早上整理抽屉，下午读小说。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s02",
+          "type": "literal",
+          "expected": [
+            "s02"
+          ],
+          "hits": [
+            {
+              "id": "s02",
+              "score": 0.8404653113350213,
+              "excerpt": "Launch checklist: the amber badge must be reviewed before release."
+            },
+            {
+              "id": "s12",
+              "score": 0.7652935528220783,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s20",
+              "score": 0.7587602982899209,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s07",
+              "score": 0.7458552748492684,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s16",
+              "score": 0.74555341614569,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s03",
+          "type": "literal",
+          "expected": [
+            "s03"
+          ],
+          "hits": [
+            {
+              "id": "s03",
+              "score": 0.8917882206299677,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s11",
+              "score": 0.8642816885591412,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            },
+            {
+              "id": "s15",
+              "score": 0.8491275106512661,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8417229745550023,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8413996981421775,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s04",
+          "type": "literal",
+          "expected": [
+            "s04"
+          ],
+          "hits": [
+            {
+              "id": "s04",
+              "score": 0.8996170906148877,
+              "excerpt": "朋友讨论：不要把安慰等同于解决所有问题。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8445486105484542,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s03",
+              "score": 0.8420552695460312,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s01",
+              "score": 0.8408553260415692,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            },
+            {
+              "id": "s15",
+              "score": 0.8376947853641935,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s05",
+          "type": "literal",
+          "expected": [
+            "s05"
+          ],
+          "hits": [
+            {
+              "id": "s05",
+              "score": 0.8759719064863201,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s07",
+              "score": 0.7985453462454299,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s20",
+              "score": 0.7929442551780489,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s12",
+              "score": 0.7872438173940248,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s18",
+              "score": 0.7853026095300772,
+              "excerpt": "Users can retrieve the original PDF page after reading an extracted passage."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s06",
+          "type": "literal",
+          "expected": [
+            "s06"
+          ],
+          "hits": [
+            {
+              "id": "s06",
+              "score": 0.8933761856692165,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8480785655691065,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8330070684224862,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s13",
+              "score": 0.8300692287218454,
+              "excerpt": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。"
+            },
+            {
+              "id": "s01",
+              "score": 0.8282116644160332,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s07",
+          "type": "literal",
+          "expected": [
+            "s07"
+          ],
+          "hits": [
+            {
+              "id": "s07",
+              "score": 0.8611695895484077,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s03",
+              "score": 0.8051382615963953,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s20",
+              "score": 0.8042337720288335,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s06",
+              "score": 0.8030742172977644,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s15",
+              "score": 0.7969223348251893,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s08",
+          "type": "literal",
+          "expected": [
+            "s08"
+          ],
+          "hits": [
+            {
+              "id": "s08",
+              "score": 0.8810497899274718,
+              "excerpt": "Coffee journal: I chose tea instead of espresso today."
+            },
+            {
+              "id": "s05",
+              "score": 0.7995730676093782,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s09",
+              "score": 0.7994240447609462,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s12",
+              "score": 0.7929506779816102,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s07",
+              "score": 0.7870689265937707,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s09",
+          "type": "literal",
+          "expected": [
+            "s09"
+          ],
+          "hits": [
+            {
+              "id": "s09",
+              "score": 0.8998826486598566,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8909327547108274,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s13",
+              "score": 0.839449534871793,
+              "excerpt": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8387781943697016,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s19",
+              "score": 0.8364422061599799,
+              "excerpt": "合成日记：早上整理抽屉，下午读小说。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s10",
+          "type": "literal",
+          "expected": [
+            "s10"
+          ],
+          "hits": [
+            {
+              "id": "s10",
+              "score": 0.8739442661545618,
+              "excerpt": "A decoder converts token sequences into output symbols."
+            },
+            {
+              "id": "s20",
+              "score": 0.8028072993316093,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s12",
+              "score": 0.8026598300797388,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s16",
+              "score": 0.7705460042411679,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            },
+            {
+              "id": "s05",
+              "score": 0.7617816240030226,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s11",
+          "type": "literal",
+          "expected": [
+            "s11"
+          ],
+          "hits": [
+            {
+              "id": "s11",
+              "score": 0.9006001714826922,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            },
+            {
+              "id": "s15",
+              "score": 0.8628914553270044,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s03",
+              "score": 0.8609698013134749,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8499497369203153,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8490038427480565,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s12",
+          "type": "literal",
+          "expected": [
+            "s12"
+          ],
+          "hits": [
+            {
+              "id": "s12",
+              "score": 0.8718458959660976,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s07",
+              "score": 0.7538344168040423,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s16",
+              "score": 0.740273451179495,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            },
+            {
+              "id": "s20",
+              "score": 0.7380988771707113,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s05",
+              "score": 0.7312839993438522,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s13",
+          "type": "paraphrase",
+          "expected": [
+            "s13"
+          ],
+          "hits": [
+            {
+              "id": "s13",
+              "score": 0.8945871108901299,
+              "excerpt": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。"
+            },
+            {
+              "id": "s19",
+              "score": 0.885484231635727,
+              "excerpt": "合成日记：早上整理抽屉，下午读小说。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8685895303855511,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8537471551982466,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s01",
+              "score": 0.8501327881502236,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s14",
+          "type": "paraphrase",
+          "expected": [
+            "s14"
+          ],
+          "hits": [
+            {
+              "id": "s07",
+              "score": 0.798196052522889,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s12",
+              "score": 0.7861095748679372,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s05",
+              "score": 0.7832297869925374,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s02",
+              "score": 0.7786966038602989,
+              "excerpt": "Launch checklist: the amber badge must be reviewed before release."
+            },
+            {
+              "id": "s16",
+              "score": 0.7720671228386502,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            }
+          ],
+          "rank": null
+        },
+        {
+          "id": "s15",
+          "type": "paraphrase",
+          "expected": [
+            "s15"
+          ],
+          "hits": [
+            {
+              "id": "s15",
+              "score": 0.8422832404693162,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8349583702226762,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8323739836088331,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8323556377436225,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s11",
+              "score": 0.8249516112739453,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s16",
+          "type": "paraphrase",
+          "expected": [
+            "s16"
+          ],
+          "hits": [
+            {
+              "id": "s05",
+              "score": 0.8132299143494728,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s20",
+              "score": 0.7898053869372327,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s12",
+              "score": 0.7845097951990028,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s07",
+              "score": 0.7815028393806455,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s16",
+              "score": 0.7756329735813796,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            }
+          ],
+          "rank": 5
+        },
+        {
+          "id": "s17",
+          "type": "cross_language",
+          "expected": [
+            "s17"
+          ],
+          "hits": [
+            {
+              "id": "s05",
+              "score": 0.8013802520409136,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s20",
+              "score": 0.7973745865681378,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s17",
+              "score": 0.7967042947478431,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s07",
+              "score": 0.7799279470835798,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s09",
+              "score": 0.7784870240160899,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            }
+          ],
+          "rank": 3
+        },
+        {
+          "id": "s18",
+          "type": "cross_language",
+          "expected": [
+            "s18"
+          ],
+          "hits": [
+            {
+              "id": "s03",
+              "score": 0.8585657720666906,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s11",
+              "score": 0.8513340988692664,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            },
+            {
+              "id": "s17",
+              "score": 0.848272447926801,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s15",
+              "score": 0.8471594404316104,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8451555220062366,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            }
+          ],
+          "rank": null
+        },
+        {
+          "id": "s19",
+          "type": "absent",
+          "expected": [],
+          "hits": [
+            {
+              "id": "s15",
+              "score": 0.8482597472549844,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s04",
+              "score": 0.8414382092755792,
+              "excerpt": "朋友讨论：不要把安慰等同于解决所有问题。"
+            },
+            {
+              "id": "s13",
+              "score": 0.8387873105340375,
+              "excerpt": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。"
+            },
+            {
+              "id": "s11",
+              "score": 0.8372635696599655,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            },
+            {
+              "id": "s06",
+              "score": 0.836351051260384,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            }
+          ],
+          "rank": null
+        },
+        {
+          "id": "s20",
+          "type": "literal_injection_absent",
+          "expected": [],
+          "hits": [
+            {
+              "id": "s03",
+              "score": 0.8269163046309347,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s10",
+              "score": 0.8191676967431696,
+              "excerpt": "A decoder converts token sequences into output symbols."
+            },
+            {
+              "id": "s12",
+              "score": 0.8188122587674902,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s05",
+              "score": 0.8172074337757917,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s09",
+              "score": 0.8149788957912218,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            }
+          ],
+          "rank": null
+        }
+      ]
+    },
+    {
+      "order": "reverse",
+      "document_ids": [
+        "s20",
+        "s19",
+        "s18",
+        "s17",
+        "s16",
+        "s15",
+        "s14",
+        "s13",
+        "s12",
+        "s11",
+        "s10",
+        "s09",
+        "s08",
+        "s07",
+        "s06",
+        "s05",
+        "s04",
+        "s03",
+        "s02",
+        "s01"
+      ],
+      "groups": {
+        "literal": {
+          "count": 12,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0
+        },
+        "paraphrase": {
+          "count": 4,
+          "recall_at_1": 0.5,
+          "recall_at_5": 1.0
+        },
+        "cross_language": {
+          "count": 2,
+          "recall_at_1": 0.5,
+          "recall_at_5": 0.5
+        }
+      },
+      "cases": [
+        {
+          "id": "s01",
+          "type": "literal",
+          "expected": [
+            "s01"
+          ],
+          "hits": [
+            {
+              "id": "s01",
+              "score": 0.8949003105517086,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            },
+            {
+              "id": "s15",
+              "score": 0.8339440764695469,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s06",
+              "score": 0.831160299190286,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s04",
+              "score": 0.8274878310173589,
+              "excerpt": "朋友讨论：不要把安慰等同于解决所有问题。"
+            },
+            {
+              "id": "s19",
+              "score": 0.8243927429583164,
+              "excerpt": "合成日记：早上整理抽屉，下午读小说。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s02",
+          "type": "literal",
+          "expected": [
+            "s02"
+          ],
+          "hits": [
+            {
+              "id": "s02",
+              "score": 0.8387766866049003,
+              "excerpt": "Launch checklist: the amber badge must be reviewed before release."
+            },
+            {
+              "id": "s12",
+              "score": 0.7710039123421296,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s20",
+              "score": 0.760827723638841,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s16",
+              "score": 0.746402141795516,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            },
+            {
+              "id": "s07",
+              "score": 0.7455101987153369,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s03",
+          "type": "literal",
+          "expected": [
+            "s03"
+          ],
+          "hits": [
+            {
+              "id": "s03",
+              "score": 0.8959580531434692,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s11",
+              "score": 0.8599623219712642,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8427542623093024,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8421473604403167,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s15",
+              "score": 0.840739792183818,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s04",
+          "type": "literal",
+          "expected": [
+            "s04"
+          ],
+          "hits": [
+            {
+              "id": "s04",
+              "score": 0.8984238800393602,
+              "excerpt": "朋友讨论：不要把安慰等同于解决所有问题。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8484977408985717,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s03",
+              "score": 0.8458907486656093,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s01",
+              "score": 0.8431413454932699,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            },
+            {
+              "id": "s15",
+              "score": 0.8423890870330746,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s05",
+          "type": "literal",
+          "expected": [
+            "s05"
+          ],
+          "hits": [
+            {
+              "id": "s05",
+              "score": 0.8672215213950172,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s07",
+              "score": 0.794041810470803,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s20",
+              "score": 0.7893104416484151,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s12",
+              "score": 0.7825223810812383,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s18",
+              "score": 0.7819628095625908,
+              "excerpt": "Users can retrieve the original PDF page after reading an extracted passage."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s06",
+          "type": "literal",
+          "expected": [
+            "s06"
+          ],
+          "hits": [
+            {
+              "id": "s06",
+              "score": 0.8867827780117254,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8489602997073935,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8357401441525818,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s13",
+              "score": 0.8303578251987573,
+              "excerpt": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。"
+            },
+            {
+              "id": "s01",
+              "score": 0.8229266222896304,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s07",
+          "type": "literal",
+          "expected": [
+            "s07"
+          ],
+          "hits": [
+            {
+              "id": "s07",
+              "score": 0.8625840866766679,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s20",
+              "score": 0.8108194186422244,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s06",
+              "score": 0.8088510745916514,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8053580781221066,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s03",
+              "score": 0.8042288616631025,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s08",
+          "type": "literal",
+          "expected": [
+            "s08"
+          ],
+          "hits": [
+            {
+              "id": "s08",
+              "score": 0.8745462992854851,
+              "excerpt": "Coffee journal: I chose tea instead of espresso today."
+            },
+            {
+              "id": "s09",
+              "score": 0.8021203909626032,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s05",
+              "score": 0.7957147577956514,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s12",
+              "score": 0.794001613652204,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s15",
+              "score": 0.7868421764701213,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s09",
+          "type": "literal",
+          "expected": [
+            "s09"
+          ],
+          "hits": [
+            {
+              "id": "s09",
+              "score": 0.9010894643468605,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8903917142680696,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s13",
+              "score": 0.8438674811855993,
+              "excerpt": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8413590561960097,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s19",
+              "score": 0.8396288200771227,
+              "excerpt": "合成日记：早上整理抽屉，下午读小说。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s10",
+          "type": "literal",
+          "expected": [
+            "s10"
+          ],
+          "hits": [
+            {
+              "id": "s10",
+              "score": 0.8784483746921691,
+              "excerpt": "A decoder converts token sequences into output symbols."
+            },
+            {
+              "id": "s12",
+              "score": 0.8024814781328999,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s20",
+              "score": 0.7952064746464009,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s16",
+              "score": 0.7713936349052035,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            },
+            {
+              "id": "s07",
+              "score": 0.7663989664412418,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s11",
+          "type": "literal",
+          "expected": [
+            "s11"
+          ],
+          "hits": [
+            {
+              "id": "s11",
+              "score": 0.8977318215929202,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            },
+            {
+              "id": "s15",
+              "score": 0.865106212583163,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s03",
+              "score": 0.8555417134975536,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s17",
+              "score": 0.851022676586193,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8488666567256795,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s12",
+          "type": "literal",
+          "expected": [
+            "s12"
+          ],
+          "hits": [
+            {
+              "id": "s12",
+              "score": 0.8669467254350018,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s07",
+              "score": 0.7471388488364956,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s20",
+              "score": 0.7370266575866065,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s16",
+              "score": 0.7348165515799431,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            },
+            {
+              "id": "s05",
+              "score": 0.7293010818591957,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s13",
+          "type": "paraphrase",
+          "expected": [
+            "s13"
+          ],
+          "hits": [
+            {
+              "id": "s13",
+              "score": 0.8886270103851592,
+              "excerpt": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。"
+            },
+            {
+              "id": "s19",
+              "score": 0.8725990807932563,
+              "excerpt": "合成日记：早上整理抽屉，下午读小说。"
+            },
+            {
+              "id": "s06",
+              "score": 0.862086461623071,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8487648079728747,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s01",
+              "score": 0.846377029383554,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s14",
+          "type": "paraphrase",
+          "expected": [
+            "s14"
+          ],
+          "hits": [
+            {
+              "id": "s07",
+              "score": 0.7981925241184176,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s12",
+              "score": 0.7932199384366102,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s05",
+              "score": 0.7846520353162669,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s02",
+              "score": 0.781630884604066,
+              "excerpt": "Launch checklist: the amber badge must be reviewed before release."
+            },
+            {
+              "id": "s14",
+              "score": 0.7707531826452383,
+              "excerpt": "The review queue takes three days because only one teammate can approve."
+            }
+          ],
+          "rank": 5
+        },
+        {
+          "id": "s15",
+          "type": "paraphrase",
+          "expected": [
+            "s15"
+          ],
+          "hits": [
+            {
+              "id": "s15",
+              "score": 0.8396694973660883,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8327064888394776,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8285981769319861,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8276475772952944,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s11",
+              "score": 0.8211416683185432,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s16",
+          "type": "paraphrase",
+          "expected": [
+            "s16"
+          ],
+          "hits": [
+            {
+              "id": "s05",
+              "score": 0.8123300797889748,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s20",
+              "score": 0.7808306688135378,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s12",
+              "score": 0.7788758540764796,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s07",
+              "score": 0.7754359347676627,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s16",
+              "score": 0.760026478415639,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            }
+          ],
+          "rank": 5
+        },
+        {
+          "id": "s17",
+          "type": "cross_language",
+          "expected": [
+            "s17"
+          ],
+          "hits": [
+            {
+              "id": "s17",
+              "score": 0.796737100669578,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s20",
+              "score": 0.7921727606358946,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s05",
+              "score": 0.7898092492704762,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s10",
+              "score": 0.7741381911185521,
+              "excerpt": "A decoder converts token sequences into output symbols."
+            },
+            {
+              "id": "s09",
+              "score": 0.7734986924630195,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s18",
+          "type": "cross_language",
+          "expected": [
+            "s18"
+          ],
+          "hits": [
+            {
+              "id": "s03",
+              "score": 0.8617698516688947,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8543772858776921,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s11",
+              "score": 0.8509468154911521,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8507599459204545,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s15",
+              "score": 0.845912335395244,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            }
+          ],
+          "rank": null
+        },
+        {
+          "id": "s19",
+          "type": "absent",
+          "expected": [],
+          "hits": [
+            {
+              "id": "s15",
+              "score": 0.8463430566039662,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s13",
+              "score": 0.8408279660591503,
+              "excerpt": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。"
+            },
+            {
+              "id": "s01",
+              "score": 0.8387040910900108,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            },
+            {
+              "id": "s04",
+              "score": 0.8371307947775338,
+              "excerpt": "朋友讨论：不要把安慰等同于解决所有问题。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8351267657786545,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            }
+          ],
+          "rank": null
+        },
+        {
+          "id": "s20",
+          "type": "literal_injection_absent",
+          "expected": [],
+          "hits": [
+            {
+              "id": "s03",
+              "score": 0.8247225397628174,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s10",
+              "score": 0.8211326307159027,
+              "excerpt": "A decoder converts token sequences into output symbols."
+            },
+            {
+              "id": "s12",
+              "score": 0.8202076422467633,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s09",
+              "score": 0.8185849512500355,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s05",
+              "score": 0.8185219995565209,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            }
+          ],
+          "rank": null
+        }
+      ]
+    },
+    {
+      "order": "forward_repeat",
+      "document_ids": [
+        "s01",
+        "s02",
+        "s03",
+        "s04",
+        "s05",
+        "s06",
+        "s07",
+        "s08",
+        "s09",
+        "s10",
+        "s11",
+        "s12",
+        "s13",
+        "s14",
+        "s15",
+        "s16",
+        "s17",
+        "s18",
+        "s19",
+        "s20"
+      ],
+      "groups": {
+        "literal": {
+          "count": 12,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0
+        },
+        "paraphrase": {
+          "count": 4,
+          "recall_at_1": 0.5,
+          "recall_at_5": 0.75
+        },
+        "cross_language": {
+          "count": 2,
+          "recall_at_1": 0.0,
+          "recall_at_5": 0.5
+        }
+      },
+      "cases": [
+        {
+          "id": "s01",
+          "type": "literal",
+          "expected": [
+            "s01"
+          ],
+          "hits": [
+            {
+              "id": "s01",
+              "score": 0.8955309736733276,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            },
+            {
+              "id": "s15",
+              "score": 0.8287266372870763,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s04",
+              "score": 0.8241554901358004,
+              "excerpt": "朋友讨论：不要把安慰等同于解决所有问题。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8236469439144551,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s19",
+              "score": 0.8217398148480028,
+              "excerpt": "合成日记：早上整理抽屉，下午读小说。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s02",
+          "type": "literal",
+          "expected": [
+            "s02"
+          ],
+          "hits": [
+            {
+              "id": "s02",
+              "score": 0.8404653113350213,
+              "excerpt": "Launch checklist: the amber badge must be reviewed before release."
+            },
+            {
+              "id": "s12",
+              "score": 0.7652935528220783,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s20",
+              "score": 0.7587602982899209,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s07",
+              "score": 0.7458552748492684,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s16",
+              "score": 0.74555341614569,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s03",
+          "type": "literal",
+          "expected": [
+            "s03"
+          ],
+          "hits": [
+            {
+              "id": "s03",
+              "score": 0.8917882206299677,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s11",
+              "score": 0.8642816885591412,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            },
+            {
+              "id": "s15",
+              "score": 0.8491275106512661,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8417229745550023,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8413996981421775,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s04",
+          "type": "literal",
+          "expected": [
+            "s04"
+          ],
+          "hits": [
+            {
+              "id": "s04",
+              "score": 0.8996170906148877,
+              "excerpt": "朋友讨论：不要把安慰等同于解决所有问题。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8445486105484542,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s03",
+              "score": 0.8420552695460312,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s01",
+              "score": 0.8408553260415692,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            },
+            {
+              "id": "s15",
+              "score": 0.8376947853641935,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s05",
+          "type": "literal",
+          "expected": [
+            "s05"
+          ],
+          "hits": [
+            {
+              "id": "s05",
+              "score": 0.8759719064863201,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s07",
+              "score": 0.7985453462454299,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s20",
+              "score": 0.7929442551780489,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s12",
+              "score": 0.7872438173940248,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s18",
+              "score": 0.7853026095300772,
+              "excerpt": "Users can retrieve the original PDF page after reading an extracted passage."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s06",
+          "type": "literal",
+          "expected": [
+            "s06"
+          ],
+          "hits": [
+            {
+              "id": "s06",
+              "score": 0.8933761856692165,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8480785655691065,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8330070684224862,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s13",
+              "score": 0.8300692287218454,
+              "excerpt": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。"
+            },
+            {
+              "id": "s01",
+              "score": 0.8282116644160332,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s07",
+          "type": "literal",
+          "expected": [
+            "s07"
+          ],
+          "hits": [
+            {
+              "id": "s07",
+              "score": 0.8611695895484077,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s03",
+              "score": 0.8051382615963953,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s20",
+              "score": 0.8042337720288335,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s06",
+              "score": 0.8030742172977644,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s15",
+              "score": 0.7969223348251893,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s08",
+          "type": "literal",
+          "expected": [
+            "s08"
+          ],
+          "hits": [
+            {
+              "id": "s08",
+              "score": 0.8810497899274718,
+              "excerpt": "Coffee journal: I chose tea instead of espresso today."
+            },
+            {
+              "id": "s05",
+              "score": 0.7995730676093782,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s09",
+              "score": 0.7994240447609462,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s12",
+              "score": 0.7929506779816102,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s07",
+              "score": 0.7870689265937707,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s09",
+          "type": "literal",
+          "expected": [
+            "s09"
+          ],
+          "hits": [
+            {
+              "id": "s09",
+              "score": 0.8998826486598566,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8909327547108274,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s13",
+              "score": 0.839449534871793,
+              "excerpt": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8387781943697016,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s19",
+              "score": 0.8364422061599799,
+              "excerpt": "合成日记：早上整理抽屉，下午读小说。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s10",
+          "type": "literal",
+          "expected": [
+            "s10"
+          ],
+          "hits": [
+            {
+              "id": "s10",
+              "score": 0.8739442661545618,
+              "excerpt": "A decoder converts token sequences into output symbols."
+            },
+            {
+              "id": "s20",
+              "score": 0.8028072993316093,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s12",
+              "score": 0.8026598300797388,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s16",
+              "score": 0.7705460042411679,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            },
+            {
+              "id": "s05",
+              "score": 0.7617816240030226,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s11",
+          "type": "literal",
+          "expected": [
+            "s11"
+          ],
+          "hits": [
+            {
+              "id": "s11",
+              "score": 0.9006001714826922,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            },
+            {
+              "id": "s15",
+              "score": 0.8628914553270044,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s03",
+              "score": 0.8609698013134749,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8499497369203153,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8490038427480565,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s12",
+          "type": "literal",
+          "expected": [
+            "s12"
+          ],
+          "hits": [
+            {
+              "id": "s12",
+              "score": 0.8718458959660976,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s07",
+              "score": 0.7538344168040423,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s16",
+              "score": 0.740273451179495,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            },
+            {
+              "id": "s20",
+              "score": 0.7380988771707113,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s05",
+              "score": 0.7312839993438522,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s13",
+          "type": "paraphrase",
+          "expected": [
+            "s13"
+          ],
+          "hits": [
+            {
+              "id": "s13",
+              "score": 0.8945871108901299,
+              "excerpt": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。"
+            },
+            {
+              "id": "s19",
+              "score": 0.885484231635727,
+              "excerpt": "合成日记：早上整理抽屉，下午读小说。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8685895303855511,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8537471551982466,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s01",
+              "score": 0.8501327881502236,
+              "excerpt": "水杉散步让我平静，但不是所有灵感都需要变成任务。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s14",
+          "type": "paraphrase",
+          "expected": [
+            "s14"
+          ],
+          "hits": [
+            {
+              "id": "s07",
+              "score": 0.798196052522889,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s12",
+              "score": 0.7861095748679372,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s05",
+              "score": 0.7832297869925374,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s02",
+              "score": 0.7786966038602989,
+              "excerpt": "Launch checklist: the amber badge must be reviewed before release."
+            },
+            {
+              "id": "s16",
+              "score": 0.7720671228386502,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            }
+          ],
+          "rank": null
+        },
+        {
+          "id": "s15",
+          "type": "paraphrase",
+          "expected": [
+            "s15"
+          ],
+          "hits": [
+            {
+              "id": "s15",
+              "score": 0.8422832404693162,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s17",
+              "score": 0.8349583702226762,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8323739836088331,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            },
+            {
+              "id": "s06",
+              "score": 0.8323556377436225,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            },
+            {
+              "id": "s11",
+              "score": 0.8249516112739453,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "id": "s16",
+          "type": "paraphrase",
+          "expected": [
+            "s16"
+          ],
+          "hits": [
+            {
+              "id": "s05",
+              "score": 0.8132299143494728,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s20",
+              "score": 0.7898053869372327,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s12",
+              "score": 0.7845097951990028,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s07",
+              "score": 0.7815028393806455,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s16",
+              "score": 0.7756329735813796,
+              "excerpt": "Duplicated documents disagree and nobody knows which copy is current."
+            }
+          ],
+          "rank": 5
+        },
+        {
+          "id": "s17",
+          "type": "cross_language",
+          "expected": [
+            "s17"
+          ],
+          "hits": [
+            {
+              "id": "s05",
+              "score": 0.8013802520409136,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s20",
+              "score": 0.7973745865681378,
+              "excerpt": "Synthetic record about leaf patterns and paper textures."
+            },
+            {
+              "id": "s17",
+              "score": 0.7967042947478431,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s07",
+              "score": 0.7799279470835798,
+              "excerpt": "Budget memo: unit cost is 0.37 for the synthetic task."
+            },
+            {
+              "id": "s09",
+              "score": 0.7784870240160899,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            }
+          ],
+          "rank": 3
+        },
+        {
+          "id": "s18",
+          "type": "cross_language",
+          "expected": [
+            "s18"
+          ],
+          "hits": [
+            {
+              "id": "s03",
+              "score": 0.8585657720666906,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s11",
+              "score": 0.8513340988692664,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            },
+            {
+              "id": "s17",
+              "score": 0.848272447926801,
+              "excerpt": "把录音变成带有时间戳的文字，以便回听。"
+            },
+            {
+              "id": "s15",
+              "score": 0.8471594404316104,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s09",
+              "score": 0.8451555220062366,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            }
+          ],
+          "rank": null
+        },
+        {
+          "id": "s19",
+          "type": "absent",
+          "expected": [],
+          "hits": [
+            {
+              "id": "s15",
+              "score": 0.8482597472549844,
+              "excerpt": "每次重新介绍背景都会浪费协作时间。"
+            },
+            {
+              "id": "s04",
+              "score": 0.8414382092755792,
+              "excerpt": "朋友讨论：不要把安慰等同于解决所有问题。"
+            },
+            {
+              "id": "s13",
+              "score": 0.8387873105340375,
+              "excerpt": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。"
+            },
+            {
+              "id": "s11",
+              "score": 0.8372635696599655,
+              "excerpt": "验收标准：取消操作后不能出现重复记录。"
+            },
+            {
+              "id": "s06",
+              "score": 0.836351051260384,
+              "excerpt": "灵感：用雨滴声音作为专注计时器的结束提示。"
+            }
+          ],
+          "rank": null
+        },
+        {
+          "id": "s20",
+          "type": "literal_injection_absent",
+          "expected": [],
+          "hits": [
+            {
+              "id": "s03",
+              "score": 0.8269163046309347,
+              "excerpt": "讲座记录：检索增强生成的关键是保留出处。"
+            },
+            {
+              "id": "s10",
+              "score": 0.8191676967431696,
+              "excerpt": "A decoder converts token sequences into output symbols."
+            },
+            {
+              "id": "s12",
+              "score": 0.8188122587674902,
+              "excerpt": "Sketch idea: a cobalt bridge connects two floating gardens."
+            },
+            {
+              "id": "s05",
+              "score": 0.8172074337757917,
+              "excerpt": "Podcast notes: source attribution prevents unsupported claims."
+            },
+            {
+              "id": "s09",
+              "score": 0.8149788957912218,
+              "excerpt": "合成资料：不要自动上传私人录音。"
+            }
+          ],
+          "rank": null
+        }
+      ]
+    }
+  ],
+  "changed_cases": [
+    {
+      "id": "s01",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": true
+    },
+    {
+      "id": "s02",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": true
+    },
+    {
+      "id": "s03",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": true
+    },
+    {
+      "id": "s04",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": false
+    },
+    {
+      "id": "s05",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": false
+    },
+    {
+      "id": "s06",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": false
+    },
+    {
+      "id": "s07",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": true
+    },
+    {
+      "id": "s08",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": true
+    },
+    {
+      "id": "s09",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": false
+    },
+    {
+      "id": "s10",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": true
+    },
+    {
+      "id": "s11",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": true
+    },
+    {
+      "id": "s12",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": true
+    },
+    {
+      "id": "s13",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": false
+    },
+    {
+      "id": "s14",
+      "forward_rank": null,
+      "reverse_rank": 5,
+      "ranking_changed": true
+    },
+    {
+      "id": "s15",
+      "forward_rank": 1,
+      "reverse_rank": 1,
+      "ranking_changed": true
+    },
+    {
+      "id": "s16",
+      "forward_rank": 5,
+      "reverse_rank": 5,
+      "ranking_changed": false
+    },
+    {
+      "id": "s17",
+      "forward_rank": 3,
+      "reverse_rank": 1,
+      "ranking_changed": true
+    },
+    {
+      "id": "s18",
+      "forward_rank": null,
+      "reverse_rank": null,
+      "ranking_changed": true
+    },
+    {
+      "id": "s19",
+      "forward_rank": null,
+      "reverse_rank": null,
+      "ranking_changed": true
+    },
+    {
+      "id": "s20",
+      "forward_rank": null,
+      "reverse_rank": null,
+      "ranking_changed": true
+    }
+  ],
+  "forward_repeat_exact_match": true,
+  "interpretation": "Order sensitivity measured directly; mechanism not established. HTTP uses randomized IDs and may differ in other unmeasured inputs. No threshold tuning.",
+  "browser_validation": false
+}

@@ -1,0 +1,193 @@
+{
+  "kind": "real HTTP SQLite and local model, no browser",
+  "binary_sha256": "4170a5a902095abe5d46eb85cd615bb60433840fbb474e6656bee72d9265c5a0",
+  "checks": [
+    {
+      "check": "anonymous denied; configured local processor status",
+      "passed": true
+    },
+    {
+      "check": "20 real ONNX HTTP queries; only owner records and exact current source excerpts",
+      "passed": true
+    },
+    {
+      "check": "forged other creator, empty source/date filters, and second account remain isolated",
+      "passed": true
+    },
+    {
+      "check": "real TCP close cancels active model request and releases busy slot",
+      "passed": true
+    },
+    {
+      "check": "positive workbench owner/category/source/date filter and excluded category",
+      "passed": true
+    },
+    {
+      "check": "deletion and edits reflected in next query without stale persistent index",
+      "passed": true
+    },
+    {
+      "check": "restart without model gives explicit503 while original keyword retrieval still works",
+      "passed": true
+    }
+  ],
+  "cases": [
+    {
+      "id": "s01",
+      "type": "literal",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 3.429
+    },
+    {
+      "id": "s02",
+      "type": "literal",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 2.675
+    },
+    {
+      "id": "s03",
+      "type": "literal",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 2.276
+    },
+    {
+      "id": "s04",
+      "type": "literal",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 2.629
+    },
+    {
+      "id": "s05",
+      "type": "literal",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 2.711
+    },
+    {
+      "id": "s06",
+      "type": "literal",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 2.536
+    },
+    {
+      "id": "s07",
+      "type": "literal",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 2.271
+    },
+    {
+      "id": "s08",
+      "type": "literal",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 2.324
+    },
+    {
+      "id": "s09",
+      "type": "literal",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 2.295
+    },
+    {
+      "id": "s10",
+      "type": "literal",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 2.234
+    },
+    {
+      "id": "s11",
+      "type": "literal",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 2.664
+    },
+    {
+      "id": "s12",
+      "type": "literal",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 2.492
+    },
+    {
+      "id": "s13",
+      "type": "paraphrase",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 3.914
+    },
+    {
+      "id": "s14",
+      "type": "paraphrase",
+      "expected_rank": 5,
+      "returned": 5,
+      "seconds": 2.736
+    },
+    {
+      "id": "s15",
+      "type": "paraphrase",
+      "expected_rank": 1,
+      "returned": 5,
+      "seconds": 2.228
+    },
+    {
+      "id": "s16",
+      "type": "paraphrase",
+      "expected_rank": 5,
+      "returned": 5,
+      "seconds": 2.476
+    },
+    {
+      "id": "s17",
+      "type": "cross_language",
+      "expected_rank": 3,
+      "returned": 5,
+      "seconds": 2.404
+    },
+    {
+      "id": "s18",
+      "type": "cross_language",
+      "expected_rank": 3,
+      "returned": 5,
+      "seconds": 2.498
+    },
+    {
+      "id": "s19",
+      "type": "absent",
+      "expected_rank": null,
+      "returned": 5,
+      "seconds": 2.664
+    },
+    {
+      "id": "s20",
+      "type": "literal_injection_absent",
+      "expected_rank": null,
+      "returned": 5,
+      "seconds": 2.515
+    }
+  ],
+  "elapsed_seconds": 65.558,
+  "negative_queries": "Similarity returns candidates even for absent queries; not an answerability detector.",
+  "literal": {
+    "total": 12,
+    "recall_at_1": 12,
+    "recall_at_5": 12
+  },
+  "paraphrase": {
+    "total": 4,
+    "recall_at_1": 2,
+    "recall_at_5": 4
+  },
+  "cross_language": {
+    "total": 2,
+    "recall_at_1": 0,
+    "recall_at_5": 2
+  }
+}
