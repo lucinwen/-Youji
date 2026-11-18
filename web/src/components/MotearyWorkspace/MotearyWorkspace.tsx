@@ -27,6 +27,7 @@ import { State } from "@/types/proto/api/common_pb";
 import { type Memo, Visibility } from "@/types/proto/api/memo_service_pb";
 import AudioImport from "./AudioImport";
 import BatchImport from "./BatchImport";
+import ChatImport from "./ChatImport";
 import OriginalAudioPreview, { getOriginalAudio } from "./OriginalAudioPreview";
 import PDFImport from "./PDFImport";
 import SemanticSearch from "./SemanticSearch";
@@ -362,6 +363,10 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
           <details id="pdf-import" className="scroll-mt-4 rounded-xl border border-border p-3">
             <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium">PDF 原件与逐页正文</summary>
             <PDFImport key={`pdf:${userName}`} userName={userName} onSaved={() => void query.refetch()} />
+          </details>
+          <details id="chat-import" className="scroll-mt-4 rounded-xl border border-border p-3">
+            <summary className="min-h-11 cursor-pointer py-3 text-sm">聊天 JSON 原件与消息正文</summary>
+            <ChatImport key={`chat:${userName}`} userName={userName} onSaved={() => void query.refetch()} />
           </details>
           <details id="batch-import" className="scroll-mt-4 rounded-xl border border-border p-3">
             <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium">批量文字与其他原件</summary>

@@ -213,3 +213,7 @@ The workspace now keeps quick capture and keyword search ahead of folded heavy
 controls; audio correction drafts can be explicitly downloaded and restored after
 matching the same original. This does not enable ASR or imply browser/mobile
 acceptance. See [mobile/recovery checkpoint evidence](MOBILE_RECOVERY_QA_20261118.md).
+
+聊天原件入口与兼容边界：[LOCAL_CHAT.md](LOCAL_CHAT.md)。
+
+聊天闭环验证：[CHAT_WORKSPACE_QA_20261118.md](CHAT_WORKSPACE_QA_20261118.md)。

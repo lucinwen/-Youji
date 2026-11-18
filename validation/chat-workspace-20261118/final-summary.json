@@ -1,0 +1,49 @@
+{
+  "base_commit": "c5d37719934c5577940374c42ade7c3382a44072",
+  "source_checkpoint": "62411341282090f5759a2fe28bac6d8744ec355f",
+  "branch": "feat/chat-json-import-20261118",
+  "binary_sha256": "f0257fdfaf9644bacc8d8fdac1321faf0f91f1a44e5273a810b56fae6eb56d58",
+  "frontend": {
+    "lint": "passed",
+    "tests_passed": 1837,
+    "tests_skipped": 4,
+    "files_passed": 203,
+    "files_skipped": 2,
+    "duration_seconds": 464.08,
+    "final_exit_code": 0,
+    "release_build": "passed",
+    "earlier_runs": "3 empty-status integration failures corrected; 512MiB full runner worker error retained; locale 97/97 isolated pass; final 1024MiB full run passed after resource recovery",
+    "earlier_builds": "two exit137 attempts retained; standard build passed after preserving completed tmpfs QA archives on disk"
+  },
+  "http": {
+    "kind": "real HTTP/SQLite and actual frontend module; not browser",
+    "model_executed": false,
+    "binary_sha256": "f0257fdfaf9644bacc8d8fdac1321faf0f91f1a44e5273a810b56fae6eb56d58",
+    "checks": [
+      {
+        "check": "anonymous memo access denied; local chat preview requires no processor",
+        "passed": true
+      },
+      {
+        "check": "actual chat TypeScript module uses real API: save/retry/response-loss recovery/search/account isolation/delete",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "check": "restart preserves chat memo and original; final deletion removes memo and attachment rows",
+        "passed": true
+      }
+    ]
+  },
+  "browser": "not run this iteration; prior sandboxed Chromium socket EPERM and cloud loopback refusal remain unresolved",
+  "phone": "not tested",
+  "fixtures": "synthetic schema-compatible chats only; no real Telegram exporter compatibility certification",
+  "model_executed": false,
+  "asr_denial": "not retried; no ASR assets touched",
+  "limits": [
+    "512 KiB named single-chat JSON; 1000 entries; 256 KiB derived memo plus account quota",
+    "No media import, service-event rendering, full-account export or rich_message support",
+    "No transaction-level multi-tab guarantees; existing owner-check/write races remain",
+    "Private original includes metadata not shown in preview; no authenticity signature"
+  ]
+}

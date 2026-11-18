@@ -1,0 +1,20 @@
+{
+  "completed_qa_archives": [
+    {
+      "old": "/tmp/youji-pr8-independent",
+      "new": "/workspace/scratch/10a41183bc23/youji-runtime-cache/qa-archive/youji-pr8-independent",
+      "old_path_retained_as_symlink": true,
+      "binary_sha256": "8d590fa78e41a4717a33414b0c3ccfed08ba7beab9c4861dfc135379e1e96c6a"
+    },
+    {
+      "old": "/tmp/youji-pr12-independent",
+      "new": "/workspace/scratch/10a41183bc23/youji-runtime-cache/qa-archive/youji-pr12-independent",
+      "old_path_retained_as_symlink": true,
+      "binary_sha256": "09f0b3606c54281ac4c010b922065a427035284fe87fe0a9d64e345faea87496"
+    }
+  ],
+  "binaries_match_previous_evidence": true,
+  "asr_assets_touched": false,
+  "standard_build_after_archival": "passed",
+  "binary_sha256": "f0257fdfaf9644bacc8d8fdac1321faf0f91f1a44e5273a810b56fae6eb56d58"
+}

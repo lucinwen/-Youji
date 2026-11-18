@@ -1,0 +1,14 @@
+$ vitest run --maxWorkers=1
+
+ RUN  v4.1.5 /workspace/scratch/10a41183bc23/youji-next/web
+
+ ❯ tests/moteary-workspace.test.tsx (23 tests | 3 failed) 2768ms
+     × does not show a premature empty state while loading 51ms
+     × cancel closes without reporting a successful save 117ms
+     × only reports a server save after the original editor confirms and refreshes the list 103ms
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
