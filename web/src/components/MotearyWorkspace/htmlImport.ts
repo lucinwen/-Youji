@@ -1,4 +1,5 @@
-import { type AudioReceipt, saveAudio } from "./audioImport";
+import { saveAtomicOriginal } from "./atomicOriginalImport";
+import type { AudioReceipt } from "./audioImport";
 import type { BatchSource } from "./batchImport";
 import type { HTMLText } from "./htmlText";
 export type HTMLPlan = { item: BatchSource; parsed: HTMLText };
@@ -58,6 +59,8 @@ export async function prepareHTML(file: File, owner: string, signal: AbortSignal
   if (
     !/\.html?$/i.test(file.name) ||
     file.name.length > 240 ||
+    file.name.startsWith(".") ||
+    file.name.startsWith(" ") ||
     /[\\/]/.test(file.name) ||
     Array.from(file.name).some((c) => c.charCodeAt(0) < 32 || c.charCodeAt(0) === 127)
   )
@@ -82,4 +85,4 @@ export async function prepareHTML(file: File, owner: string, signal: AbortSignal
   return { item: { id, owner, filename: file.name, data, sha256, content }, parsed };
 }
 export const saveHTML = (plan: HTMLPlan, signal: AbortSignal, receipt: (value: AudioReceipt) => void) =>
-  saveAudio(plan.item, signal, receipt);
+  saveAtomicOriginal(plan.item, "html", signal, receipt);

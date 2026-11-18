@@ -3,8 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { parseHTMLInWorker, prepareHTML, saveHTML } from "@/components/MotearyWorkspace/htmlImport";
 import { extractHTML } from "@/components/MotearyWorkspace/htmlText";
 
-const saveAudio = vi.hoisted(() => vi.fn());
-vi.mock("@/components/MotearyWorkspace/audioImport", () => ({ saveAudio }));
+const saveAtomicOriginal = vi.hoisted(() => vi.fn());
+vi.mock("@/components/MotearyWorkspace/atomicOriginalImport", () => ({ saveAtomicOriginal }));
 const owner = "users/synthetic";
 const file = (html: string, name = "synthetic.html") => {
   const bytes = new TextEncoder().encode(html);
@@ -29,7 +29,7 @@ beforeEach(() => {
   vi.stubGlobal("fetch", fetchMock);
   vi.stubGlobal("Worker", ParserWorker);
   fetchMock.mockReset();
-  saveAudio.mockReset();
+  saveAtomicOriginal.mockReset();
   ParserWorker.instances = [];
   ParserWorker.automatic = true;
 });
@@ -123,7 +123,7 @@ describe("HTML worker and source plan", () => {
     expect((await prepareHTML(file("<p>different</p>"), owner, new AbortController().signal)).item.id).not.toBe(first.item.id);
     expect(ParserWorker.instances.every((worker) => worker.terminate.mock.calls.length === 1)).toBe(true);
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(saveAudio).not.toHaveBeenCalled();
+    expect(saveAtomicOriginal).not.toHaveBeenCalled();
   });
   it("terminates a pending worker on cancellation and ignores its late response", async () => {
     ParserWorker.automatic = false;
@@ -197,12 +197,16 @@ describe("HTML worker and source plan", () => {
     ).rejects.toThrow();
     expect(ParserWorker.instances).toHaveLength(0);
   });
-  it("uses the existing single-original save protocol only after an explicit save", async () => {
+  it.each([".hidden.html", " spaced.html", "bad.txt"])("rejects unsupported filename %s before worker startup", async (name) => {
+    await expect(prepareHTML(file("<p>text</p>", name), owner, new AbortController().signal)).rejects.toThrow("文件名有效");
+    expect(ParserWorker.instances).toHaveLength(0);
+  });
+  it("uses the dedicated HTML atomic save protocol only after an explicit save", async () => {
     const signal = new AbortController().signal;
     const plan = await prepareHTML(file("<p>正文</p>"), owner, signal);
     const receipt = vi.fn();
-    saveAudio.mockResolvedValue({ status: "verified" });
+    saveAtomicOriginal.mockResolvedValue({ status: "verified" });
     expect(await saveHTML(plan, signal, receipt)).toEqual({ status: "verified" });
-    expect(saveAudio).toHaveBeenCalledWith(plan.item, signal, receipt);
+    expect(saveAtomicOriginal).toHaveBeenCalledWith(plan.item, "html", signal, receipt);
   });
 });

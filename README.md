@@ -17,10 +17,12 @@
 
 ## 当前累计草稿与启动
 
-可拉取分支：`feat/transactional-drafts-demo-20261118`。此分支包含前序 PR #1–17；不需要逐个合并，也不表示这些草稿已经合并 main。
+Windows 用户请使用 [PowerShell / WSL 待验证指南](moteary/WINDOWS_DEMO.md)，不要直接粘贴下面的 Bash 命令。Windows 实机尚未验收。
+
+可拉取分支：`feat/html-atomic-demo-20261118`。此分支包含前序 PR #1–18；不需要逐个合并，也不表示这些草稿已经合并 main。
 
 ```bash
-git clone --single-branch --branch feat/transactional-drafts-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
+git clone --single-branch --branch feat/html-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
 cd youji-demo
 pnpm --dir web install --frozen-lockfile
 pnpm --dir web release
@@ -43,7 +45,7 @@ env -i LANG=C.UTF-8 "$PWD/build/youji" --addr 127.0.0.1 --port 5231 \
 
 已有 PDF 文本解析、可选语义候选检索、HTML/聊天 JSON 原件导入与音频人工稿等功能，配置及各轮证据见 [功能记录](moteary/README.md)。语义候选可能没有答案；自动语音识别的真人评估保持暂停。真实浏览器、手机、跨设备同步仍未完成验收；组件与 HTTP 测试不能替代这些结论。
 
-本轮 [验证报告](moteary/DRAFT_LOCK_DEMO_QA_20261118.md) 区分组件、原生锁、真实 HTTP 与未完成的浏览器验收。
+最新 [HTML事务与四来源验收](moteary/HTML_ATOMIC_QA_20261118.md) 记录固定生产构建、并发与检索回源结果；[草稿锁验收](moteary/DRAFT_LOCK_DEMO_QA_20261118.md) 保留前轮证据。真实浏览器与Windows仍未验收。
 
 ## 2026-11-12 历史检查点（不代表当前完整范围）
 - 已实现：来源类别/批注、完整编辑器、显式单文件和批量 CLI、浏览器批量预检/保存/停止、原件 ZIP 保真、SHA-256 回读、PRIVATE 与修改冲突保护。

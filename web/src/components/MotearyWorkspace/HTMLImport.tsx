@@ -77,6 +77,10 @@ export default function HTMLImport({ userName, onSaved }: { userName: string; on
         选择 UTF-8 HTML（最多 512 KiB）。在本地 Worker 提取首个 article、main 或 body 的文字，不加载原网页资源、不运行脚本、不渲染原始
         HTML。不是智能正文识别，可能遗漏或包含非正文；请核对预览。
       </p>
+      <p className="text-xs text-muted-foreground">
+        保存需新版有记服务器与 SQLite；原 HTML 的 ZIP 与 PRIVATE
+        记录一同提交。旧版记录可能提示冲突，请打开原记录核对，不会自动覆盖或迁移。正文还受账号配额限制，超限不会截断。原件包含未展示字段，仍须核对敏感内容。
+      </p>
       <label className="block text-sm">
         本地 HTML 原件
         <input

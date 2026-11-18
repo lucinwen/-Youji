@@ -1,0 +1,40 @@
+{
+  "base_commit": "cff10c3fa4ed504450c175a2014df574165d70d8",
+  "source_checkpoint": "bca379f96a05cee705d3f21757137f5ff0a82a32",
+  "binary_version": "26.11.18-dev.bca379f",
+  "binary_sha256": "78bae9615f9cc59fc97ee272ed2b2baf9ad09b9b261efd639433c60d7308d315",
+  "html_worker_sha256": "e4d1f1d0f1114b7599031b6b85ba28e44eed87e2bc8e8fba45d6ff8573510cf1",
+  "go_api_race": {
+    "passed": 8,
+    "html": 5,
+    "manual": 3
+  },
+  "frontend_targeted": 93,
+  "frontend_full": {
+    "passed": 2004,
+    "skipped": 11
+  },
+  "lint": "passed after initial exit137",
+  "frontend_build": "passed",
+  "go_build": "passed",
+  "html_concurrent_http_groups": 6,
+  "manual_concurrent_http_groups": 6,
+  "concurrent_results_each": {
+    "requests": 8,
+    "imported": 1,
+    "verified": 7,
+    "memo_rows": 1,
+    "zip_blob_rows": 1,
+    "unlinked_rows": 0
+  },
+  "html_module_http_groups": 4,
+  "manual_module_http_groups": 4,
+  "multisource_groups": 3,
+  "multisource_originals_verified": 4,
+  "startup_checks": 10,
+  "html_worker_trap_requests": 0,
+  "windows": "not tested; offline dependency check blocked by missing cache; no exe build",
+  "browser_mobile": "not tested; no unsafe sandbox retry",
+  "model_executed": false,
+  "scope": "New SQLite HTML entry plus existing manual text; other save paths remain unchanged"
+}
