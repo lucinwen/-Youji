@@ -1,0 +1,8 @@
+{
+  "node": "v24.22.1",
+  "afterThrow": {
+    "held": [],
+    "pending": []
+  },
+  "reacquire": "reacquired"
+}

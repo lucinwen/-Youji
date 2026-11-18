@@ -1,0 +1,59 @@
+{
+  "node": "v24.22.1",
+  "kind": "Node native lock probes only; no store/browser",
+  "afterSyncThrow": {
+    "held": [
+      {
+        "name": "synthetic-native-throw-probe",
+        "mode": "exclusive",
+        "clientId": "node-7-0"
+      }
+    ],
+    "pending": []
+  },
+  "reacquire": "timeout after 300ms",
+  "abortRejection": "AbortError",
+  "beforeRelease": {
+    "held": [
+      {
+        "name": "synthetic-native-abort-probe",
+        "mode": "exclusive",
+        "clientId": "node-7-0"
+      },
+      {
+        "name": "synthetic-native-throw-probe",
+        "mode": "exclusive",
+        "clientId": "node-7-0"
+      }
+    ],
+    "pending": [
+      {
+        "name": "synthetic-native-throw-probe",
+        "mode": "exclusive",
+        "clientId": "node-7-0"
+      },
+      {
+        "name": "synthetic-native-abort-probe",
+        "mode": "exclusive",
+        "clientId": "node-7-0"
+      }
+    ]
+  },
+  "afterRelease": {
+    "called": false,
+    "held": [
+      {
+        "name": "synthetic-native-throw-probe",
+        "mode": "exclusive",
+        "clientId": "node-7-0"
+      }
+    ],
+    "pending": [
+      {
+        "name": "synthetic-native-throw-probe",
+        "mode": "exclusive",
+        "clientId": "node-7-0"
+      }
+    ]
+  }
+}

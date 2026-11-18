@@ -1,0 +1,36 @@
+{
+  "base_commit": "a6e09a0133dff68b10f12c8280e565d356002114",
+  "source_checkpoint": "5f9b270d5ab5c009d7e7592c40a34756871c2d66",
+  "binary_version": "26.11.18-dev.5f9b270",
+  "binary_sha256": "029f32e93b3fbd15edbbde1f783defee2152e2d8dc3045cb57967cde910b1a2f",
+  "lint": "passed",
+  "frontend_full": {
+    "passed": 1994,
+    "skipped": 10,
+    "files_passed": 209,
+    "files_skipped": 5
+  },
+  "native_node_web_locks": {
+    "passed": 4,
+    "node": "24.22.1",
+    "storage": "synthetic synchronous Map; not browser localStorage"
+  },
+  "frontend_build": "passed",
+  "go_build": "passed",
+  "final_manual_http_groups": 4,
+  "final_concurrent_http_groups": 6,
+  "concurrent_requests": 8,
+  "concurrent_result": {
+    "imported": 1,
+    "verified": 7,
+    "memo_rows": 1,
+    "attachment_rows": 1,
+    "unlinked_rows": 0
+  },
+  "final_startup_checks": 10,
+  "browser": "blocked: normal sandbox socket EPERM; cloud loopback connection refused",
+  "mobile": "not tested",
+  "model_executed": false,
+  "installation": "existing dependencies; fresh SQLite instances; no clean OS or offline dependency-install claim",
+  "scope": "v2 opt-in manual paste drafts; cooperative Web Locks protocol; v1 read-only recovery; server atomic path remains SQLite manual-text only"
+}

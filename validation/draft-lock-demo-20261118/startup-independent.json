@@ -1,0 +1,12 @@
+{
+  "source": "independent reviewer tool output; temporary logs not retained",
+  "binary_version": "26.11.18-dev.f76b46c",
+  "binary_sha256": "f60bab7b1474e9e1702e508193e169b4e41c31618420120f4c6e2d31fa6d954d",
+  "plan_creates_nothing": true,
+  "fresh_script_http_200": true,
+  "helper_refuses_used_data": true,
+  "direct_same_directory_restart_http_200": true,
+  "business_records_tested": false,
+  "model_executed": false,
+  "scope": "Existing PR17-equivalent binary, not a rebuild of this new branch"
+}

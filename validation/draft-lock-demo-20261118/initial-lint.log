@@ -1,0 +1,8 @@
+$ tsc --noEmit --skipLibCheck && biome check src tests
+tests/moteary-manual-draft-store.test.ts(201,43): error TS2345: Argument of type '() => string | ManualDraftSnapshot | Promise<void> | Promise<ManualDraftSnapshot> | null' is not assignable to parameter of type '(value: void) => void | PromiseLike<void | null> | null'.
+  Type 'string | ManualDraftSnapshot | Promise<void> | Promise<ManualDraftSnapshot> | null' is not assignable to type 'void | PromiseLike<void | null> | null'.
+    Type 'string' is not assignable to type 'void | PromiseLike<void | null> | null'.
+tests/moteary-manual-draft-store.test.ts(202,43): error TS2345: Argument of type '() => string | ManualDraftSnapshot | Promise<void> | Promise<ManualDraftSnapshot> | null' is not assignable to parameter of type '(value: void) => void | PromiseLike<void | null> | null'.
+  Type 'string | ManualDraftSnapshot | Promise<void> | Promise<ManualDraftSnapshot> | null' is not assignable to type 'void | PromiseLike<void | null> | null'.
+    Type 'string' is not assignable to type 'void | PromiseLike<void | null> | null'.
+[ELIFECYCLE] Command failed with exit code 1.

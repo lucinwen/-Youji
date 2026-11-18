@@ -7,6 +7,7 @@ import { expect, it, vi } from "vitest";
 import { deleteManualDraft, readManualDraft, writeManualDraft } from "@/components/MotearyWorkspace/manualDraftStore";
 import { prepareManualText, preparePastedText, saveManualText } from "@/components/MotearyWorkspace/manualTextImport";
 import { Visibility } from "@/types/proto/api/memo_service_pb";
+import { installManualDraftLocks } from "./helpers/manual-draft-locks";
 
 // Transport adapters invoke the real REST gateway. Only specific failure cases
 // deliberately drop a successful server response at this client boundary.
@@ -35,6 +36,7 @@ const nativeFetch = globalThis.fetch.bind(globalThis);
 it.skipIf(!process.env.YOUJI_MANUAL_TEXT_WEB_QA)(
   "runs actual manual text module over real HTTP with original-byte recovery and isolation",
   async () => {
+    const draftLocks = installManualDraftLocks();
     const config = JSON.parse(process.env.YOUJI_MANUAL_TEXT_WEB_QA ?? "{}");
     const requests: { method: string; path: string }[] = [];
     let nextRequestAt = 0;
@@ -158,7 +160,7 @@ it.skipIf(!process.env.YOUJI_MANUAL_TEXT_WEB_QA)(
       // Paste also uses a real private record and a byte-preserving original.
       const pastedText = "PastedManualNeedle 合成粘贴原文\n```\n#source/not-a-real-tag\n```";
       // jsdom localStorage persists through a simulated editor lifecycle; this is not a browser refresh test.
-      const local = writeManualDraft(config.owner, { text: pastedText, ...options }, null);
+      const local = await writeManualDraft(config.owner, { text: pastedText, ...options }, null);
       expect(readManualDraft("users/synthetic-other-local")).toBeNull();
       const restoredDraft = readManualDraft(config.owner);
       expect(restoredDraft?.value.text).toBe(pastedText);
@@ -169,7 +171,7 @@ it.skipIf(!process.env.YOUJI_MANUAL_TEXT_WEB_QA)(
       const retryDraft = readManualDraft(config.owner)!;
       const retriedPlan = await preparePastedText(retryDraft.value.text, config.owner, retryDraft.value);
       expect((await saveManualText(retriedPlan, signal(), vi.fn())).status).toBe("verified");
-      deleteManualDraft(config.owner, local.raw);
+      await deleteManualDraft(config.owner, local.raw);
       expect(readManualDraft(config.owner)).toBeNull();
       const pastedSaved = await call("GET", pastedReceipt.memo);
       expect(pastedSaved.visibility).toBe("PRIVATE");
@@ -203,6 +205,7 @@ it.skipIf(!process.env.YOUJI_MANUAL_TEXT_WEB_QA)(
       expect(await list("attachments")).toHaveLength(1);
       expect(requests.some((r) => r.path.includes("/youji/audio/") || r.path.includes("/youji/retrieval/"))).toBe(false);
     } finally {
+      draftLocks.restore();
       vi.unstubAllGlobals();
     }
   },
