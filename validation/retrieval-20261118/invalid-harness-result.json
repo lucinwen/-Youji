@@ -1,0 +1,1 @@
+{"valid":false,"reason":"Initial POST used wrapped memo body; created empty records. Discard zero-hit report. Harness now asserts exact saved body and nonempty candidates."}

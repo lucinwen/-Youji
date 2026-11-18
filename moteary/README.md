@@ -193,3 +193,7 @@ YOUJI_PDF_PYTHON="$PWD/.venv-pdf/bin/python" python tests/moteary/run_pdf_web_e2
 ```
 
 本轮证据、失败与未验收项见 `PDF_WORKSPACE_QA_20261118.md`。
+
+### Optional experimental semantic retrieval
+
+The workbench now provides a separate local-model ranking panel with original passages and source links; default keyword search remains available. See [local retrieval setup, provenance and limitations](LOCAL_RETRIEVAL.md). It requires explicitly provisioned model files and does not download models or send records to an external inference provider during use.

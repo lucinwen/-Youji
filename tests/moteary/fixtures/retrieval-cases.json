@@ -1,0 +1,198 @@
+[
+  {
+    "id": "s01",
+    "kind": "diary",
+    "text": "水杉散步让我平静，但不是所有灵感都需要变成任务。",
+    "query": "水杉散步",
+    "type": "literal",
+    "expected": [
+      "s01"
+    ]
+  },
+  {
+    "id": "s02",
+    "kind": "work",
+    "text": "Launch checklist: the amber badge must be reviewed before release.",
+    "query": "amber badge",
+    "type": "literal",
+    "expected": [
+      "s02"
+    ]
+  },
+  {
+    "id": "s03",
+    "kind": "lecture",
+    "text": "讲座记录：检索增强生成的关键是保留出处。",
+    "query": "保留出处",
+    "type": "literal",
+    "expected": [
+      "s03"
+    ]
+  },
+  {
+    "id": "s04",
+    "kind": "conversation",
+    "text": "朋友讨论：不要把安慰等同于解决所有问题。",
+    "query": "安慰等同于",
+    "type": "literal",
+    "expected": [
+      "s04"
+    ]
+  },
+  {
+    "id": "s05",
+    "kind": "reference",
+    "text": "Podcast notes: source attribution prevents unsupported claims.",
+    "query": "source attribution",
+    "type": "literal",
+    "expected": [
+      "s05"
+    ]
+  },
+  {
+    "id": "s06",
+    "kind": "idea",
+    "text": "灵感：用雨滴声音作为专注计时器的结束提示。",
+    "query": "雨滴声音",
+    "type": "literal",
+    "expected": [
+      "s06"
+    ]
+  },
+  {
+    "id": "s07",
+    "kind": "work",
+    "text": "Budget memo: unit cost is 0.37 for the synthetic task.",
+    "query": "0.37",
+    "type": "literal",
+    "expected": [
+      "s07"
+    ]
+  },
+  {
+    "id": "s08",
+    "kind": "diary",
+    "text": "Coffee journal: I chose tea instead of espresso today.",
+    "query": "instead of espresso",
+    "type": "literal",
+    "expected": [
+      "s08"
+    ]
+  },
+  {
+    "id": "s09",
+    "kind": "reference",
+    "text": "合成资料：不要自动上传私人录音。",
+    "query": "私人录音",
+    "type": "literal",
+    "expected": [
+      "s09"
+    ]
+  },
+  {
+    "id": "s10",
+    "kind": "lecture",
+    "text": "A decoder converts token sequences into output symbols.",
+    "query": "token sequences",
+    "type": "literal",
+    "expected": [
+      "s10"
+    ]
+  },
+  {
+    "id": "s11",
+    "kind": "work",
+    "text": "验收标准：取消操作后不能出现重复记录。",
+    "query": "重复记录",
+    "type": "literal",
+    "expected": [
+      "s11"
+    ]
+  },
+  {
+    "id": "s12",
+    "kind": "idea",
+    "text": "Sketch idea: a cobalt bridge connects two floating gardens.",
+    "query": "cobalt bridge",
+    "type": "literal",
+    "expected": [
+      "s12"
+    ]
+  },
+  {
+    "id": "s13",
+    "kind": "diary",
+    "text": "夜里迟迟无法入睡，我把脑海里的念头写在纸上。",
+    "query": "失眠时记日记",
+    "type": "paraphrase",
+    "expected": [
+      "s13"
+    ]
+  },
+  {
+    "id": "s14",
+    "kind": "work",
+    "text": "The review queue takes three days because only one teammate can approve.",
+    "query": "approval bottleneck",
+    "type": "paraphrase",
+    "expected": [
+      "s14"
+    ]
+  },
+  {
+    "id": "s15",
+    "kind": "lecture",
+    "text": "每次重新介绍背景都会浪费协作时间。",
+    "query": "上下文交接成本",
+    "type": "paraphrase",
+    "expected": [
+      "s15"
+    ]
+  },
+  {
+    "id": "s16",
+    "kind": "reference",
+    "text": "Duplicated documents disagree and nobody knows which copy is current.",
+    "query": "single source of truth",
+    "type": "paraphrase",
+    "expected": [
+      "s16"
+    ]
+  },
+  {
+    "id": "s17",
+    "kind": "idea",
+    "text": "把录音变成带有时间戳的文字，以便回听。",
+    "query": "timestamped audio transcript",
+    "type": "cross_language",
+    "expected": [
+      "s17"
+    ]
+  },
+  {
+    "id": "s18",
+    "kind": "work",
+    "text": "Users can retrieve the original PDF page after reading an extracted passage.",
+    "query": "从提取段落返回原始页面",
+    "type": "cross_language",
+    "expected": [
+      "s18"
+    ]
+  },
+  {
+    "id": "s19",
+    "kind": "diary",
+    "text": "合成日记：早上整理抽屉，下午读小说。",
+    "query": "不存在的紫色火山987",
+    "type": "absent",
+    "expected": []
+  },
+  {
+    "id": "s20",
+    "kind": "reference",
+    "text": "Synthetic record about leaf patterns and paper textures.",
+    "query": "x\") || true || (\"",
+    "type": "literal_injection_absent",
+    "expected": []
+  }
+]

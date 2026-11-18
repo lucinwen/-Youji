@@ -28,6 +28,7 @@ import { type Memo, Visibility } from "@/types/proto/api/memo_service_pb";
 import BatchImport from "./BatchImport";
 import OriginalAudioPreview, { getOriginalAudio } from "./OriginalAudioPreview";
 import PDFImport from "./PDFImport";
+import SemanticSearch from "./SemanticSearch";
 import {
   buildCaptureStarter,
   buildSourceFilter,
@@ -474,6 +475,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
               仅在当前账户和所选分类、空间内搜索已保存正文。PDF、音频和图片的附件内部内容尚不可搜索；可以搜索已填写到正文的文件名或批注。关键词不保存在网址或浏览器存储中。
             </p>
           </form>
+          <SemanticSearch userName={userName} filter={buildSourceFilter(userName, category, spaceName || undefined, "", retrieval)} />
           {isSpacesError && (
             <p role="alert" className="mb-3 text-xs text-destructive">
               空间列表未能读取，暂不可切换。请刷新页面重试；不会把失败当作没有空间。

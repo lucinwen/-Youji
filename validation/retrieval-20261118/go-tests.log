@@ -1,0 +1,123 @@
+ok      github.com/usememos/memos/server    (cached)
+2026/11/18 12:25:15 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:15 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:15 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:15 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:15 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:15 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:15 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:15 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:15 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:15 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:15 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:15 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:15 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:15 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:16 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:16 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:16 WARN attachment create returned an error after its storage object was persisted in the database; skipping compensation attachment_uid=mbQf7cv3mvdc7K9kNbS49e storage_type=LOCAL
+2026/11/18 12:25:16 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:16 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:16 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:16 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:16 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:16 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:19 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:19 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:19 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:19 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:19 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:19 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:20 INFO client error method=/memos.api.AttachmentService/UploadAttachment error="unauthenticated: authentication required" stacktrace="unauthenticated: authentication required"
+2026/11/18 12:25:20 INFO OK method=/memos.api.AttachmentService/UploadAttachment
+2026/11/18 12:25:20 INFO OK method=/memos.api.AttachmentService/UploadAttachment
+2026/11/18 12:25:20 INFO OK method=/memos.api.AttachmentService/UploadAttachment
+2026/11/18 12:25:21 INFO OK method=/memos.api.AttachmentService/UploadAttachment
+2026/11/18 12:25:21 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:21 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:22 ERROR failed to resolve API access policy error="database unavailable"
+2026/11/18 12:25:22 ERROR failed to resolve API access policy error="database unavailable"
+2026/11/18 12:25:22 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:22 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:22 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:22 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:22 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:22 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:22 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:22 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:23 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:23 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:24 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:24 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:24 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:24 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:24 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:24 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:24 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:24 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:24 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:24 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:25 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:25 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:25 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:25 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:25 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:25 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:25 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:25 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:25 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:25 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:26 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:26 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:26 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:26 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:26 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:26 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:26 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:26 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:26 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:26 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:27 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:27 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:27 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:27 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:27 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:27 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:27 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:27 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:27 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:28 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:28 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:28 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:28 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:28 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:28 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:28 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:28 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:28 INFO database initialized successfully schemaVersion=26.10.1
+2026/11/18 12:25:29 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 12:25:29 INFO database initialized successfully schemaVersion=26.10.1
+--- FAIL: TestUserWebhookSigningSecretLifecycle (0.13s)
+    user_webhook_test.go:61:
+            Error Trace:    /workspace/scratch/10a41183bc23/youji-next/server/api/user_webhook_test.go:61
+            Error:          Received unexpected error:
+                            rpc error: code = InvalidArgument desc = webhook URL hostname could not be resolved: lookup example.com on 168.63.129.16:53: dial udp 168.63.129.16:53: connect: network is unreachable
+            Test:           TestUserWebhookSigningSecretLifecycle
+FAIL
+FAIL    github.com/usememos/memos/server/api    15.290s
+ok      github.com/usememos/memos/server/api/test   136.453s
+ok      github.com/usememos/memos/server/auth   (cached)
+ok      github.com/usememos/memos/server/fileserver 7.449s
+ok      github.com/usememos/memos/server/frontend   (cached)
+ok      github.com/usememos/memos/server/mcp    17.380s
+ok      github.com/usememos/memos/server/test   30.429s
+ok      github.com/usememos/memos/core/access   (cached)
+ok      github.com/usememos/memos/core/configuration    (cached)
+ok      github.com/usememos/memos/core/identityprovider (cached)
+ok      github.com/usememos/memos/core/instancesetting  (cached)
+ok      github.com/usememos/memos/core/memoexport   (cached)
+ok      github.com/usememos/memos/core/memopayload  (cached)
+ok      github.com/usememos/memos/core/notification (cached)
+ok      github.com/usememos/memos/core/usagelimit   (cached)
+ok      github.com/usememos/memos/core/user (cached)
+FAIL

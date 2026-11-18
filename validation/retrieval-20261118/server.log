@@ -1,0 +1,20 @@
+time=2026-11-18T12:27:51.783-06:00 level=INFO msg="initializing new database with latest schema" file=migration/sqlite/LATEST.sql
+time=2026-11-18T12:27:51.787-06:00 level=INFO msg="database initialized successfully" schemaVersion=26.10.1
+Memos 26.11.18-dev.ad87307 started successfully!
+Data directory: /tmp/youji-semantic-qa-61r0v35_
+Database driver: sqlite
+Server running on 127.0.0.1:49665
+Access your memos at: http://127.0.0.1:49665
+Access mode: private
+time=2026-11-18T12:27:51.824-06:00 level=INFO msg="rebuilding memo payloads" fromVersion=0 toVersion=1
+time=2026-11-18T12:27:51.825-06:00 level=INFO msg="rebuilt memo payloads" refreshed=0 skipped=0 failed=0
+time=2026-11-18T12:28:57.335-06:00 level=INFO msg="server shutting down"
+time=2026-11-18T12:28:57.338-06:00 level=INFO msg="memos stopped properly"
+Memos 26.11.18-dev.ad87307 started successfully!
+Data directory: /tmp/youji-semantic-qa-61r0v35_
+Database driver: sqlite
+Server running on 127.0.0.1:49665
+Access your memos at: http://127.0.0.1:49665
+Access mode: private
+time=2026-11-18T12:28:57.997-06:00 level=INFO msg="server shutting down"
+time=2026-11-18T12:28:57.999-06:00 level=INFO msg="memos stopped properly"

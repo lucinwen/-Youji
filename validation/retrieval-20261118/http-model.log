@@ -1,0 +1,51 @@
+{
+  "kind": "real HTTP SQLite and local model, no browser",
+  "binary_sha256": "4170a5a902095abe5d46eb85cd615bb60433840fbb474e6656bee72d9265c5a0",
+  "checks": [
+    {
+      "check": "anonymous denied; configured local processor status",
+      "passed": true
+    },
+    {
+      "check": "20 real ONNX HTTP queries; only owner records and exact current source excerpts",
+      "passed": true
+    },
+    {
+      "check": "forged other creator, empty source/date filters, and second account remain isolated",
+      "passed": true
+    },
+    {
+      "check": "real TCP close cancels active model request and releases busy slot",
+      "passed": true
+    },
+    {
+      "check": "positive workbench owner/category/source/date filter and excluded category",
+      "passed": true
+    },
+    {
+      "check": "deletion and edits reflected in next query without stale persistent index",
+      "passed": true
+    },
+    {
+      "check": "restart without model gives explicit503 while original keyword retrieval still works",
+      "passed": true
+    }
+  ],
+  "elapsed_seconds": 65.558,
+  "negative_queries": "Similarity returns candidates even for absent queries; not an answerability detector.",
+  "literal": {
+    "total": 12,
+    "recall_at_1": 12,
+    "recall_at_5": 12
+  },
+  "paraphrase": {
+    "total": 4,
+    "recall_at_1": 2,
+    "recall_at_5": 4
+  },
+  "cross_language": {
+    "total": 2,
+    "recall_at_1": 0,
+    "recall_at_5": 2
+  }
+}

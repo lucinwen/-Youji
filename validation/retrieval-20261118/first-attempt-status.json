@@ -1,0 +1,5 @@
+{
+  "frontend": "Interrupted exit130 after fork termination timeout; rerun with one worker",
+  "go": "Concurrent race linking killed by resource pressure; interrupted exit130; rerun -p1",
+  "http": "HTTP422 during concurrent resource pressure, first earlier attempt also had harness PATCH400 fixed; rerun sequentially"
+}
