@@ -1,0 +1,15 @@
+{
+  "source_commit": "524edacb112d85984b4f69c4bc012fe724b698bc",
+  "new_directory": "/workspace/scratch/10a41183bc23/youji-runtime-cache/html-clean-final.wLHgdF",
+  "existing_node_modules_copied": false,
+  "install": "pnpm install --offline --frozen-lockfile --ignore-scripts --store-dir /workspace/.pnpm-store",
+  "cache": "existing package store required; not a cache-free first install",
+  "node": "24.22.1",
+  "pnpm": "11.25.0",
+  "go": "1.27.2",
+  "build": "pnpm release",
+  "worker": "html.worker-CMvgekDN.js",
+  "worker_sha256": "e4d1f1d0f1114b7599031b6b85ba28e44eed87e2bc8e8fba45d6ff8573510cf1",
+  "worker_bytes": 165283,
+  "licenses_in_built_assets_byte_verified": true
+}

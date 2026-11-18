@@ -217,3 +217,5 @@ acceptance. See [mobile/recovery checkpoint evidence](MOBILE_RECOVERY_QA_2026111
 聊天原件入口与兼容边界：[LOCAL_CHAT.md](LOCAL_CHAT.md)。
 
 聊天闭环验证：[CHAT_WORKSPACE_QA_20261118.md](CHAT_WORKSPACE_QA_20261118.md)。
+
+本地网页： [LOCAL_HTML.md](LOCAL_HTML.md) · [HTML_WORKSPACE_QA_20261118.md](HTML_WORKSPACE_QA_20261118.md)。

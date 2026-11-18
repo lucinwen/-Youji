@@ -1,0 +1,93 @@
+{
+  "base_commit": "7a0f412bd9f8f5ffd89d906bcbabd93ef5525c8e",
+  "source_checkpoint": "524edacb112d85984b4f69c4bc012fe724b698bc",
+  "branch": "feat/offline-html-import-20261118",
+  "binary_sha256": "92fd9dbe3c40ca7230b68ba9832859929263d14d6c1f81887e9693f8488cef3b",
+  "frontend": {
+    "lint": "passed",
+    "passed": 1865,
+    "skipped": 5,
+    "files_passed": 205,
+    "files_skipped": 3,
+    "duration_seconds": 384.02,
+    "exit_code": 0,
+    "targeted_passed": 51
+  },
+  "clean_build": {
+    "source_commit": "524edacb112d85984b4f69c4bc012fe724b698bc",
+    "new_directory": "/workspace/scratch/10a41183bc23/youji-runtime-cache/html-clean-final.wLHgdF",
+    "existing_node_modules_copied": false,
+    "install": "pnpm install --offline --frozen-lockfile --ignore-scripts --store-dir /workspace/.pnpm-store",
+    "cache": "existing package store required; not a cache-free first install",
+    "node": "24.22.1",
+    "pnpm": "11.25.0",
+    "go": "1.27.2",
+    "build": "pnpm release",
+    "worker": "html.worker-CMvgekDN.js",
+    "worker_sha256": "e4d1f1d0f1114b7599031b6b85ba28e44eed87e2bc8e8fba45d6ff8573510cf1",
+    "worker_bytes": 165283,
+    "licenses_in_built_assets_byte_verified": true
+  },
+  "http": {
+    "kind": "real HTTP/SQLite and actual frontend module; not browser",
+    "model_executed": false,
+    "worker_evidence": {
+      "workers": 3,
+      "trap_requests": 0,
+      "cancelled_after_start": true,
+      "scheduler": "node:worker_threads; actual production worker asset, not browser"
+    },
+    "binary_sha256": "92fd9dbe3c40ca7230b68ba9832859929263d14d6c1f81887e9693f8488cef3b",
+    "checks": [
+      {
+        "check": "embedded parser license texts served byte-for-byte from the built binary",
+        "passed": true
+      },
+      {
+        "check": "anonymous memo access denied; local HTML preview requires no processor",
+        "passed": true
+      },
+      {
+        "check": "actual HTML TypeScript module uses real API: save/retry/response-loss recovery/search/account isolation/delete",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "check": "restart preserves HTML memo and original; final deletion removes memo and attachment rows",
+        "passed": true
+      }
+    ]
+  },
+  "preflight": {
+    "kind": "fresh-local-demo-preflight",
+    "server_contacted": false,
+    "models_executed": false,
+    "model_env_set": {
+      "YOUJI_AUDIO_PYTHON": false,
+      "YOUJI_AUDIO_WORKER": false,
+      "YOUJI_AUDIO_MODEL": false,
+      "YOUJI_PDF_PYTHON": false,
+      "YOUJI_PDF_WORKER": false,
+      "YOUJI_RETRIEVAL_PYTHON": false,
+      "YOUJI_RETRIEVAL_WORKER": false,
+      "YOUJI_RETRIEVAL_MODEL": false
+    },
+    "data_state": "new",
+    "binary": {
+      "executable": true,
+      "version": "26.11.18-dev.524edac",
+      "status": "ok"
+    },
+    "ok": true
+  },
+  "browser": "not executed this iteration; previous sandboxed Chromium socket EPERM and cloud-loopback failure have no verified resolution",
+  "physical_phone": "not tested",
+  "asr": "paused; no model execution or denied evaluation retry",
+  "limits": [
+    "Text extraction only, not Readability/AI/OCR; first article/main/body may omit text",
+    "Worker API guards are defense in depth, not OS network isolation or strict memory sandbox",
+    "Raw HTML includes hidden/unpreviewed active content and metadata; ZIP only, no inline HTML view",
+    "Owner-check/write and attachment-check/link races remain; no global cross-entry deduplication",
+    "WeChat direct integration not implemented; core capture priorities remain unchanged"
+  ]
+}
