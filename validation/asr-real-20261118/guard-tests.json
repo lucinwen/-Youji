@@ -1,0 +1,9 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 /tmp/youji-asr-venv/bin/python -m unittest discover -s tests/moteary -p 'test_asr_real_evaluation.py' -v",
+  "status": "passed",
+  "tests": 5,
+  "failures": 0,
+  "errors": 0,
+  "scope": "Selection determinism, unsafe filenames, local size/hash checks, CER normalization, and Python socket guard imports",
+  "limitation": "The Python socket guard test does not establish native-library network isolation. The actual inference was later blocked for telemetry."
+}

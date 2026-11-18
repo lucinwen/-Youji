@@ -67,6 +67,17 @@ export default function SemanticSearch({ userName, filter }: { userName: string;
       controller.current = null;
     };
   }, [userName, filter]);
+  useEffect(() => {
+    const offline = () => {
+      controller.current?.abort();
+      controller.current = null;
+      setResult(undefined);
+      setBusy(false);
+      setError("连接已断开，旧候选已清除。恢复连接后请重新检索并核对原文。");
+    };
+    window.addEventListener("offline", offline);
+    return () => window.removeEventListener("offline", offline);
+  }, []);
   const search = async (next = false) => {
     if (controller.current || !query.trim()) return;
     const offset = next ? result?.nextOffset : 0;
@@ -150,8 +161,8 @@ export default function SemanticSearch({ userName, filter }: { userName: string;
     <section aria-label="实验性语义找回" className="mb-4 rounded-xl border border-border bg-card p-4">
       <h3 className="text-sm font-medium">相关片段候选 · 实验功能</h3>
       <p className="my-2 text-xs leading-6 text-muted-foreground">
-        仅在点击后发送查询到当前有记服务器，由本地模型处理，不发送云端。沿用当前工作台的分类、来源、日期和空间范围，每批最多比较 100
-        条候选，最多枚举 5000 条记录。 每批最多返回 5
+        仅在点击后发送查询到你配置的有记服务器，由该服务器本地模型处理，不调用第三方云模型。沿用当前工作台的分类、来源、日期和空间范围，每批最多比较
+        100 条候选，最多枚举 5000 条记录。 每批最多返回 5
         条相近记录，不是全库排名。跨语言查询可能漏找。相关不代表事实，不保证找全或一定有结果；分数是相似度，不是概率。原关键词搜索结果保持不变。
       </p>
       <form
@@ -229,6 +240,18 @@ export default function SemanticSearch({ userName, filter }: { userName: string;
               {result.total === 0 ? "当前范围没有候选记录。" : "本批没有可比较正文或没有返回候选。"}
               这不是模型判断没有答案，可继续使用关键词搜索。
             </p>
+          )}
+          {result.hits.length > 0 && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setResult(undefined);
+                setError("已清除这些候选。没有记录为答案，也没有发送反馈或修改资料；可换用原文关键词继续找回。");
+              }}
+            >
+              这些候选没有回答我的问题
+            </Button>
           )}
           {result.hits.map((hit) => (
             <article key={hit.name} className="rounded border border-border p-3">

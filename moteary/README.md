@@ -201,3 +201,9 @@ The workbench now provides a separate local-model ranking panel with original pa
 The related-passage panel supports explicit continuation beyond the newest 100 records, with coverage counts and change detection. See [coverage, isolation and independent retrieval QA](RETRIEVAL_COVERAGE_QA_20261118.md) for tested limits and the weak cross-language results.
 
 [Offline transcription assessment](asr-evaluation/README.md) contains real local tiny/base model experiments on synthetic audio. It is **not an enabled product transcription feature**: standard VAD removed the tested silence hallucination, while the Chinese samples remained unacceptable.
+
+## Audio review checkpoint (2026-11-18)
+
+The workbench now has a separate audio-and-transcript flow: explicitly preview a selected local original, paste/import and correct a transcript, confirm PRIVATE storage, and find the same source record by saved words. Original ZIP, optional machine draft and correction stay in one Memo. Recovery receipts and verified orphan reuse are included. See [local audio operation and limits](LOCAL_AUDIO.md) and [actual audio QA](AUDIO_WORKSPACE_QA_20261118.md).
+
+A default-disabled local ASR adapter is implemented but not certified: the public-human-Mandarin evaluation was blocked by automatic approval review after an unexpected telemetry connection. It was not retried through another path. Manual transcripts were tested against real HTTP/SQLite; production ASR and real browser/mobile use remain unverified. See [exact evaluation evidence](asr-real-evaluation/README.md).

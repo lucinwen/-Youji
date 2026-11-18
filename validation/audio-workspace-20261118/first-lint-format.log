@@ -1,0 +1,23 @@
+$ tsc --noEmit --skipLibCheck && biome check src tests
+src/components/MotearyWorkspace/AudioImport.tsx format ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Formatter would have printed the following content:
+
+    111 111 │         <p className="my-2 text-xs leading-6 text-muted-foreground">
+    112 112 │           音频不超过 16
+    113     │ - ········MiB。本机试听不上传；点击转写或保存时才发送原件到你配置的有记服务器，服务器不一定在本机。转写不调用第三方云模型，最多处理·120·秒；自动识别尚未完成验收，机器稿可能严重错误。人工稿也需核对原声；可不使用模型，直接粘贴或导入
+    114     │ - ········UTF-8·稿件。
+        113 │ + ········MiB。本机试听不上传；点击转写或保存时才发送原件到你配置的有记服务器，服务器不一定在本机。转写不调用第三方云模型，最多处理·120
+        114 │ + ········秒；自动识别尚未完成验收，机器稿可能严重错误。人工稿也需核对原声；可不使用模型，直接粘贴或导入·UTF-8·稿件。
+    115 115 │         </p>
+    116 116 │         <label className="block text-xs">
+
+
+Checked 694 files in 498ms. No fixes applied.
+Found 1 error.
+check ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Some errors were emitted while running checks.
+
+
+[ELIFECYCLE] Command failed with exit code 1.

@@ -1,0 +1,42 @@
+{
+  "status": "blocked-by-automatic-approval-review; incomplete evaluation",
+  "denied_tool": "tools.write_stdin",
+  "denied_arguments": {"session_id": 71672, "chars": "", "yield_time_ms": 1000, "max_output_tokens": 3000},
+  "operation": "Wait for existing local offline ASR evaluation subprocess output",
+  "evaluation_script": "moteary/asr-real-evaluation/evaluate.py",
+  "model_directory": "/workspace/scratch/10a41183bc23/youji-runtime-cache/asr-real-small",
+  "audio_directory": "/workspace/scratch/10a41183bc23/youji-runtime-cache/asr-real-fleurs",
+  "model_revision": "536b0662742c02347bc0e980a01041f333bce120",
+  "rejection_verbatim": "write_stdin failed: Unified exec process failed: This action was rejected due to unacceptable risk.\nReason: The inference command unexpectedly triggered an external Microsoft telemetry connection outside the authorized local/offline ASR scope; its payload is unknown and could include sensitive metadata, so the unapproved egress must be denied.\nDo not bypass this rejection through a workaround or indirect execution. Continue with a safer alternative, or carry out checks to prove that the action is authorized or low risk before trying again. Complete unaffected work without asking for confirmation. Report anything that remains blocked, clarify why it was blocked by auto-review, inform the user of the risk and ask for approval.",
+  "observed_before_rejection": {
+    "filename": "15119654797764315030.wav",
+    "sentence_id": "1636",
+    "sha256": "7029eafa1b9a46916d1ba75c744a9c3283443dd5d00d48cb0d647992217a9cb0",
+    "status": "decoded",
+    "edit_distance": 6,
+    "reference_characters": 18,
+    "cer": 0.3333333333333333,
+    "duration_seconds": 4.92,
+    "duration_after_vad_seconds": 4.392,
+    "elapsed_seconds": 5.490870196008473
+  },
+  "native_diagnostic_before_rejection": "UCX ERROR failed to create VFS socket: Operation not permitted",
+  "diagnostic_distinction": "The observed UCX diagnostic socket error is not evidence identifying the Microsoft telemetry source or payload. No connection URL, payload or successful-transmission status was independently established.",
+  "read_only_followup": {
+    "results_json_exists": false,
+    "exact_evaluation_process_visible": false,
+    "process_check": "Elevated read-only pgrep for exact /tmp/youji-asr-venv/bin/python moteary/asr-real-evaluation/evaluate.py command found no process",
+    "termination_performed": false,
+    "user_history_checked": true,
+    "new_explicit_telemetry_authorization_found": false,
+    "retry_performed": false
+  },
+  "unknown_or_unverified": [
+    "Full transcript for the first sample was not printed before interruption",
+    "Remaining four samples",
+    "Silence and corrupt-audio checks",
+    "Aggregate CER and peak RSS",
+    "Telemetry payload, destination URL, or whether any data was transmitted",
+    "Production or browser acceptance"
+  ]
+}

@@ -1,0 +1,10 @@
+test_cer_normalization_and_insertions (test_asr_real_evaluation.RealASREvaluationGuards.test_cer_normalization_and_insertions) ... ok
+test_fixed_selection_ignores_duplicate_sentences_and_long_audio (test_asr_real_evaluation.RealASREvaluationGuards.test_fixed_selection_ignores_duplicate_sentences_and_long_audio) ... ok
+test_hash_and_size_guard (test_asr_real_evaluation.RealASREvaluationGuards.test_hash_and_size_guard) ... ok
+test_network_guard_preserves_ssl_import_and_blocks_sockets (test_asr_real_evaluation.RealASREvaluationGuards.test_network_guard_preserves_ssl_import_and_blocks_sockets) ... ok
+test_selection_rejects_path_traversal_and_insufficient_data (test_asr_real_evaluation.RealASREvaluationGuards.test_selection_rejects_path_traversal_and_insufficient_data) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.131s
+
+OK

@@ -105,7 +105,7 @@ export default function OriginalAudioPreview({ original }: { original: OriginalA
   return (
     <section aria-label={`音频原件 ${original.filename}`} className="mx-5 mb-5 min-w-0 border-t border-border pt-3 text-xs">
       <p className="mb-2 leading-5 text-muted-foreground">
-        按需读取不超过 16 MiB 的归档原件，与记录中的 SHA-256 核对后试听；不会转写。校验值由记录提供，不代表来源认证。
+        按需读取不超过 16 MiB 的归档原件，与记录中的 SHA-256 核对后试听；本试听操作不执行转写。已有稿件仍需核对原声，校验值不代表来源认证。
       </p>
       {!url && (
         <Button type="button" size="sm" variant="outline" disabled={busy} onClick={() => void load()}>
@@ -124,7 +124,7 @@ export default function OriginalAudioPreview({ original }: { original: OriginalA
             onError={() => setError("浏览器无法播放此音频格式，可下载已校验原件使用本机播放器打开。")}
           />
           <p role="status" className="my-2">
-            已与记录中的校验值一致；尚未转写。
+            已与记录中的校验值一致；请对照原声核对稿件。
           </p>
           <a href={url} download={original.filename} className="inline-block min-h-10 py-3 underline">
             下载已校验音频原件
