@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-11-18T18:37:57.805379+00:00",
+  "sha256": "a9fa7a8915cc93fe73ec1a2d5b754012cb484e1232102468073b19ce462c8f8a",
+  "documents": 24,
+  "queries": 66,
+  "worker_sha256": "89827ea3b31bd45f0d87882084a44cd7702f68b10651146a915b3b6d111fcaf8",
+  "policy": "Freeze queries, labels and model before running; no fitted cutoff and no answerability claim."
+}

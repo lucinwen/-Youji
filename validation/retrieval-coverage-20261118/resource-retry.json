@@ -1,0 +1,17 @@
+{
+  "frontend_test_first_attempt": "SIGKILL; subsequent isolated full suite passed",
+  "production_build_first_attempt": "exit137; moving completed ASR runtime/weights from tmpfs to disk while retaining original symlinks; retry with Node heap1024MiB and Rayon2 threads",
+  "moved_data": "only this task synthetic ASR runtime and public models, outside repository; no deleted checkpoint",
+  "relocation_hash_checks": [
+    {
+      "directory": "youji-asr-model",
+      "original_path_is_symlink": true,
+      "verified_files": 5
+    },
+    {
+      "directory": "youji-asr-base",
+      "original_path_is_symlink": true,
+      "verified_files": 5
+    }
+  ]
+}

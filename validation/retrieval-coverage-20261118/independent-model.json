@@ -1,0 +1,2460 @@
+{
+  "model": "intfloat/multilingual-e5-small",
+  "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "fixture_sha256": "a9fa7a8915cc93fe73ec1a2d5b754012cb484e1232102468073b19ce462c8f8a",
+  "worker_sha256": "89827ea3b31bd45f0d87882084a44cd7702f68b10651146a915b3b6d111fcaf8",
+  "worker_unchanged_since_preregistration": true,
+  "groups": {
+    "literal": {
+      "total": 6,
+      "top1": 6,
+      "top5": 6
+    },
+    "paraphrase": {
+      "total": 24,
+      "top1": 23,
+      "top5": 24
+    },
+    "cross_language": {
+      "total": 24,
+      "top1": 0,
+      "top5": 8
+    }
+  },
+  "negative_queries": 12,
+  "negative_queries_returning_candidates": 12,
+  "negative_top_score_range": [
+    0.770107978875454,
+    0.8603571777557777
+  ],
+  "load_seconds": 3.7288561159948586,
+  "warm_query_median_seconds": 0.17393752749921987,
+  "blocked_network_attempts": 0,
+  "threshold_fitted": false,
+  "limitations": [
+    "Synthetic challenge, not real-user accuracy",
+    "Local warm encoder timing, not server SLA",
+    "Python network guard is not OS isolation",
+    "Negative queries are ranked, not classified as unanswerable"
+  ],
+  "queries": [
+    {
+      "id": "p01",
+      "type": "paraphrase",
+      "query": "自行车在院子里怎样防雨",
+      "expected": [
+        "new-01"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-01",
+          "score": 0.9253317805396681,
+          "excerpt": "雨棚修好以后，院子里的自行车座垫不再被夜雨淋湿。"
+        },
+        {
+          "id": "new-10",
+          "score": 0.8737028701813345,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8502365178834911,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-07",
+          "score": 0.8499393674569167,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.841536405258338,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        }
+      ],
+      "seconds": 0.20325076299195644
+    },
+    {
+      "id": "x01",
+      "type": "cross_language",
+      "query": "keeping bicycles dry outdoors",
+      "expected": [
+        "new-01"
+      ],
+      "expected_rank": 3,
+      "hits": [
+        {
+          "id": "new-19",
+          "score": 0.8109144058118263,
+          "excerpt": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+        },
+        {
+          "id": "new-16",
+          "score": 0.8053746291502497,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-01",
+          "score": 0.8052565187648031,
+          "excerpt": "雨棚修好以后，院子里的自行车座垫不再被夜雨淋湿。"
+        },
+        {
+          "id": "new-21",
+          "score": 0.8017875430948662,
+          "excerpt": "The imaginary train station moved the bicycle parking racks beside the east entrance, underneath the covered walkway."
+        },
+        {
+          "id": "new-14",
+          "score": 0.8001221721654346,
+          "excerpt": "For the fictional neighborhood concert, volunteers collect reusable cups at the exits and wash them for the next event."
+        }
+      ],
+      "seconds": 0.16057750400796067
+    },
+    {
+      "id": "p02",
+      "type": "paraphrase",
+      "query": "图书馆关门时归还借书",
+      "expected": [
+        "new-02"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-02",
+          "score": 0.9081169767525268,
+          "excerpt": "社区图书馆周三闭馆清点藏书，借来的书可以投入门外还书箱。"
+        },
+        {
+          "id": "new-06",
+          "score": 0.8707109981458183,
+          "excerpt": "读书会决定先讨论结尾，再回头比较不同人物对同一事件的描述。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8596341040948452,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8532627032534092,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-10",
+          "score": 0.85113838806941,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        }
+      ],
+      "seconds": 0.1390917679964332
+    },
+    {
+      "id": "x02",
+      "type": "cross_language",
+      "query": "returning library books when the building is closed",
+      "expected": [
+        "new-02"
+      ],
+      "expected_rank": 2,
+      "hits": [
+        {
+          "id": "new-20",
+          "score": 0.7997246642259311,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-02",
+          "score": 0.7989722268556054,
+          "excerpt": "社区图书馆周三闭馆清点藏书，借来的书可以投入门外还书箱。"
+        },
+        {
+          "id": "new-23",
+          "score": 0.785593836728917,
+          "excerpt": "For the fictional film club, captions are enabled by default and seats near the speakers are left optional rather than assigned."
+        },
+        {
+          "id": "new-14",
+          "score": 0.7816576541493047,
+          "excerpt": "For the fictional neighborhood concert, volunteers collect reusable cups at the exits and wash them for the next event."
+        },
+        {
+          "id": "new-17",
+          "score": 0.78150651385806,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        }
+      ],
+      "seconds": 0.1489589130069362
+    },
+    {
+      "id": "p03",
+      "type": "paraphrase",
+      "query": "薄荷搬到光照更好的地方",
+      "expected": [
+        "new-03"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-03",
+          "score": 0.8737362282708075,
+          "excerpt": "种在北窗的薄荷长得很慢，挪到南阳台两周后出现了新叶。"
+        },
+        {
+          "id": "new-07",
+          "score": 0.8439962795246934,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-01",
+          "score": 0.8432794146123416,
+          "excerpt": "雨棚修好以后，院子里的自行车座垫不再被夜雨淋湿。"
+        },
+        {
+          "id": "new-10",
+          "score": 0.838921506906256,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8387004394371118,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        }
+      ],
+      "seconds": 0.1411190969956806
+    },
+    {
+      "id": "x03",
+      "type": "cross_language",
+      "query": "moving mint to a sunnier location",
+      "expected": [
+        "new-03"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-21",
+          "score": 0.8003288684040426,
+          "excerpt": "The imaginary train station moved the bicycle parking racks beside the east entrance, underneath the covered walkway."
+        },
+        {
+          "id": "new-19",
+          "score": 0.7964786126795536,
+          "excerpt": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7912836357363565,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-22",
+          "score": 0.786887666306648,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        },
+        {
+          "id": "new-14",
+          "score": 0.7830741816545115,
+          "excerpt": "For the fictional neighborhood concert, volunteers collect reusable cups at the exits and wash them for the next event."
+        }
+      ],
+      "seconds": 0.13703804199758451
+    },
+    {
+      "id": "p04",
+      "type": "paraphrase",
+      "query": "复盘如何区分观察和推测",
+      "expected": [
+        "new-04"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-04",
+          "score": 0.9044028200157737,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.854389411931362,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-06",
+          "score": 0.8533185928793484,
+          "excerpt": "读书会决定先讨论结尾，再回头比较不同人物对同一事件的描述。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.842462214355246,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8380430681343123,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        }
+      ],
+      "seconds": 0.14514740600134246
+    },
+    {
+      "id": "x04",
+      "type": "cross_language",
+      "query": "separating observations from assumptions in a retrospective",
+      "expected": [
+        "new-04"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-22",
+          "score": 0.8322813711850914,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        },
+        {
+          "id": "new-17",
+          "score": 0.8068983197334185,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        },
+        {
+          "id": "new-15",
+          "score": 0.7981176342603695,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        },
+        {
+          "id": "new-18",
+          "score": 0.7935594581147184,
+          "excerpt": "During the mock workshop, participants write questions anonymously before the facilitator groups similar concerns on a board."
+        },
+        {
+          "id": "new-20",
+          "score": 0.7906207419264393,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        }
+      ],
+      "seconds": 0.14861933399515692
+    },
+    {
+      "id": "p05",
+      "type": "paraphrase",
+      "query": "打印设备堵纸的处理记录",
+      "expected": [
+        "new-05"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-05",
+          "score": 0.8897022331686506,
+          "excerpt": "打印机卡纸时先断电，再打开后盖检查滚轮；此条只是合成设备日志。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8672527368748533,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8616517159480267,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8394859721214628,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8352930210911853,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        }
+      ],
+      "seconds": 0.14458248400478624
+    },
+    {
+      "id": "x05",
+      "type": "cross_language",
+      "query": "printer paper jam maintenance notes",
+      "expected": [
+        "new-05"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-19",
+          "score": 0.785772138720636,
+          "excerpt": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+        },
+        {
+          "id": "new-20",
+          "score": 0.7820853377856622,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7772449643162385,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-22",
+          "score": 0.7765844586696153,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        },
+        {
+          "id": "new-15",
+          "score": 0.7729838402087325,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        }
+      ],
+      "seconds": 0.14695793799182866
+    },
+    {
+      "id": "p06",
+      "type": "paraphrase",
+      "query": "读书小组比较人物视角",
+      "expected": [
+        "new-06"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-06",
+          "score": 0.8856306438251607,
+          "excerpt": "读书会决定先讨论结尾，再回头比较不同人物对同一事件的描述。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8430878940563182,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-02",
+          "score": 0.8395773943124438,
+          "excerpt": "社区图书馆周三闭馆清点藏书，借来的书可以投入门外还书箱。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8382531096706255,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8254590390697158,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        }
+      ],
+      "seconds": 0.14186932900338434
+    },
+    {
+      "id": "x06",
+      "type": "cross_language",
+      "query": "comparing character perspectives in a reading group",
+      "expected": [
+        "new-06"
+      ],
+      "expected_rank": 5,
+      "hits": [
+        {
+          "id": "new-22",
+          "score": 0.8228554767474172,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        },
+        {
+          "id": "new-18",
+          "score": 0.8181870299492534,
+          "excerpt": "During the mock workshop, participants write questions anonymously before the facilitator groups similar concerns on a board."
+        },
+        {
+          "id": "new-23",
+          "score": 0.7949610965557139,
+          "excerpt": "For the fictional film club, captions are enabled by default and seats near the speakers are left optional rather than assigned."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7895069480555665,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-06",
+          "score": 0.7668358530212125,
+          "excerpt": "读书会决定先讨论结尾，再回头比较不同人物对同一事件的描述。"
+        }
+      ],
+      "seconds": 0.13730050099547952
+    },
+    {
+      "id": "p07",
+      "type": "paraphrase",
+      "query": "湖边路线关闭后的绕行选择",
+      "expected": [
+        "new-07"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-07",
+          "score": 0.8905247158573675,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-10",
+          "score": 0.8890982478966887,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8456881609356828,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-01",
+          "score": 0.8440158949311749,
+          "excerpt": "雨棚修好以后，院子里的自行车座垫不再被夜雨淋湿。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8426290952706001,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        }
+      ],
+      "seconds": 0.1447635850054212
+    },
+    {
+      "id": "x07",
+      "type": "cross_language",
+      "query": "alternative walking route after a lakeside path closure",
+      "expected": [
+        "new-07"
+      ],
+      "expected_rank": 2,
+      "hits": [
+        {
+          "id": "new-21",
+          "score": 0.7951426284638613,
+          "excerpt": "The imaginary train station moved the bicycle parking racks beside the east entrance, underneath the covered walkway."
+        },
+        {
+          "id": "new-07",
+          "score": 0.777643049346079,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-14",
+          "score": 0.772909975774442,
+          "excerpt": "For the fictional neighborhood concert, volunteers collect reusable cups at the exits and wash them for the next event."
+        },
+        {
+          "id": "new-19",
+          "score": 0.7725435842730687,
+          "excerpt": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+        },
+        {
+          "id": "new-17",
+          "score": 0.7695056609660996,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        }
+      ],
+      "seconds": 0.1417821350041777
+    },
+    {
+      "id": "p08",
+      "type": "paraphrase",
+      "query": "演示时保持数据稳定",
+      "expected": [
+        "new-08"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-08",
+          "score": 0.8712740946102631,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8538259779189051,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8474421545978192,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8408165654381518,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-05",
+          "score": 0.8380517415011445,
+          "excerpt": "打印机卡纸时先断电，再打开后盖检查滚轮；此条只是合成设备日志。"
+        }
+      ],
+      "seconds": 0.1381678500038106
+    },
+    {
+      "id": "x08",
+      "type": "cross_language",
+      "query": "using a frozen dataset for a customer demonstration",
+      "expected": [
+        "new-08"
+      ],
+      "expected_rank": 3,
+      "hits": [
+        {
+          "id": "new-17",
+          "score": 0.7993200715952233,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        },
+        {
+          "id": "new-15",
+          "score": 0.7931790513405523,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        },
+        {
+          "id": "new-08",
+          "score": 0.7931720413859211,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-14",
+          "score": 0.792892673707461,
+          "excerpt": "For the fictional neighborhood concert, volunteers collect reusable cups at the exits and wash them for the next event."
+        },
+        {
+          "id": "new-22",
+          "score": 0.7926384247671627,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        }
+      ],
+      "seconds": 0.15124786899832543
+    },
+    {
+      "id": "p09",
+      "type": "paraphrase",
+      "query": "旧容器去掉贴纸再利用",
+      "expected": [
+        "new-09"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-09",
+          "score": 0.8858780625252125,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-05",
+          "score": 0.8653899759184553,
+          "excerpt": "打印机卡纸时先断电，再打开后盖检查滚轮；此条只是合成设备日志。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8493171109430426,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-03",
+          "score": 0.8451666106411404,
+          "excerpt": "种在北窗的薄荷长得很慢，挪到南阳台两周后出现了新叶。"
+        },
+        {
+          "id": "new-02",
+          "score": 0.8449552370927268,
+          "excerpt": "社区图书馆周三闭馆清点藏书，借来的书可以投入门外还书箱。"
+        }
+      ],
+      "seconds": 0.13971991199650802
+    },
+    {
+      "id": "x09",
+      "type": "cross_language",
+      "query": "removing labels from jars before reusing them",
+      "expected": [
+        "new-09"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-19",
+          "score": 0.8177979563020419,
+          "excerpt": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+        },
+        {
+          "id": "new-20",
+          "score": 0.8081570012073356,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-16",
+          "score": 0.8047437431137588,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-24",
+          "score": 0.7997472079541589,
+          "excerpt": "The design review removed a surprise auto-play sound and replaced it with a visible play button that users choose to press."
+        },
+        {
+          "id": "new-17",
+          "score": 0.7981783058754415,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        }
+      ],
+      "seconds": 0.15498815999308135
+    },
+    {
+      "id": "p10",
+      "type": "paraphrase",
+      "query": "自行车路线绕开修桥工地",
+      "expected": [
+        "new-10"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-10",
+          "score": 0.9116723097890147,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-07",
+          "score": 0.8745244888345918,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-01",
+          "score": 0.8690374202926243,
+          "excerpt": "雨棚修好以后，院子里的自行车座垫不再被夜雨淋湿。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8450593711973597,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8415394281073121,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        }
+      ],
+      "seconds": 0.1576684710016707
+    },
+    {
+      "id": "x10",
+      "type": "cross_language",
+      "query": "cycling detour around a bridge construction site",
+      "expected": [
+        "new-10"
+      ],
+      "expected_rank": 2,
+      "hits": [
+        {
+          "id": "new-21",
+          "score": 0.8188326530528168,
+          "excerpt": "The imaginary train station moved the bicycle parking racks beside the east entrance, underneath the covered walkway."
+        },
+        {
+          "id": "new-10",
+          "score": 0.8072980584119119,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-16",
+          "score": 0.7934014590279828,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-19",
+          "score": 0.7802970591858465,
+          "excerpt": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+        },
+        {
+          "id": "new-17",
+          "score": 0.7767426791135145,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        }
+      ],
+      "seconds": 0.14713516300253104
+    },
+    {
+      "id": "p11",
+      "type": "paraphrase",
+      "query": "用实物帮助理解长度测量",
+      "expected": [
+        "new-11"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-11",
+          "score": 0.8729003285828238,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8421307334476055,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8249830740416308,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.82316970543976,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8227510566342662,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        }
+      ],
+      "seconds": 0.16448603400203865
+    },
+    {
+      "id": "x11",
+      "type": "cross_language",
+      "query": "teaching length measurement with building blocks",
+      "expected": [
+        "new-11"
+      ],
+      "expected_rank": 2,
+      "hits": [
+        {
+          "id": "new-22",
+          "score": 0.7908407287642576,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        },
+        {
+          "id": "new-11",
+          "score": 0.7892226121909676,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-18",
+          "score": 0.7815026719168686,
+          "excerpt": "During the mock workshop, participants write questions anonymously before the facilitator groups similar concerns on a board."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7750295343251262,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-23",
+          "score": 0.7688668741703891,
+          "excerpt": "For the fictional film club, captions are enabled by default and seats near the speakers are left optional rather than assigned."
+        }
+      ],
+      "seconds": 0.14687166600197088
+    },
+    {
+      "id": "p12",
+      "type": "paraphrase",
+      "query": "报表生成不要阻塞界面",
+      "expected": [
+        "new-12"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-12",
+          "score": 0.8775118618254991,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8618712795742982,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-05",
+          "score": 0.8549505892149352,
+          "excerpt": "打印机卡纸时先断电，再打开后盖检查滚轮；此条只是合成设备日志。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8468892819684795,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8359148391586346,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        }
+      ],
+      "seconds": 0.2108608609996736
+    },
+    {
+      "id": "x12",
+      "type": "cross_language",
+      "query": "background report export with a download link when ready",
+      "expected": [
+        "new-12"
+      ],
+      "expected_rank": 3,
+      "hits": [
+        {
+          "id": "new-20",
+          "score": 0.8143992193770729,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-15",
+          "score": 0.7986130809253171,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        },
+        {
+          "id": "new-12",
+          "score": 0.7907911330051436,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-16",
+          "score": 0.7830618432186953,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-22",
+          "score": 0.7738070346175983,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        }
+      ],
+      "seconds": 0.16015835799043998
+    },
+    {
+      "id": "p13",
+      "type": "paraphrase",
+      "query": "camera restrictions in the ceramics exhibition",
+      "expected": [
+        "new-13"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-13",
+          "score": 0.8568376356731772,
+          "excerpt": "The synthetic museum visit notes say the pottery gallery is upstairs and photography is prohibited in that room."
+        },
+        {
+          "id": "new-23",
+          "score": 0.8046959618866226,
+          "excerpt": "For the fictional film club, captions are enabled by default and seats near the speakers are left optional rather than assigned."
+        },
+        {
+          "id": "new-19",
+          "score": 0.7761547844369577,
+          "excerpt": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7735118047674969,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-22",
+          "score": 0.7725667967723131,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        }
+      ],
+      "seconds": 0.13670581599581055
+    },
+    {
+      "id": "x13",
+      "type": "cross_language",
+      "query": "陶器展厅不允许拍照",
+      "expected": [
+        "new-13"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-05",
+          "score": 0.8511429720958937,
+          "excerpt": "打印机卡纸时先断电，再打开后盖检查滚轮；此条只是合成设备日志。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8509052105744859,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-07",
+          "score": 0.848497276154626,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8465743119818687,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-10",
+          "score": 0.8443476197110409,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        }
+      ],
+      "seconds": 0.13567237999814097
+    },
+    {
+      "id": "p14",
+      "type": "paraphrase",
+      "query": "reusing drink containers after a community music event",
+      "expected": [
+        "new-14"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-14",
+          "score": 0.8793726684563026,
+          "excerpt": "For the fictional neighborhood concert, volunteers collect reusable cups at the exits and wash them for the next event."
+        },
+        {
+          "id": "new-16",
+          "score": 0.8158984935766973,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-24",
+          "score": 0.7881567534358244,
+          "excerpt": "The design review removed a surprise auto-play sound and replaced it with a visible play button that users choose to press."
+        },
+        {
+          "id": "new-17",
+          "score": 0.7851481404267292,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        },
+        {
+          "id": "new-20",
+          "score": 0.7815429381544114,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        }
+      ],
+      "seconds": 0.22703815400018357
+    },
+    {
+      "id": "x14",
+      "type": "cross_language",
+      "query": "社区音乐会回收清洗杯子",
+      "expected": [
+        "new-14"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-09",
+          "score": 0.8670285387350507,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-02",
+          "score": 0.8580695454406444,
+          "excerpt": "社区图书馆周三闭馆清点藏书，借来的书可以投入门外还书箱。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8481842856543561,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8478439578797617,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-01",
+          "score": 0.8462725042039798,
+          "excerpt": "雨棚修好以后，院子里的自行车座垫不再被夜雨淋湿。"
+        }
+      ],
+      "seconds": 0.17292345200257841
+    },
+    {
+      "id": "p15",
+      "type": "paraphrase",
+      "query": "improving the speed of invoice date queries",
+      "expected": [
+        "new-15"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-15",
+          "score": 0.8867274229464263,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        },
+        {
+          "id": "new-20",
+          "score": 0.7807365831536979,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-18",
+          "score": 0.7733770838182646,
+          "excerpt": "During the mock workshop, participants write questions anonymously before the facilitator groups similar concerns on a board."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7715703561781577,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-22",
+          "score": 0.7691885853935451,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        }
+      ],
+      "seconds": 0.17647554499853868
+    },
+    {
+      "id": "x15",
+      "type": "cross_language",
+      "query": "给发票日期字段加索引提速",
+      "expected": [
+        "new-15"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-12",
+          "score": 0.8644546800223755,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8584040263636007,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8572676031911662,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-10",
+          "score": 0.8434110864121702,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-05",
+          "score": 0.8402159252627921,
+          "excerpt": "打印机卡纸时先断电，再打开后盖检查滚轮；此条只是合成设备日志。"
+        }
+      ],
+      "seconds": 0.22594232000119518
+    },
+    {
+      "id": "p16",
+      "type": "paraphrase",
+      "query": "finding cables easily during a trip",
+      "expected": [
+        "new-16"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-16",
+          "score": 0.8816997871099514,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-15",
+          "score": 0.8013288193967261,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        },
+        {
+          "id": "new-23",
+          "score": 0.7964082730804953,
+          "excerpt": "For the fictional film club, captions are enabled by default and seats near the speakers are left optional rather than assigned."
+        },
+        {
+          "id": "new-14",
+          "score": 0.7948360198062536,
+          "excerpt": "For the fictional neighborhood concert, volunteers collect reusable cups at the exits and wash them for the next event."
+        },
+        {
+          "id": "new-20",
+          "score": 0.7899309710137888,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        }
+      ],
+      "seconds": 0.16370724300213624
+    },
+    {
+      "id": "x16",
+      "type": "cross_language",
+      "query": "旅行时把充电线集中收纳",
+      "expected": [
+        "new-16"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-07",
+          "score": 0.8647579774500526,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-10",
+          "score": 0.8617181114017795,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8505394804419818,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8477723296627988,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8442534438416529,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        }
+      ],
+      "seconds": 0.2708423779986333
+    },
+    {
+      "id": "p17",
+      "type": "paraphrase",
+      "query": "turning leftover loaves into another ingredient",
+      "expected": [
+        "new-17"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-17",
+          "score": 0.8212882731457583,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        },
+        {
+          "id": "new-22",
+          "score": 0.8053205451202621,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        },
+        {
+          "id": "new-14",
+          "score": 0.7894833463181613,
+          "excerpt": "For the fictional neighborhood concert, volunteers collect reusable cups at the exits and wash them for the next event."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7863772685960626,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-20",
+          "score": 0.7855854895081253,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        }
+      ],
+      "seconds": 0.17495160299586132
+    },
+    {
+      "id": "x17",
+      "type": "cross_language",
+      "query": "把隔夜面包做成面包屑",
+      "expected": [
+        "new-17"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-09",
+          "score": 0.8497265391863146,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-03",
+          "score": 0.8436042997109969,
+          "excerpt": "种在北窗的薄荷长得很慢，挪到南阳台两周后出现了新叶。"
+        },
+        {
+          "id": "new-01",
+          "score": 0.843160451600118,
+          "excerpt": "雨棚修好以后，院子里的自行车座垫不再被夜雨淋湿。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8418201997432797,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.840221289195637,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        }
+      ],
+      "seconds": 0.15907605999382213
+    },
+    {
+      "id": "p18",
+      "type": "paraphrase",
+      "query": "collecting workshop questions without names",
+      "expected": [
+        "new-18"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-18",
+          "score": 0.8702656733921661,
+          "excerpt": "During the mock workshop, participants write questions anonymously before the facilitator groups similar concerns on a board."
+        },
+        {
+          "id": "new-16",
+          "score": 0.8108346655771844,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-20",
+          "score": 0.7941080707044286,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-13",
+          "score": 0.7919477206409998,
+          "excerpt": "The synthetic museum visit notes say the pottery gallery is upstairs and photography is prohibited in that room."
+        },
+        {
+          "id": "new-23",
+          "score": 0.7900343456456658,
+          "excerpt": "For the fictional film club, captions are enabled by default and seats near the speakers are left optional rather than assigned."
+        }
+      ],
+      "seconds": 0.2791792600037297
+    },
+    {
+      "id": "x18",
+      "type": "cross_language",
+      "query": "匿名收集研讨会问题并归类",
+      "expected": [
+        "new-18"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-04",
+          "score": 0.8653225566839408,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8554223962761344,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-06",
+          "score": 0.850469042837148,
+          "excerpt": "读书会决定先讨论结尾，再回头比较不同人物对同一事件的描述。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8493707987884087,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8426464991464369,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        }
+      ],
+      "seconds": 0.48980461299652234
+    },
+    {
+      "id": "p19",
+      "type": "paraphrase",
+      "query": "giving birds water away from new plants",
+      "expected": [
+        "new-19"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-19",
+          "score": 0.8767217464768022,
+          "excerpt": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+        },
+        {
+          "id": "new-14",
+          "score": 0.8010886053318844,
+          "excerpt": "For the fictional neighborhood concert, volunteers collect reusable cups at the exits and wash them for the next event."
+        },
+        {
+          "id": "new-17",
+          "score": 0.7969586328943629,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7811309189303729,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-20",
+          "score": 0.7762088778286871,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        }
+      ],
+      "seconds": 0.5849084209912689
+    },
+    {
+      "id": "x19",
+      "type": "cross_language",
+      "query": "把鸟饮水处放在幼苗远处",
+      "expected": [
+        "new-19"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-09",
+          "score": 0.8676477870201723,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8583468931922684,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-10",
+          "score": 0.8547150900322857,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-07",
+          "score": 0.8531493205805823,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-03",
+          "score": 0.850094312093997,
+          "excerpt": "种在北窗的薄荷长得很慢，挪到南阳台两周后出现了新叶。"
+        }
+      ],
+      "seconds": 0.20367826700385194
+    },
+    {
+      "id": "p20",
+      "type": "paraphrase",
+      "query": "protecting offline edits from overwriting newer content",
+      "expected": [
+        "new-20"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-20",
+          "score": 0.8322502628394038,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-17",
+          "score": 0.796780858166522,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        },
+        {
+          "id": "new-24",
+          "score": 0.7936391726512178,
+          "excerpt": "The design review removed a surprise auto-play sound and replaced it with a visible play button that users choose to press."
+        },
+        {
+          "id": "new-15",
+          "score": 0.7928152351812258,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        },
+        {
+          "id": "new-23",
+          "score": 0.7868082092381419,
+          "excerpt": "For the fictional film club, captions are enabled by default and seats near the speakers are left optional rather than assigned."
+        }
+      ],
+      "seconds": 0.23315218501375057
+    },
+    {
+      "id": "x20",
+      "type": "cross_language",
+      "query": "断网草稿避免覆盖服务器新版本",
+      "expected": [
+        "new-20"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-12",
+          "score": 0.8712157361976287,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8645322804646924,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-05",
+          "score": 0.8580028551209753,
+          "excerpt": "打印机卡纸时先断电，再打开后盖检查滚轮；此条只是合成设备日志。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8525410840396073,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-03",
+          "score": 0.8480613347349228,
+          "excerpt": "种在北窗的薄荷长得很慢，挪到南阳台两周后出现了新叶。"
+        }
+      ],
+      "seconds": 0.17590349500824232
+    },
+    {
+      "id": "p21",
+      "type": "paraphrase",
+      "query": "where to park a bicycle at the station",
+      "expected": [
+        "new-21"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-21",
+          "score": 0.8782017778653177,
+          "excerpt": "The imaginary train station moved the bicycle parking racks beside the east entrance, underneath the covered walkway."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7866542064048506,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-10",
+          "score": 0.7539172913430733,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-14",
+          "score": 0.7512128740202585,
+          "excerpt": "For the fictional neighborhood concert, volunteers collect reusable cups at the exits and wash them for the next event."
+        },
+        {
+          "id": "new-13",
+          "score": 0.7454020095505399,
+          "excerpt": "The synthetic museum visit notes say the pottery gallery is upstairs and photography is prohibited in that room."
+        }
+      ],
+      "seconds": 0.15441568399546668
+    },
+    {
+      "id": "x21",
+      "type": "cross_language",
+      "query": "车站东入口有遮雨自行车停车位",
+      "expected": [
+        "new-21"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-01",
+          "score": 0.8866366296884335,
+          "excerpt": "雨棚修好以后，院子里的自行车座垫不再被夜雨淋湿。"
+        },
+        {
+          "id": "new-10",
+          "score": 0.8745598845683531,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-07",
+          "score": 0.8547478622050023,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8476047127091079,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-02",
+          "score": 0.8418003986069202,
+          "excerpt": "社区图书馆周三闭馆清点藏书，借来的书可以投入门外还书箱。"
+        }
+      ],
+      "seconds": 0.17097518900118303
+    },
+    {
+      "id": "p22",
+      "type": "paraphrase",
+      "query": "why two changing measurements do not prove one causes the other",
+      "expected": [
+        "new-22"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-22",
+          "score": 0.8421108222793234,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        },
+        {
+          "id": "new-20",
+          "score": 0.7832738954325141,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-15",
+          "score": 0.7752633993306977,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        },
+        {
+          "id": "new-24",
+          "score": 0.7720365474342303,
+          "excerpt": "The design review removed a surprise auto-play sound and replaced it with a visible play button that users choose to press."
+        },
+        {
+          "id": "new-16",
+          "score": 0.770292743437673,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        }
+      ],
+      "seconds": 0.15538887701404747
+    },
+    {
+      "id": "x22",
+      "type": "cross_language",
+      "query": "相关关系不等于因果关系",
+      "expected": [
+        "new-22"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-04",
+          "score": 0.8619116121947976,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-06",
+          "score": 0.8541946899574302,
+          "excerpt": "读书会决定先讨论结尾，再回头比较不同人物对同一事件的描述。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8389514941166035,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8385416214380459,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8360889988281865,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        }
+      ],
+      "seconds": 0.30386636400362477
+    },
+    {
+      "id": "p23",
+      "type": "paraphrase",
+      "query": "making a screening easier to follow with subtitles",
+      "expected": [
+        "new-23"
+      ],
+      "expected_rank": 2,
+      "hits": [
+        {
+          "id": "new-16",
+          "score": 0.8111809061517059,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-23",
+          "score": 0.8078002165156102,
+          "excerpt": "For the fictional film club, captions are enabled by default and seats near the speakers are left optional rather than assigned."
+        },
+        {
+          "id": "new-15",
+          "score": 0.7957724566547095,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        },
+        {
+          "id": "new-22",
+          "score": 0.7900272847555018,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        },
+        {
+          "id": "new-24",
+          "score": 0.7893724035740226,
+          "excerpt": "The design review removed a surprise auto-play sound and replaced it with a visible play button that users choose to press."
+        }
+      ],
+      "seconds": 0.2597294939914718
+    },
+    {
+      "id": "x23",
+      "type": "cross_language",
+      "query": "电影放映默认开启字幕",
+      "expected": [
+        "new-23"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-09",
+          "score": 0.8463864310839051,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8402516112707449,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-06",
+          "score": 0.837332026160619,
+          "excerpt": "读书会决定先讨论结尾，再回头比较不同人物对同一事件的描述。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8370484168961934,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-05",
+          "score": 0.8338801880582845,
+          "excerpt": "打印机卡纸时先断电，再打开后盖检查滚轮；此条只是合成设备日志。"
+        }
+      ],
+      "seconds": 0.3866539019945776
+    },
+    {
+      "id": "p24",
+      "type": "paraphrase",
+      "query": "requiring permission before playing audio",
+      "expected": [
+        "new-24"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-24",
+          "score": 0.8213187291356394,
+          "excerpt": "The design review removed a surprise auto-play sound and replaced it with a visible play button that users choose to press."
+        },
+        {
+          "id": "new-23",
+          "score": 0.817925287159176,
+          "excerpt": "For the fictional film club, captions are enabled by default and seats near the speakers are left optional rather than assigned."
+        },
+        {
+          "id": "new-18",
+          "score": 0.8092200460541759,
+          "excerpt": "During the mock workshop, participants write questions anonymously before the facilitator groups similar concerns on a board."
+        },
+        {
+          "id": "new-20",
+          "score": 0.7930931530569684,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-13",
+          "score": 0.7885245306644986,
+          "excerpt": "The synthetic museum visit notes say the pottery gallery is upstairs and photography is prohibited in that room."
+        }
+      ],
+      "seconds": 0.24559957400197163
+    },
+    {
+      "id": "x24",
+      "type": "cross_language",
+      "query": "播放声音前让用户主动点击",
+      "expected": [
+        "new-24"
+      ],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-12",
+          "score": 0.8516380014052106,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.844396274605151,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8280761933414872,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-05",
+          "score": 0.8241211627376824,
+          "excerpt": "打印机卡纸时先断电，再打开后盖检查滚轮；此条只是合成设备日志。"
+        },
+        {
+          "id": "new-02",
+          "score": 0.822857762445436,
+          "excerpt": "社区图书馆周三闭馆清点藏书，借来的书可以投入门外还书箱。"
+        }
+      ],
+      "seconds": 0.23022700900037307
+    },
+    {
+      "id": "l01",
+      "type": "literal",
+      "query": "好以后，院子里的自行车",
+      "expected": [
+        "new-01"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-01",
+          "score": 0.9186291242829938,
+          "excerpt": "雨棚修好以后，院子里的自行车座垫不再被夜雨淋湿。"
+        },
+        {
+          "id": "new-10",
+          "score": 0.8708648518541344,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-07",
+          "score": 0.8614700540865967,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-02",
+          "score": 0.8609397556606785,
+          "excerpt": "社区图书馆周三闭馆清点藏书，借来的书可以投入门外还书箱。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8519958152501208,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        }
+      ],
+      "seconds": 0.1845389759982936
+    },
+    {
+      "id": "l02",
+      "type": "literal",
+      "query": "书馆周三闭馆清点藏书，",
+      "expected": [
+        "new-02"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-02",
+          "score": 0.9343555673894508,
+          "excerpt": "社区图书馆周三闭馆清点藏书，借来的书可以投入门外还书箱。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8659902586556323,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-06",
+          "score": 0.8620917969690725,
+          "excerpt": "读书会决定先讨论结尾，再回头比较不同人物对同一事件的描述。"
+        },
+        {
+          "id": "new-07",
+          "score": 0.8591604768130312,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8579844018517878,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        }
+      ],
+      "seconds": 0.22361795899632853
+    },
+    {
+      "id": "l03",
+      "type": "literal",
+      "query": "窗的薄荷长得很慢，挪到",
+      "expected": [
+        "new-03"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-03",
+          "score": 0.9283453188509005,
+          "excerpt": "种在北窗的薄荷长得很慢，挪到南阳台两周后出现了新叶。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8565356018446821,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-10",
+          "score": 0.8535317892900991,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8492011927119455,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8474446450374048,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        }
+      ],
+      "seconds": 0.27624201400612947
+    },
+    {
+      "id": "l04",
+      "type": "literal",
+      "query": "队复盘把事实时间线和每",
+      "expected": [
+        "new-04"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-04",
+          "score": 0.920106744615689,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8546458175363003,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-06",
+          "score": 0.8500112377514673,
+          "excerpt": "读书会决定先讨论结尾，再回头比较不同人物对同一事件的描述。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8497116407911458,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.831339196751343,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        }
+      ],
+      "seconds": 0.1806987269956153
+    },
+    {
+      "id": "l05",
+      "type": "literal",
+      "query": "卡纸时先断电，再打开后",
+      "expected": [
+        "new-05"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-05",
+          "score": 0.9220734959010197,
+          "excerpt": "打印机卡纸时先断电，再打开后盖检查滚轮；此条只是合成设备日志。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.864813999058224,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8602337364200157,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8536152682692411,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8498401497593553,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        }
+      ],
+      "seconds": 0.2530297100020107
+    },
+    {
+      "id": "l06",
+      "type": "literal",
+      "query": "决定先讨论结尾，再回头",
+      "expected": [
+        "new-06"
+      ],
+      "expected_rank": 1,
+      "hits": [
+        {
+          "id": "new-06",
+          "score": 0.9205840689705136,
+          "excerpt": "读书会决定先讨论结尾，再回头比较不同人物对同一事件的描述。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8698287993776462,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8657852503265293,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8541552341351792,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8527214510340816,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        }
+      ],
+      "seconds": 0.25583207499585114
+    },
+    {
+      "id": "n01",
+      "type": "absent",
+      "query": "火星探测器发动机测试",
+      "expected": [],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-05",
+          "score": 0.8398357790948525,
+          "excerpt": "打印机卡纸时先断电，再打开后盖检查滚轮；此条只是合成设备日志。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8347668982595916,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8225375072758766,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8224217788126964,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.820900967508538,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        }
+      ],
+      "seconds": 0.22153615900606383
+    },
+    {
+      "id": "n02",
+      "type": "absent",
+      "query": "鲸鱼迁徙的卫星路线",
+      "expected": [],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-10",
+          "score": 0.8571866176111421,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-07",
+          "score": 0.8460073973308727,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8440843675930245,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-03",
+          "score": 0.8361935480369378,
+          "excerpt": "种在北窗的薄荷长得很慢，挪到南阳台两周后出现了新叶。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8336874650826219,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        }
+      ],
+      "seconds": 0.273386617001961
+    },
+    {
+      "id": "n03",
+      "type": "absent",
+      "query": "结婚宴会座位安排",
+      "expected": [],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-11",
+          "score": 0.8329675717794962,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8297526388904031,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-02",
+          "score": 0.8286725962261214,
+          "excerpt": "社区图书馆周三闭馆清点藏书，借来的书可以投入门外还书箱。"
+        },
+        {
+          "id": "new-01",
+          "score": 0.8278138958421885,
+          "excerpt": "雨棚修好以后，院子里的自行车座垫不再被夜雨淋湿。"
+        },
+        {
+          "id": "new-06",
+          "score": 0.8272632908351607,
+          "excerpt": "读书会决定先讨论结尾，再回头比较不同人物对同一事件的描述。"
+        }
+      ],
+      "seconds": 0.2238849150016904
+    },
+    {
+      "id": "n04",
+      "type": "absent",
+      "query": "古代金币拍卖价格",
+      "expected": [],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-07",
+          "score": 0.8239803059193904,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8232514384126717,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-10",
+          "score": 0.8215827765483511,
+          "excerpt": "骑行路线避开施工中的木桥，绕过邮局后从石桥过河。"
+        },
+        {
+          "id": "new-11",
+          "score": 0.8191209433590892,
+          "excerpt": "合成课程笔记：孩子先用积木搭出不同长度，再学习尺子上的刻度。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8165843530344028,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        }
+      ],
+      "seconds": 0.21432648300833534
+    },
+    {
+      "id": "n05",
+      "type": "absent",
+      "query": "医院急诊值班名单",
+      "expected": [],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-04",
+          "score": 0.8603571777557777,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-08",
+          "score": 0.8587160977478496,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-02",
+          "score": 0.8565281925666848,
+          "excerpt": "社区图书馆周三闭馆清点藏书，借来的书可以投入门外还书箱。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.852986857882805,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8440465042405807,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        }
+      ],
+      "seconds": 0.17136550099530723
+    },
+    {
+      "id": "n06",
+      "type": "absent",
+      "query": "云端密码重置验证码",
+      "expected": [],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-08",
+          "score": 0.8523476503130251,
+          "excerpt": "工作记录：客户演示使用冻结的数据副本，避免现场内容随后台更新而改变。"
+        },
+        {
+          "id": "new-04",
+          "score": 0.8422564443624275,
+          "excerpt": "这次团队复盘把事实时间线和每个人的猜测分成两栏，以免混淆。"
+        },
+        {
+          "id": "new-12",
+          "score": 0.8377348070526333,
+          "excerpt": "午间讨论提出把耗时的报表导出移到后台，完成时再显示下载链接。"
+        },
+        {
+          "id": "new-09",
+          "score": 0.8326702608802183,
+          "excerpt": "合成家务记录：玻璃罐上的旧标签用温水浸泡后整片脱落，罐子留下装种子。"
+        },
+        {
+          "id": "new-07",
+          "score": 0.8321300001978267,
+          "excerpt": "合成旅行笔记：湖边步道因落石暂时封闭，游客改走山脚的铺装道路。"
+        }
+      ],
+      "seconds": 0.1551009789982345
+    },
+    {
+      "id": "n07",
+      "type": "absent",
+      "query": "volcano seismic sensor calibration",
+      "expected": [],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-16",
+          "score": 0.7900513810624485,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-22",
+          "score": 0.7814325884555129,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        },
+        {
+          "id": "new-15",
+          "score": 0.7698891225692804,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        },
+        {
+          "id": "new-19",
+          "score": 0.7607940028780678,
+          "excerpt": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+        },
+        {
+          "id": "new-20",
+          "score": 0.7597661534400658,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        }
+      ],
+      "seconds": 0.15034155100875068
+    },
+    {
+      "id": "n08",
+      "type": "absent",
+      "query": "chess tournament tie break rules",
+      "expected": [],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-20",
+          "score": 0.7789030053759332,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-18",
+          "score": 0.7721846772442531,
+          "excerpt": "During the mock workshop, participants write questions anonymously before the facilitator groups similar concerns on a board."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7695314836246706,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-19",
+          "score": 0.7640255365830613,
+          "excerpt": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+        },
+        {
+          "id": "new-17",
+          "score": 0.7598961450273776,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        }
+      ],
+      "seconds": 0.17847678100224584
+    },
+    {
+      "id": "n09",
+      "type": "absent",
+      "query": "satellite launch insurance contract",
+      "expected": [],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-20",
+          "score": 0.7836977774712894,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-15",
+          "score": 0.7611665924719853,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        },
+        {
+          "id": "new-24",
+          "score": 0.7538743867829861,
+          "excerpt": "The design review removed a surprise auto-play sound and replaced it with a visible play button that users choose to press."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7537284342421768,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-23",
+          "score": 0.7507727532576405,
+          "excerpt": "For the fictional film club, captions are enabled by default and seats near the speakers are left optional rather than assigned."
+        }
+      ],
+      "seconds": 0.1878523600025801
+    },
+    {
+      "id": "n10",
+      "type": "absent",
+      "query": "recipe for chocolate ice cream",
+      "expected": [],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-17",
+          "score": 0.8177797419416649,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        },
+        {
+          "id": "new-22",
+          "score": 0.7790847543356154,
+          "excerpt": "The synthetic lecture notes distinguish correlation from causation and use two unrelated seasonal trends as an example."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7787089966004832,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-15",
+          "score": 0.7675999875621418,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        },
+        {
+          "id": "new-19",
+          "score": 0.7664056151767745,
+          "excerpt": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+        }
+      ],
+      "seconds": 0.2184072129894048
+    },
+    {
+      "id": "n11",
+      "type": "absent",
+      "query": "ocean submarine pressure valve",
+      "expected": [],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-24",
+          "score": 0.770107978875454,
+          "excerpt": "The design review removed a surprise auto-play sound and replaced it with a visible play button that users choose to press."
+        },
+        {
+          "id": "new-16",
+          "score": 0.7624102805827355,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-19",
+          "score": 0.74660361452206,
+          "excerpt": "The garden journal is synthetic: a shallow bowl of water was placed away from the seedlings so birds would not disturb the young plants."
+        },
+        {
+          "id": "new-20",
+          "score": 0.7455202576320488,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-21",
+          "score": 0.7406933333083976,
+          "excerpt": "The imaginary train station moved the bicycle parking racks beside the east entrance, underneath the covered walkway."
+        }
+      ],
+      "seconds": 0.21267654599796515
+    },
+    {
+      "id": "n12",
+      "type": "absent",
+      "query": "airport lost passport procedure",
+      "expected": [],
+      "expected_rank": null,
+      "hits": [
+        {
+          "id": "new-20",
+          "score": 0.8145561680375705,
+          "excerpt": "The test application keeps a local draft when a connection drops and asks the writer before replacing a newer server version."
+        },
+        {
+          "id": "new-16",
+          "score": 0.8051073249829402,
+          "excerpt": "A synthetic packing checklist groups charging cables in one small pouch so they can be found without unpacking the suitcase."
+        },
+        {
+          "id": "new-24",
+          "score": 0.7797360493584826,
+          "excerpt": "The design review removed a surprise auto-play sound and replaced it with a visible play button that users choose to press."
+        },
+        {
+          "id": "new-15",
+          "score": 0.7788832143112872,
+          "excerpt": "The project log records that a slow database query became faster after an index was added to the invoice date column."
+        },
+        {
+          "id": "new-17",
+          "score": 0.7675581297220966,
+          "excerpt": "The fictional bakery saves yesterday’s unsold bread for making toasted crumbs rather than throwing it away."
+        }
+      ],
+      "seconds": 0.26218485400022473
+    }
+  ]
+}

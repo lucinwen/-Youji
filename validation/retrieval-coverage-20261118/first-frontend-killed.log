@@ -1,0 +1,14 @@
+
+ RUN  v4.1.5 /workspace/scratch/10a41183bc23/youji-next/web
+
+ ✓ tests/use-memo-save.test.tsx (10 tests) 4587ms
+     ✓ refreshes the parent memo total after creating a comment  920ms
+     ✓ holds a saved confirmation before a closing host resets  908ms
+     ✓ clears the new memo hoist after editing that memo  908ms
+     ✓ preserves the new memo hoist when editing another memo  905ms
+     ✓ preserves a newer marker created while the edit save is pending  904ms
+ ✓ tests/locale-resources.test.ts (97 tests) 3454ms
+     ✓ references every English key and reviews every computed key pattern  1840ms
+ ✓ tests/app-sidebar-logo.test.tsx (54 tests) 2724ms
+undefined
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command was killed with SIGKILL (Forced termination): vitest run '--pool=forks' '--maxWorkers=1' --no-file-parallelism '--reporter=default'

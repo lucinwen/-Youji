@@ -1,0 +1,59 @@
+{
+  "packages": {
+    "faster-whisper": {
+      "version": "1.2.1",
+      "declared_license": "MIT",
+      "project_urls": null
+    },
+    "ctranslate2": {
+      "version": "4.9.0",
+      "declared_license": "MIT",
+      "project_urls": [
+        "Documentation, https://opennmt.net/CTranslate2",
+        "Forum, https://forum.opennmt.net",
+        "Gitter, https://gitter.im/OpenNMT/CTranslate2",
+        "Source, https://github.com/OpenNMT/CTranslate2"
+      ]
+    },
+    "av": {
+      "version": "16.0.1",
+      "declared_license": "BSD-3-Clause",
+      "project_urls": [
+        "Bug Tracker, https://github.com/PyAV-Org/PyAV/discussions/new?category=4-bugs",
+        "Source Code, https://github.com/PyAV-Org/PyAV",
+        "homepage, https://pyav.basswood-io.com"
+      ]
+    },
+    "espeakng-loader": {
+      "version": "0.2.4",
+      "declared_license": null,
+      "project_urls": null
+    },
+    "tokenizers": {
+      "version": "0.23.3",
+      "declared_license": null,
+      "project_urls": [
+        "Homepage, https://github.com/huggingface/tokenizers",
+        "Source, https://github.com/huggingface/tokenizers"
+      ]
+    },
+    "onnxruntime": {
+      "version": "1.32.0",
+      "declared_license": "MIT License",
+      "project_urls": null
+    }
+  },
+  "model_license": "MIT, declared in pinned converted model card and upstream OpenAI Whisper code/weights statement",
+  "sources": [
+    "https://huggingface.co/Systran/faster-whisper-tiny/tree/d90ca5fe260221311c53c58e660288d3deb8d356",
+    "https://github.com/openai/whisper#license",
+    "https://github.com/SYSTRAN/faster-whisper/blob/v1.2.1/LICENSE",
+    "https://github.com/espeak-ng/espeak-ng#license-information",
+    "https://github.com/thewh1teagle/espeakng-loader/blob/main/LICENSE"
+  ],
+  "espeak_runtime_version": "1.52.0",
+  "espeak_library_sha256": "b15ce0803b26254e8a0d088c6b9281a2637b2b02613147cc320cfdefaf2c3ccf",
+  "tts_license_note": "espeakng-loader wrapper MIT; bundled eSpeak NG GPL-3.0-or-later. Evaluation-only isolated /tmp tool; no executable or data files copied into product. Wheel does not itself expose complete bundled-library license metadata; production redistribution needs a complete binary dependency license inventory.",
+  "distribution": "No wheels, shared libraries, weights or audio committed; only authored evaluation script, provenance, license text and synthetic result text.",
+  "native_diagnostic": "UCX attempted a VFS Unix socket and was denied by host sandbox. Inference proceeded without bypass. Python guard count does not cover native-library socket attempts."
+}

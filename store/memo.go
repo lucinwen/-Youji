@@ -85,8 +85,10 @@ type FindMemo struct {
 	CommentContextMemoID *int32
 	Access               *MemoAccessScope
 	ExcludeContent       bool
-	ExcludeComments      bool
-	Filters              []string
+	// ExcludePayload omits payload from results without changing SQL filter evaluation.
+	ExcludePayload  bool
+	ExcludeComments bool
+	Filters         []string
 
 	// Pagination
 	Limit  *int

@@ -1,0 +1,10 @@
+{
+  "directory_mode": "0o555",
+  "files": {
+    "model_qint8_avx512_vnni.onnx": "0o444",
+    "tokenizer.json": "0o444",
+    "config.json": "0o444",
+    "manifest.json": "0o444"
+  },
+  "caveat": "Mode bits do not stop owner/root chmod; deploy model owned by a separate administrator or read-only mount."
+}

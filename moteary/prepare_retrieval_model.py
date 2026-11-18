@@ -11,6 +11,7 @@ from retrieval_worker import FILES, MODEL, REVISION
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--directory', required=True)
+    parser.add_argument('--read-only', action='store_true', help='Seal this dedicated model directory and verified files with read-only mode bits')
     args = parser.parse_args()
     destination = Path(args.directory).resolve()
     destination.mkdir(parents=True, exist_ok=True)
@@ -38,7 +39,14 @@ def main():
                 temporary.replace(target)
             finally:
                 temporary.unlink(missing_ok=True)
-    (destination / 'manifest.json').write_text(json.dumps({'repository': MODEL, 'revision': REVISION, 'sha256': FILES}, indent=2))
+    manifest = destination / 'manifest.json'
+    manifest_text = json.dumps({'repository': MODEL, 'revision': REVISION, 'sha256': FILES}, indent=2)
+    if not manifest.is_file() or manifest.read_text() != manifest_text:
+        manifest.write_text(manifest_text)
+    if args.read_only:
+        for name in [*FILES, 'manifest.json']:
+            (destination / name).chmod(0o444)
+        destination.chmod(0o555)
     print('Verified local model files. No user documents were read or uploaded.')
 
 

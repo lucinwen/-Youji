@@ -1,0 +1,448 @@
+
+ RUN  v4.1.5 /workspace/scratch/10a41183bc23/youji-next/web
+
+ ✓ tests/use-memo-save.test.tsx (10 tests) 4627ms
+     ✓ refreshes the parent memo total after creating a comment  911ms
+     ✓ holds a saved confirmation before a closing host resets  932ms
+     ✓ clears the new memo hoist after editing that memo  909ms
+     ✓ preserves the new memo hoist when editing another memo  915ms
+     ✓ preserves a newer marker created while the edit save is pending  907ms
+ ✓ tests/locale-resources.test.ts (97 tests) 3517ms
+     ✓ references every English key and reviews every computed key pattern  2075ms
+ ✓ tests/app-sidebar-logo.test.tsx (54 tests) 2507ms
+ ✓ tests/memo-view-icons.test.tsx (7 tests) 1776ms
+     ✓ creates and validates a view with a selected icon  829ms
+     ✓ resets an existing icon using the icon update mask  348ms
+stderr | tests/memo-editor-source-mode.test.tsx > MemoEditor source mode > switches back when saving the mode fails
+Error: unavailable
+    at /workspace/scratch/10a41183bc23/youji-next/web/tests/memo-editor-source-mode.test.tsx:119:83
+    at Mock (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+spy@4.1.5/node_modules/@vitest/spy/dist/index.js:332:34)
+    at /workspace/scratch/10a41183bc23/youji-next/web/src/hooks/useSourceMode.ts:24:7
+    at onToggle (/workspace/scratch/10a41183bc23/youji-next/web/src/components/MemoEditor/edit/EditSession.tsx:106:54)
+    at handleClick (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@base-ui+react@1.7.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/@base-ui/react/menu/checkbox-item/MenuCheckboxItem.mjs:79:22)
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@base-ui+react@1.7.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/@base-ui/react/merge-props/mergeProps.mjs:179:22
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@base-ui+react@1.7.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/@base-ui/react/merge-props/mergeProps.mjs:179:22
+    at onClick (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@base-ui+react@1.7.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/@base-ui/react/internals/use-button/useButton.mjs:83:26)
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@base-ui+react@1.7.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/@base-ui/react/merge-props/mergeProps.mjs:199:12
+    at executeDispatch (/workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/react-dom@19.2.6_react@19.2.6/node_modules/react-dom/cjs/react-dom-client.development.js:19116:9)
+
+ ✓ tests/memo-editor-source-mode.test.tsx (6 tests) 1583ms
+     ✓ shows the Markdown label only while source mode is on  501ms
+ ✓ tests/moteary-audio-preview.test.tsx (17 tests) 2223ms
+     ✓ does not fetch before intent, verifies bytes and provides a non-autoplay player and original download  301ms
+     ✓ rejects a ZIP containing a compressed original above the decoded limit  321ms
+     ✓ rejects extra highly compressed entries before attempting their decoding  754ms
+     ✓ rejects a non-target first entry before attempting its decoding  318ms
+     ✓ rejects duplicate names before decoding the second entry  304ms
+ ✓ tests/memo-action-menu.test.tsx (14 tests) 1821ms
+     ✓ groups an owner's memo actions by what they do to the card and puts Delete last, with no Move entry  423ms
+ ✓ tests/moteary-workspace.test.tsx (20 tests) 2778ms
+     ✓ shows a literal, safely rendered annotation match for <img src=x onerror="alert(1)"> only after search submission  544ms
+ ✓ tests/audience-menu.test.tsx (12 tests) 1848ms
+     ✓ omits the Members audience when the memo has no Space  417ms
+ ✓ tests/space-switcher.test.tsx (12 tests) 2029ms
+     ✓ shows an independent creator choice, a collapsed Space selector, and an icon create action  469ms
+ ✓ tests/preview-image-dialog.test.tsx (27 tests) 2401ms
+     ✓ provides a dialog description without accessibility warnings  552ms
+     ✓ clears a stale drag when the item changes  465ms
+ ✓ tests/usage-limits-settings.test.tsx (12 tests) 1783ms
+     ✓ moves an entry up and saves the whole list  513ms
+ ✓ tests/user-menu.test.tsx (11 tests) 1211ms
+stderr | tests/create-space-dialog.test.tsx > CreateSpaceDialog > reveals and associates a conflicting Space UID returned by the server
+ConnectError: [already_exists] space already exists
+    at /workspace/scratch/10a41183bc23/youji-next/web/tests/create-space-dialog.test.tsx:107:41
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64 {
+  rawMessage: 'space already exists',
+  code: 6,
+  metadata: Headers {},
+  details: [],
+  cause: undefined
+}
+
+stderr | tests/create-space-dialog.test.tsx > CreateSpaceDialog > reuses the Space UID for retries and generates a new one for the next open
+Error: Unavailable
+    at /workspace/scratch/10a41183bc23/youji-next/web/tests/create-space-dialog.test.tsx:126:45
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64
+
+ ✓ tests/create-space-dialog.test.tsx (8 tests) 1535ms
+     ✓ creates and reports the new Space to the caller  437ms
+     ✓ keeps the icon in the draft until creating and clears it when the dialog closes  569ms
+ ✓ tests/space-icon-picker.test.tsx (9 tests) 1511ms
+     ✓ searches and selects a symbol with keyboard navigation and restores trigger focus  719ms
+     ✓ accepts a pasted joined emoji and can reset it  439ms
+ ✓ tests/moteary-semantic-ui.test.tsx (19 tests) 1211ms
+ ✓ tests/quick-find-navigation.test.tsx (10 tests) 1138ms
+     ✓ preserves the draft when changing modes and submits CEL with Enter  397ms
+stderr | tests/spaces-section.test.tsx > SpacesSection > keeps ordinary Space members read-only and hides governance controls
+Encountered two children with the same key, `spaces/product/members/alice`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+ ✓ tests/spaces-section.test.tsx (9 tests) 927ms
+ ✓ tests/global-memo-editor.test.tsx (33 tests) 968ms
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+ ✓ tests/editor-suggestions.test.tsx (20 tests) 1009ms
+ ✓ tests/memo-detail-sidebar.test.tsx (9 tests) 888ms
+     ✓ organizes source, in-page navigation, connections, and frequent actions without repeating metadata  425ms
+ ✓ tests/memo-content-view.test.tsx (27 tests) 808ms
+ ✓ tests/insert-menu.test.tsx (7 tests) 646ms
+     ✓ shows attachment and inline-image actions in the intended order  306ms
+Not implemented: Window's scrollBy() method
+stderr | tests/memo-editor-transcription.test.tsx > existing memo audio transcription > blocks save while transcribing, inserts into the editable draft and retains the original attachment on save
+Error: [vitest] No "userKeys" export is defined on the "@/hooks/useUserQueries" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+    at VitestMocker.createError (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/vitest@4.1.5_@types+node@24.12.2_jsdom@29.1.1_vite@8.0.11_@types+node@24.12.2_jiti@2.6.1_/node_modules/vitest/dist/chunks/startVitestModuleRunner.bRl2_oI_.js:62:17)
+    at Object.get (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/vitest@4.1.5_@types+node@24.12.2_jsdom@29.1.1_vite@8.0.11_@types+node@24.12.2_jiti@2.6.1_/node_modules/vitest/dist/chunks/startVitestModuleRunner.bRl2_oI_.js:324:16)
+    at Object.onSuccess (/workspace/scratch/10a41183bc23/youji-next/web/src/hooks/useMemoQueries.ts:383:49)
+    at Mutation.execute (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@tanstack+query-core@5.100.9/node_modules/@tanstack/query-core/build/modern/mutation.js:123:37)
+    at Object.save (/workspace/scratch/10a41183bc23/youji-next/web/src/components/MemoEditor/edit/services/memoService.ts:121:20)
+    at /workspace/scratch/10a41183bc23/youji-next/web/src/components/MemoEditor/edit/hooks/useMemoSave.ts:107:22 {
+  codeFrame: 'vi.mock(import("@/hooks/useUserQueries"), async (importOriginal) => {\n' +
+    '  const actual = await importOriginal()\n' +
+    '  return {\n' +
+    '    ...actual,\n' +
+    '    // your mocked methods\n' +
+    '  }\n' +
+    '})'
+}
+
+ ✓ tests/memo-editor-transcription.test.tsx (1 test) 546ms
+     ✓ blocks save while transcribing, inserts into the editable draft and retains the original attachment on save  488ms
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+ ✓ tests/editor-controller.test.tsx (29 tests) 916ms
+ ✓ tests/moteary-batch.test.tsx (27 tests | 1 skipped) 598ms
+ ✓ tests/memo-display-setting-menu.test.tsx (3 tests) 719ms
+     ✓ opens from an accessible trigger and explains the compact grid constraint  402ms
+ ✓ tests/about-page.test.tsx (9 tests) 791ms
+     ✓ renders the identity hero with a linked version chip  388ms
+ ✓ tests/moteary-pdf-ui.test.tsx (8 tests) 639ms
+ ✓ tests/tags-section.test.tsx (4 tests) 829ms
+     ✓ switches layouts from the menu, closes it, and persists the preference  412ms
+ ✓ tests/memo-editor-timestamps.test.tsx (9 tests) 562ms
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+ ✓ tests/editor.test.tsx (10 tests) 577ms
+ ✓ tests/attachment-inline-placement.test.tsx (5 tests) 328ms
+stderr | tests/space-invitation-message.test.tsx > SpaceInvitationMessage > reports a failed accept without pretending it succeeded
+Error: space invitation not found
+    at /workspace/scratch/10a41183bc23/youji-next/web/tests/space-invitation-message.test.tsx:124:50
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64
+
+stderr | tests/space-invitation-message.test.tsx > SpaceInvitationMessage > archives through the shared notification mutation and reports failures
+Error: offline
+    at /workspace/scratch/10a41183bc23/youji-next/web/tests/space-invitation-message.test.tsx:169:53
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+ ✓ tests/space-invitation-message.test.tsx (7 tests) 485ms
+ ✓ tests/memo-header-navigation.test.tsx (8 tests) 280ms
+stderr | tests/paged-memo-list.test.tsx > <PagedMemoList> > does not fetch or reschedule after unmount during the initial auto-fetch delay
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `div`. It was passed a child from PagedMemoList. See https://react.dev/link/warning-keys for more information.
+
+ ✓ tests/paged-memo-list.test.tsx (23 tests) 540ms
+ ✓ tests/memo-search-queries.test.tsx (9 tests) 601ms
+ ✓ tests/basemap-layer.test.tsx (8 tests) 388ms
+ ✓ tests/dropdown-menu-size.test.tsx (2 tests) 580ms
+     ✓ applies compact content and item density through the sm size  388ms
+ ✓ tests/map-memos.test.tsx (6 tests) 539ms
+ ✓ tests/reaction-selector.test.tsx (1 test) 302ms
+     ✓ uses a named native trigger with a visible focus state  301ms
+ ✓ tests/app-sidebar-context.test.tsx (3 tests) 272ms
+ ✓ tests/create-webhook-dialog.test.tsx (2 tests) 413ms
+ ✓ tests/memo-detail-access.test.tsx (8 tests) 376ms
+ ✓ tests/editor-commit-button.test.tsx (2 tests) 293ms
+ ✓ tests/space-routes.test.tsx (28 tests) 354ms
+ ✓ tests/memo-access-transitions.test.tsx (5 tests) 476ms
+ ✓ tests/preferences-media-metadata.test.tsx (2 tests) 434ms
+ ✓ tests/instance-section-access.test.tsx (3 tests) 392ms
+ ✓ tests/attachment-library-stats.test.ts (7 tests) 371ms
+ ✓ tests/calendar-cell-empty-clickable.test.tsx (8 tests) 233ms
+ ✓ tests/map-view.test.tsx (8 tests) 436ms
+ ✓ tests/create-access-token-dialog.test.tsx (1 test) 350ms
+     ✓ creates a non-expiring token by default  347ms
+stderr | tests/sso-auth-pages.test.tsx > automatic SSO auth pages > returns to manual controls after initiation fails without automatically retrying
+Error: Storage unavailable
+    at /workspace/scratch/10a41183bc23/youji-next/web/tests/sso-auth-pages.test.tsx:175:52
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64
+
+ ✓ tests/sso-auth-pages.test.tsx (18 tests) 474ms
+ ✓ tests/query-deduplication.test.tsx (6 tests) 380ms
+ ✓ tests/calendar-day-snapshot.test.tsx (21 tests) 471ms
+ ✓ tests/sidebar-row-state.test.tsx (8 tests) 371ms
+ ✓ tests/attachment-storage-usage.test.tsx (4 tests) 340ms
+ ✓ tests/tabs.test.tsx (3 tests) 421ms
+stderr | tests/sso-callback.test.tsx > SSO callback recovery > does not trust the return path when cancellation state does not match
+OAuth state mismatch - possible CSRF attack
+
+stderr | tests/sso-callback.test.tsx > SSO callback recovery > retains the destination after the sign-in RPC fails without retrying
+Error: Provider unavailable
+    at /workspace/scratch/10a41183bc23/youji-next/web/tests/sso-callback.test.tsx:60:40
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+ ✓ tests/sso-callback.test.tsx (5 tests) 233ms
+ ✓ tests/space-queries.test.tsx (9 tests) 396ms
+ ✓ tests/attachment-transcription-action.test.tsx (4 tests) 483ms
+     ✓ only offers transcription for persisted audio when the provider is configured  353ms
+ ✓ tests/tag-tree-render.test.tsx (9 tests) 483ms
+     ✓ starts collapsed and expands via the disclosure chevron  304ms
+ ✓ tests/sidebar-resize-handle.test.tsx (18 tests) 324ms
+ ✓ tests/upload-service.test.ts (7 tests) 299ms
+ ✓ tests/location-display-view.test.tsx (5 tests) 386ms
+     ✓ shows the place name first and reveals coordinates only with the map  350ms
+ ✓ tests/locale-picker.test.tsx (1 test) 350ms
+     ✓ links to GitHub feedback when no locale matches the search  349ms
+ ✓ tests/memos-logo.test.tsx (16 tests) 220ms
+ ✓ tests/select.test.tsx (1 test) 345ms
+     ✓ places the positioner in the dropdown stacking layer  341ms
+stderr | tests/attachment-library-source-link.test.tsx > <AttachmentMediaGrid> > links a media attachment to its source memo without replacing the direct file action
+Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (/workspace/scratch/10a41183bc23/youji-next/web/src/components/ui/button.tsx:52:146)
+    at AttachmentOpenButton (/workspace/scratch/10a41183bc23/youji-next/web/src/components/AttachmentLibrary/AttachmentLibraryPrimitives.tsx:128:58)
+    at AttachmentMediaCard (/workspace/scratch/10a41183bc23/youji-next/web/src/components/AttachmentLibrary/AttachmentMediaGrid.tsx:144:64)
+    at /workspace/scratch/10a41183bc23/youji-next/web/src/components/AttachmentLibrary/AttachmentMediaGrid.tsx:191:89
+    at Array.map (<anonymous>)
+    at /workspace/scratch/10a41183bc23/youji-next/web/src/components/AttachmentLibrary/AttachmentMediaGrid.tsx:191:27
+    at Array.map (<anonymous>)
+    at AttachmentMediaGrid (/workspace/scratch/10a41183bc23/youji-next/web/src/components/AttachmentLibrary/AttachmentMediaGrid.tsx:169:20)
+
+stderr | tests/attachment-library-source-link.test.tsx > <AttachmentMediaGrid> > shows the uploader on document rows
+Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (/workspace/scratch/10a41183bc23/youji-next/web/src/components/ui/button.tsx:52:146)
+    at AttachmentOpenButton (/workspace/scratch/10a41183bc23/youji-next/web/src/components/AttachmentLibrary/AttachmentLibraryPrimitives.tsx:128:58)
+    at /workspace/scratch/10a41183bc23/youji-next/web/src/components/AttachmentLibrary/AttachmentFileRows.tsx:155:53
+    at Array.map (<anonymous>)
+    at AttachmentDocumentRows (/workspace/scratch/10a41183bc23/youji-next/web/src/components/AttachmentLibrary/AttachmentFileRows.tsx:91:19)
+
+ ✓ tests/attachment-library-source-link.test.tsx (3 tests) 277ms
+ ✓ tests/instance-access-query.test.tsx (2 tests) 353ms
+ ✓ tests/memo-body-compact.test.tsx (6 tests) 206ms
+ ✓ tests/invite-space-member-dialog.test.tsx (2 tests) 249ms
+ ✓ tests/i18n-locale-search.test.ts (8 tests) 268ms
+ ✓ tests/memo-related-settings.test.tsx (2 tests) 406ms
+     ✓ saves only the reaction list  364ms
+ ✓ tests/timeline-view-scope.test.tsx (17 tests) 269ms
+ ✓ tests/memo-record.test.tsx (10 tests) 224ms
+ ✓ tests/sidebar-row-grammar.test.tsx (5 tests) 333ms
+ ✓ tests/memo-editor-view.test.tsx (4 tests) 247ms
+ ✓ tests/memo-filter-context.test.tsx (4 tests) 255ms
+ ✓ tests/memo-editor-paste-files.test.tsx (1 test) 238ms
+ ✓ tests/root-layout-global-editor.test.tsx (2 tests) 276ms
+ ✓ tests/month-navigator.test.tsx (1 test) 175ms
+stderr | tests/memo-comment-section.test.tsx > MemoCommentSection > opens and focuses the existing comment editor through its sidebar handle
+The current testing environment is not configured to support act(...)
+
+ ✓ tests/memo-comment-section.test.tsx (3 tests) 215ms
+ ✓ tests/auth-page-layout.test.tsx (6 tests) 201ms
+ ✓ tests/live-memo-refresh.test.tsx (3 tests) 208ms
+ ✓ tests/basemap-layer-lifecycle.test.tsx (1 test) 216ms
+ ✓ tests/use-inline-image-upload.test.tsx (4 tests) 201ms
+ ✓ tests/date-filter-navigation.test.tsx (1 test) 174ms
+ ✓ tests/video-poster.test.tsx (3 tests) 174ms
+ ✓ tests/switch.test.tsx (1 test) 158ms
+ ✓ tests/auth-context-initialization.test.tsx (1 test) 248ms
+ ✓ tests/space-context.test.tsx (11 tests) 141ms
+ ✓ tests/space-feed-pages.test.tsx (1 test) 191ms
+ ✓ tests/memo-pinned-mark.test.tsx (1 test) 192ms
+ ✓ tests/memo-parent-placeholder.test.tsx (2 tests) 169ms
+ ✓ tests/focus-mode-exit-button.test.tsx (2 tests) 166ms
+ ✓ tests/user-stats-filter-queries.test.tsx (2 tests) 136ms
+ ✓ tests/memo-comments-pagination.test.tsx (1 test) 134ms
+ ✓ tests/search-match-highlight.test.tsx (7 tests) 117ms
+ ✓ tests/code-highlight.test.ts (6 tests) 51ms
+ ✓ tests/memo-editor-cache.test.ts (11 tests) 16ms
+ ✓ tests/memo-space-badge.test.tsx (8 tests) 84ms
+ ✓ tests/memo-content-security.test.ts (16 tests) 101ms
+ ✓ tests/column-grid-untrapped.test.tsx (3 tests) 90ms
+ ✓ tests/attachment-document-rows.test.tsx (5 tests) 65ms
+ ✓ tests/sign-in-page.test.tsx (2 tests) 145ms
+ ✓ tests/map-utils.test.tsx (3 tests) 37ms
+ ✓ tests/guards.test.tsx (9 tests) 72ms
+ ✓ tests/column-grid.test.tsx (5 tests) 102ms
+Not implemented: Window's scrollTo() method
+ ✓ tests/scroll-restoration.test.tsx (2 tests) 79ms
+ ✓ tests/map-canvas.test.tsx (6 tests) 68ms
+ ✓ tests/placeholder-component.test.tsx (4 tests) 72ms
+ ✓ tests/user-avatar.test.tsx (2 tests) 59ms
+ ✓ tests/legacy-profile-redirect.test.tsx (3 tests) 54ms
+ ✓ tests/use-memo-init.test.tsx (8 tests) 59ms
+ ✓ tests/app-branding.test.tsx (5 tests) 56ms
+ ✓ tests/memo-action-navigation.test.tsx (7 tests) 58ms
+ ✓ tests/visibility-space.test.tsx (9 tests) 61ms
+ ✓ tests/memo-panel-list.test.tsx (4 tests) 43ms
+ ✓ tests/quick-find.test.ts (22 tests) 19ms
+ ✓ tests/filtered-memo-stats.test.ts (8 tests) 49ms
+ ✓ tests/location-picker.test.tsx (3 tests) 56ms
+stderr | tests/memo-editor-upload-retry.test.tsx > useMemoSave after a failed save > keeps uploaded files on the draft so a retry does not upload them again
+Error: quota exceeded
+    at Object.<anonymous> (/workspace/scratch/10a41183bc23/youji-next/web/tests/memo-editor-upload-retry.test.tsx:96:13)
+    at Object.Mock (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+spy@4.1.5/node_modules/@vitest/spy/dist/index.js:332:34)
+    at Object.save (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+spy@4.1.5/node_modules/@vitest/spy/dist/index.js:332:34)
+    at Object.current (/workspace/scratch/10a41183bc23/youji-next/web/src/components/MemoEditor/edit/hooks/useMemoSave.ts:107:40)
+    at /workspace/scratch/10a41183bc23/youji-next/web/tests/memo-editor-upload-retry.test.tsx:104:34
+    at /workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_01f2c7bab43719bd0469ec1c0554baf5/node_modules/@testing-library/react/dist/act-compat.js:47:24
+    at process.env.NODE_ENV.exports.act (/workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/react@19.2.6/node_modules/react/cjs/react.development.js:814:22)
+    at Proxy.<anonymous> (/workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_01f2c7bab43719bd0469ec1c0554baf5/node_modules/@testing-library/react/dist/act-compat.js:46:25)
+    at /workspace/scratch/10a41183bc23/youji-next/web/tests/memo-editor-upload-retry.test.tsx:104:11
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+
+stderr | tests/memo-editor-upload-retry.test.tsx > useMemoSave after a failed save > leaves the draft alone when nothing uploaded
+Error: offline
+    at /workspace/scratch/10a41183bc23/youji-next/web/tests/memo-editor-upload-retry.test.tsx:119:38
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:///workspace/scratch/10a41183bc23/youji-next/web/node_modules/.pnpm/@vitest+runner@4.1.5/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64
+
+ ✓ tests/memo-editor-upload-retry.test.tsx (3 tests) 39ms
+ ✓ tests/use-auto-save.test.tsx (6 tests) 39ms
+ ✓ tests/use-attachment-transcription.test.tsx (6 tests) 53ms
+ ✓ tests/view-context-columns.test.tsx (5 tests) 32ms
+ ✓ tests/user-theme.test.tsx (2 tests) 46ms
+ ✓ tests/near-viewport.test.tsx (1 test) 36ms
+ ✓ tests/moteary-sources.test.ts (34 tests) 48ms
+ ✓ tests/sidebar-width.test.tsx (13 tests) 42ms
+ ✓ tests/memo-export.test.ts (7 tests) 47ms
+ ✓ tests/password-sign-in-form.test.tsx (1 test) 65ms
+ ✓ tests/calendar-day-model.test.ts (21 tests) 45ms
+ ✓ tests/home-loading-boundary.test.tsx (3 tests) 50ms
+ ✓ tests/user-locale-direction.test.tsx (1 test) 30ms
+ ✓ tests/hooks.test.tsx (8 tests) 55ms
+ ✓ tests/overflow-title.test.tsx (2 tests) 42ms
+ ✓ tests/moteary-pdf-import.test.ts (8 tests | 1 skipped) 37ms
+ ✓ tests/media-metadata-exif-fixture.test.ts (1 test) 27ms
+ ✓ tests/markdown-manipulation.test.ts (7 tests) 36ms
+ ✓ tests/use-memo-suggestions.test.tsx (2 tests) 26ms
+ ✓ tests/theme.test.ts (2 tests) 33ms
+ ✓ tests/map-model.test.ts (8 tests) 30ms
+ ✓ tests/device-preferences.test.tsx (3 tests) 26ms
+ ✓ tests/managed-attachment.test.ts (14 tests) 30ms
+stderr | tests/media-metadata-service.test.ts > mediaMetadataService > falls back to browser dimensions when EXIF parsing fails
+Media metadata extraction failed; continuing without metadata.
+
+stderr | tests/media-metadata-service.test.ts > mediaMetadataService > times out video extraction, revokes the object URL, and returns no metadata
+Media metadata extraction failed; continuing without metadata.
+
+ ✓ tests/media-metadata-service.test.ts (7 tests) 25ms
+ ✓ tests/memo-share-image.test.ts (10 tests) 26ms
+ ✓ tests/router-config.test.tsx (13 tests) 16ms
+ ✓ tests/map-routes.test.ts (4 tests) 11ms
+ ✓ tests/sso.test.ts (3 tests) 22ms
+ ✓ tests/memo-view-locales.test.ts (46 tests) 16ms
+ ✓ tests/memo-suggestions.test.ts (59 tests) 20ms
+ ✓ tests/i18n-document-direction.test.ts (5 tests) 26ms
+ ✓ tests/memo-views.test.ts (12 tests) 10ms
+ ✓ tests/transcription-service.test.ts (6 tests) 23ms
+ ✓ tests/app-sidebar-routes.test.ts (43 tests) 18ms
+ ✓ tests/memo-editor-space-move.test.ts (4 tests) 16ms
+ ✓ tests/memo-outline-headings.test.ts (5 tests) 15ms
+ ✓ tests/draft-key.test.ts (4 tests) 7ms
+ ✓ tests/upload-media-metadata.test.ts (6 tests) 13ms
+ ✓ tests/memo-card-height.test.ts (3 tests) 14ms
+ ✓ tests/memo-editor-relations.test.ts (5 tests) 18ms
+ ✓ tests/tag-tree.test.ts (2 tests) 20ms
+ ✓ tests/calendar-paths.test.ts (11 tests) 12ms
+ ✓ tests/calendar-month-days.test.ts (4 tests) 11ms
+ ✓ tests/markdown-task-actions.test.ts (6 tests) 11ms
+ ✓ tests/mention-extraction.test.ts (3 tests) 11ms
+ ✓ tests/derive-default-create-time.test.ts (11 tests) 7ms
+ ✓ tests/auth-redirect.test.ts (7 tests) 10ms
+ ✓ tests/editor-tag-autocomplete.test.ts (21 tests) 11ms
+ ✓ tests/tag-grammar.test.ts (27 tests) 12ms
+ ✓ tests/media-metadata-display.test.ts (2 tests) 8ms
+ ✓ tests/inline-image-upload-files.test.ts (3 tests) 8ms
+ ✓ tests/oauth.test.ts (2 tests) 8ms
+ ✓ tests/space-settings-shell.test.ts (2 tests) 6ms
+ ✓ tests/hoist-new-memo.test.ts (5 tests) 5ms
+ ✓ tests/attachment-urls.test.ts (14 tests) 8ms
+ ✓ tests/usage-limit-errors.test.ts (6 tests) 9ms
+ ✓ tests/tag.test.ts (4 tests) 9ms
+ ✓ tests/error-info.test.ts (3 tests) 9ms
+ ✓ tests/memo-view-navigation.test.ts (24 tests) 9ms
+ ✓ tests/tag-unicode-parity.test.ts (1 test) 16ms
+ ✓ tests/calendar-grid-rows.test.ts (8 tests) 8ms
+ ✓ tests/redirect-safety.test.ts (14 tests) 8ms
+ ✓ tests/media-item-preview-metadata.test.ts (1 test) 5ms
+ ✓ tests/search-match.test.ts (8 tests) 7ms
+ ✓ tests/release-version.test.ts (21 tests) 8ms
+ ✓ tests/memo-share-attachment-links.test.ts (4 tests) 7ms
+ ✓ tests/username.test.ts (21 tests) 6ms
+ ✓ tests/configuration-queries.test.ts (2 tests) 5ms
+ ✓ tests/can-manage-memo.test.ts (3 tests) 4ms
+ ✓ tests/error.test.ts (2 tests) 5ms
+ ✓ tests/space-display.test.ts (3 tests) 5ms
+ ✓ tests/calendar-today-path.test.ts (3 tests) 6ms
+ ✓ tests/column-count.test.ts (4 tests) 5ms
+ ✓ tests/activity-calendar-tooltip.test.ts (3 tests) 7ms
+ ✓ tests/editor-inline-image-validation.test.ts (2 tests) 5ms
+ ✓ tests/column-grid-planner.test.ts (2 tests) 5ms
+
+ Test Files  199 passed (199)
+      Tests  1749 passed | 2 skipped (1751)
+   Start at  18:59:48
+   Duration  387.46s (transform 12.78s, setup 30.47s, import 88.63s, tests 71.16s, environment 150.62s)

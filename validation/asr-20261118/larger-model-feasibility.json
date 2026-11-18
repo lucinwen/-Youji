@@ -1,0 +1,35 @@
+{
+  "status": "metadata-only; neither model downloaded or executed",
+  "resource_snapshot": {
+    "memory_total_GiB": 9.7,
+    "memory_available_GiB": 2.7,
+    "swap": "none",
+    "tmp_filesystem": "tmpfs",
+    "tmp_size_GiB": 4.9,
+    "tmp_available_GiB": 2.5,
+    "cgroup_memory_limit": "not readable at standard memory.max path; not inferred"
+  },
+  "models": [
+    {
+      "repo": "Systran/faster-whisper-base",
+      "revision": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66",
+      "license": "MIT declared in model metadata; upstream OpenAI Whisper code/weights MIT",
+      "model_bytes": 145217532,
+      "model_lfs_sha256": "d01c3014881c9c6f3133c182f3d2887eb6ca1c789a7538c5c007196857a0a6a9",
+      "source": "https://huggingface.co/api/models/Systran/faster-whisper-base/tree/ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66",
+      "inference_memory": "Not measured; smaller next-step candidate, not an assurance of quality or resource fit"
+    },
+    {
+      "repo": "Systran/faster-whisper-small",
+      "revision": "536b0662742c02347bc0e980a01041f333bce120",
+      "license": "MIT declared in model metadata; upstream OpenAI Whisper code/weights MIT",
+      "model_bytes": 483546902,
+      "model_lfs_sha256": "3e305921506d8872816023e4c273e75d2419fb89b24da97b4fe7bce14170d671",
+      "source": "https://huggingface.co/api/models/Systran/faster-whisper-small/tree/536b0662742c02347bc0e980a01041f333bce120",
+      "external_reference": "faster-whisper README reports CPU int8 small at 1477 MB RAM on a different setup: 8 threads, i7-12700K, faster-whisper v1.1.0, 13-minute sample",
+      "external_source": "https://github.com/SYSTRAN/faster-whisper#small-model-on-cpu",
+      "inference_memory": "Not measured locally; do not equate disk weight size with peak RSS"
+    }
+  ],
+  "assessment": "Do not start a larger-model download during shared HTTP inference. /tmp uses RAM; downloaded weights consume memory alongside model RSS. Base is the more conservative next evaluation candidate. Small may fit alone but has tight unmeasured peak margin and no swap, so requires fresh resource checks and serialized execution. No claim of improved Chinese accuracy without testing."
+}

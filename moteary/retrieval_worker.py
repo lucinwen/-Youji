@@ -16,6 +16,51 @@ FILES = {
 }
 
 
+
+def restrict_native_network():
+    """Deny socket creation and socket-specific calls on Linux x86_64.
+
+    Launch only with pipe stdio and no inherited network descriptors (as the
+    Go handler does). This grants no capabilities and is not a filesystem or
+    complete process sandbox. Unsupported platforms fail closed in the CLI.
+    """
+    import ctypes
+    import errno
+    import platform
+    import stat
+    if sys.platform != 'linux' or platform.machine() not in ('x86_64', 'AMD64'):
+        raise RuntimeError('network_sandbox_unavailable')
+    libc = ctypes.CDLL(None, use_errno=True)
+    bad_stdio = False
+    for descriptor in range(3):
+        if stat.S_ISSOCK(os.fstat(descriptor).st_mode):
+            os.close(descriptor)
+            bad_stdio = True
+    # A launcher or native parent library may leave non-CLOEXEC descriptors.
+    # close_range requires Linux >= 5.9; absence or policy denial fails closed.
+    if libc.syscall(436, ctypes.c_uint(3), ctypes.c_uint(0xFFFFFFFF), 0) != 0:
+        raise OSError(ctypes.get_errno(), 'descriptor_isolation_unavailable')
+    if bad_stdio:
+        raise RuntimeError('socket_stdio_rejected')
+    class Filter(ctypes.Structure):
+        _fields_ = [('code', ctypes.c_ushort), ('jt', ctypes.c_ubyte),
+                    ('jf', ctypes.c_ubyte), ('k', ctypes.c_uint32)]
+    class Program(ctypes.Structure):
+        _fields_ = [('length', ctypes.c_ushort), ('filter', ctypes.POINTER(Filter))]
+    deny = 0x00050000 | errno.EPERM
+    # Verify syscall architecture; reject x32 and io_uring alternate paths.
+    rules = [(0x20, 0, 0, 4), (0x15, 1, 0, 0xC000003E), (0x06, 0, 0, 0x80000000),
+             (0x20, 0, 0, 0), (0x35, 0, 1, 0x40000000), (0x06, 0, 0, deny)]
+    for number in (41, 42, 43, 44, 45, 46, 47, 49, 50, 53, 101, 288, 299, 307, 310, 311, 425, 426, 427, 434, 438, *range(512, 548)):
+        rules.extend([(0x15, 0, 1, number), (0x06, 0, 0, deny)])
+    rules.append((0x06, 0, 0, 0x7FFF0000))
+    filters = (Filter * len(rules))(*(Filter(*rule) for rule in rules))
+    program = Program(len(rules), filters)
+    libc = ctypes.CDLL(None, use_errno=True)
+    if libc.prctl(38, 1, 0, 0, 0) != 0 or libc.prctl(22, 2, ctypes.byref(program), 0, 0) != 0:
+        raise OSError(ctypes.get_errno(), 'network_sandbox_unavailable')
+
+
 def verify_model(directory):
     path = Path(directory)
     for name, digest in FILES.items():
@@ -115,6 +160,7 @@ def main():
     socket.socket = no_network
     socket.create_connection = no_network
     try:
+        restrict_native_network()
         import resource
         resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
         resource.setrlimit(resource.RLIMIT_CPU, (50, 50))
@@ -128,7 +174,10 @@ def main():
         print(json.dumps(result, ensure_ascii=False, allow_nan=False))
     except Exception:
         # No raw input, paths, model errors or original content in logs.
-        print(json.dumps({'error': 'retrieval_unavailable'}))
+        try:
+            print(json.dumps({'error': 'retrieval_unavailable'}))
+        except OSError:
+            pass
         return 2
     return 0
 

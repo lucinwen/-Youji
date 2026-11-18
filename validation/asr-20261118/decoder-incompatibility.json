@@ -1,0 +1,10 @@
+{
+  "status": "failed-before-decoding",
+  "faster_whisper": "1.2.1",
+  "av": "19.0.2",
+  "error": "TypeError: open() got an unexpected keyword argument 'metadata_errors'",
+  "stage": "faster_whisper.audio.decode_audio -> av.open",
+  "model_loaded_locally": true,
+  "generator_consumed": false,
+  "action": "Pin PyAV 16.0.1 in isolated /tmp evaluation venv; do not modify product dependencies."
+}

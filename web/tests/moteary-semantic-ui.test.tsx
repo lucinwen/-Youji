@@ -54,8 +54,20 @@ describe("Semantic retrieval opt-in UI", () => {
     expect(screen.getByRole("link", { name: /打开原记录/ })).toHaveAttribute("href", "/memos/one");
     expect(screen.getByText(/候选已截断/)).toBeInTheDocument();
     expect(auth).toHaveBeenCalledTimes(2);
-    expect(JSON.parse(fetchMock.mock.calls[1][1].body)).toEqual({ query: "寻找以前的想法", filter: "creator == alice" });
+    expect(JSON.parse(fetchMock.mock.calls[1][1].body)).toEqual({ query: "寻找以前的想法", filter: "creator == alice", offset: 0 });
     expect(fetchMock.mock.calls[1][1].headers.Authorization).toBe("Bearer synthetic-token");
+  });
+  it.each([
+    [429, "本地语义模型正忙"],
+    [503, "本地语义模型未配置或校验未通过"],
+  ] as const)("explains processor status %s without submitting the query", async (status, message) => {
+    fetchMock.mockResolvedValueOnce(response({}, status));
+    mount();
+    expect(screen.getByRole("heading", { name: "相关片段候选 · 实验功能" })).toBeInTheDocument();
+    expect(screen.getByText(/跨语言查询可能漏找/)).toBeInTheDocument();
+    submit();
+    expect(await screen.findByRole("alert")).toHaveTextContent(message);
+    expect(fetchMock).toHaveBeenCalledOnce();
   });
   it("keeps errors distinct from empty successful results", async () => {
     fetchMock.mockResolvedValueOnce(response({ available: true })).mockResolvedValueOnce(response({}, 500));
@@ -115,5 +127,111 @@ describe("Semantic retrieval opt-in UI", () => {
     });
     expect(screen.queryByText(result.hits[0].excerpt)).not.toBeInTheDocument();
     if (reason === "scope" || reason === "account") expect(screen.getByLabelText("语义找回描述")).toHaveValue("");
+  });
+  it("labels every result as candidates and safely highlights only a literal query", async () => {
+    fetchMock.mockResolvedValueOnce(response({ available: true })).mockResolvedValueOnce(response(result));
+    mount();
+    fireEvent.change(screen.getByLabelText("语义找回描述"), { target: { value: result.hits[0].excerpt } });
+    fireEvent.click(screen.getByRole("button", { name: "尝试语义找回" }));
+    expect(await screen.findByText("这些是相近候选，可能没有答案。请核对原文。")).toBeInTheDocument();
+    expect(screen.getByText(result.hits[0].excerpt).tagName).toBe("MARK");
+    expect(document.querySelector("img")).toBeNull();
+    expect(screen.getByText("模型相似匹配 · 请核对原文")).toBeInTheDocument();
+  });
+  it.each([0, 5])("does not present an empty batch with total %s as an AI no-answer judgment", async (total) => {
+    fetchMock
+      .mockResolvedValueOnce(response({ available: true }))
+      .mockResolvedValueOnce(response({ ...result, hits: [], total, scanned: total }));
+    mount();
+    submit();
+    await waitFor(() =>
+      expect(screen.getByRole("status")).toHaveTextContent(total === 0 ? "当前范围没有候选记录" : "本批没有可比较正文或没有返回候选"),
+    );
+    expect(screen.getByRole("status")).toHaveTextContent("不是模型判断没有答案");
+  });
+  const page = {
+    ...result,
+    snapshot: "snapshot-one",
+    nextOffset: 100,
+    scanned: 100,
+    total: 150,
+    candidateTruncated: true,
+    passageTruncated: true,
+    skipped: 1,
+  };
+  it("continues the snapshot at nextOffset and replaces rather than aggregates old hits", async () => {
+    fetchMock
+      .mockResolvedValueOnce(response({ available: true }))
+      .mockResolvedValueOnce(response(page))
+      .mockResolvedValueOnce(response({ available: true }))
+      .mockResolvedValueOnce(
+        response({ ...page, nextOffset: undefined, scanned: 150, hits: [{ name: "memos/two", score: 0.7, excerpt: "older source" }] }),
+      );
+    mount();
+    submit();
+    fireEvent.click(await screen.findByRole("button", { name: "继续检索更早资料" }));
+    await screen.findByText("older source");
+    expect(JSON.parse(fetchMock.mock.calls[3][1].body)).toEqual({
+      query: "寻找以前的想法",
+      filter: "creator == alice",
+      offset: 100,
+      snapshot: "snapshot-one",
+    });
+    expect(screen.getByText(/本批覆盖 101 至 150/)).toBeInTheDocument();
+    expect(screen.queryByText(result.hits[0].excerpt)).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "继续检索更早资料" })).not.toBeInTheDocument();
+  });
+  it("discards pagination on snapshot conflict and restarts without the old token", async () => {
+    fetchMock
+      .mockResolvedValueOnce(response({ available: true }))
+      .mockResolvedValueOnce(response(page))
+      .mockResolvedValueOnce(response({ available: true }))
+      .mockResolvedValueOnce(response({}, 409))
+      .mockResolvedValueOnce(response({ available: true }))
+      .mockResolvedValueOnce(response(result));
+    mount();
+    submit();
+    fireEvent.click(await screen.findByRole("button", { name: "继续检索更早资料" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("从第一批重新开始");
+    expect(screen.queryByRole("button", { name: "继续检索更早资料" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "尝试语义找回" }));
+    await screen.findByText(result.hits[0].excerpt);
+    expect(JSON.parse(fetchMock.mock.calls[5][1].body)).toEqual({ query: "寻找以前的想法", filter: "creator == alice", offset: 0 });
+  });
+  it("ignores a cancelled next page and does not allow duplicate continuation requests", async () => {
+    let finish: ((value: Response) => void) | undefined;
+    fetchMock
+      .mockResolvedValueOnce(response({ available: true }))
+      .mockResolvedValueOnce(response(page))
+      .mockResolvedValueOnce(response({ available: true }))
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            finish = resolve;
+          }),
+      );
+    mount();
+    submit();
+    const next = await screen.findByRole("button", { name: "继续检索更早资料" });
+    fireEvent.click(next);
+    fireEvent.click(next);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(4));
+    const signal = fetchMock.mock.calls[3][1].signal;
+    fireEvent.click(screen.getByRole("button", { name: "取消语义找回" }));
+    expect(signal.aborted).toBe(true);
+    await act(async () => {
+      finish?.(response(page));
+    });
+    expect(screen.queryByText(result.hits[0].excerpt)).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "继续检索更早资料" })).not.toBeInTheDocument();
+  });
+  it("clears the previous page token immediately when the query changes", async () => {
+    fetchMock.mockResolvedValueOnce(response({ available: true })).mockResolvedValueOnce(response(page));
+    mount();
+    submit();
+    await screen.findByRole("button", { name: "继续检索更早资料" });
+    fireEvent.change(screen.getByLabelText("语义找回描述"), { target: { value: "different question" } });
+    expect(screen.queryByRole("button", { name: "继续检索更早资料" })).not.toBeInTheDocument();
+    expect(screen.queryByText(result.hits[0].excerpt)).not.toBeInTheDocument();
   });
 });
