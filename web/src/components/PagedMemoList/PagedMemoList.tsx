@@ -70,6 +70,7 @@ function useAutoFetchWhenNotScrollable({
   onFetchNext: () => Promise<unknown>;
 }) {
   const autoFetchTimeoutRef = useRef<number | null>(null);
+  const lifecycleRef = useRef(0);
   const enabledRef = useRef(enabled);
   enabledRef.current = enabled;
 
@@ -79,18 +80,20 @@ function useAutoFetchWhenNotScrollable({
   }, []);
 
   const checkAndFetchIfNeeded = useCallback(async () => {
+    const lifecycle = lifecycleRef.current;
     if (autoFetchTimeoutRef.current) {
       clearTimeout(autoFetchTimeoutRef.current);
     }
 
     await new Promise((resolve) => setTimeout(resolve, 200));
+    if (lifecycle !== lifecycleRef.current) return;
 
     const shouldFetch = enabledRef.current && !isPageScrollable() && hasNextPage && !isFetchingNextPage && memoCount > 0;
 
     if (shouldFetch) {
       await onFetchNext();
 
-      if (enabledRef.current) {
+      if (enabledRef.current && lifecycle === lifecycleRef.current) {
         autoFetchTimeoutRef.current = window.setTimeout(() => {
           void checkAndFetchIfNeeded();
         }, 500);
@@ -113,6 +116,7 @@ function useAutoFetchWhenNotScrollable({
 
   useEffect(() => {
     return () => {
+      lifecycleRef.current++;
       if (autoFetchTimeoutRef.current) {
         clearTimeout(autoFetchTimeoutRef.current);
       }

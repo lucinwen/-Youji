@@ -178,3 +178,15 @@ describe("source and local calendar retrieval", () => {
     }
   });
 });
+
+describe("PDF retrieval titles", () => {
+  it("shows original filename and page instead of code-fence markers", () => {
+    expect(getSourceTitle("# 有记 PDF 原件与页码索引\n\n原文件名：\n```\n合成资料.pdf\n```\n")).toBe("合成资料.pdf");
+    expect(getSourceTitle("# 有记 PDF 正文 · 第 2 页 / 段 1\n\n原文件名：\n````\n含`符号.pdf\n````\n")).toBe(
+      "含`符号.pdf · 第 2 页 / 段 1",
+    );
+  });
+  it("keeps incomplete provenance readable without guessing a filename", () => {
+    expect(getSourceTitle("# 有记 PDF 正文 · 第 3 页 / 段 1\n\n原文件名：")).toBe("PDF · 正文 · 第 3 页 / 段 1");
+  });
+});

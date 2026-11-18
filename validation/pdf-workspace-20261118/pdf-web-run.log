@@ -1,0 +1,22 @@
+{
+  "kind": "real protected parser/SQLite/HTTP plus actual TypeScript module; not browser E2E",
+  "checks": [
+    {
+      "check": "anonymous status/parse requests denied with existing gateway authentication",
+      "passed": true
+    },
+    {
+      "check": "authenticated real pypdf 7.1.1 parses Chinese/English pages and server computes original hash",
+      "passed": true
+    },
+    {
+      "check": "parse/preview and malformed rejection write no memo or attachment",
+      "passed": true
+    },
+    {
+      "check": "actual frontend PDF module against real parser/API: save, orphan reuse, repeat verification, keyword retrieval, cleanup",
+      "passed": true,
+      "returncode": 0
+    }
+  ]
+}

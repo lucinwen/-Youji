@@ -1,0 +1,11 @@
+{
+  "kind": "provided cloud browser against isolated local development server",
+  "status": "blocked",
+  "server": "Observed running on 127.0.0.1:5231 with a fresh synthetic SQLite directory",
+  "navigation": "http://127.0.0.1:5231",
+  "observedError": "net::ERR_CONNECTION_REFUSED",
+  "pageInteractions": 0,
+  "screenshots": 0,
+  "serverStopped": true,
+  "sandboxDisabled": false
+}

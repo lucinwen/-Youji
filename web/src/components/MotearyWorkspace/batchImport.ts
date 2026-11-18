@@ -179,7 +179,7 @@ export async function checkOtherEntry(item: BatchSource, signal?: AbortSignal): 
       throw new ImportQuotaError("无法完成跨入口原件查重，本项尚未上传。请检查登录与连接后重试。");
     }
     for (const memo of result.memos) {
-      if (/^memos\/(mw-|ml-)[a-zA-Z0-9_-]+$/.test(memo.name))
+      if (/^memos\/(mw-|ml-|mp-|mwp-)[a-zA-Z0-9_-]+$/.test(memo.name))
         throw new ImportQuotaError(
           `另一入口可能已保存相同原件：${memo.name}。本项尚未上传，请打开原记录核对并使用原入口继续；不会自动合并或删除。`,
         );

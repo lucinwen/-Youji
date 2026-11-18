@@ -156,3 +156,40 @@ MOTEARY_BINARY=./build/youji .venv-pdf/bin/python tests/moteary/run_pdf_e2e.py
 最终回执只确认计划 API 记录已删除/不存在，**不认证存储物理擦除**，也不清理由历史失败上传遗留的未关联附件。上游数据库删除成功但存储清理失败时，重试可能看到 404；这类存储错误需要管理员检查。此入口仅覆盖本版 PDF 导入，不替代旧长文导入的全套清理功能。
 
 上传原件成功但 memo 写入结果不确定时，错误现在列出准确 `attachments/...` 和目标 `memos/...`，以便在附件管理中核查；不要删除可能已关联的原件。自动复用/自动孤儿清理尚未实现，失败后重试仍可能新增一个可定位的未关联附件。
+
+## 网页 PDF 工作流（2026-11-18，基于 PR #7 继续）
+
+现在可在 `/moteary` 的「把 PDF 变成可找回的资料」面板直接选择原件、主动解析、逐页预览、保存、核验重试和预览清理；不再要求每次导入运行命令。初次启用由本机管理员完成：
+
+```sh
+python -m venv .venv-pdf
+.venv-pdf/bin/pip install -r moteary/requirements-pdf.txt
+# 两个路径均须为绝对路径；Python 保留 venv 路径，不替换为系统解释器
+export YOUJI_PDF_PYTHON="$PWD/.venv-pdf/bin/python"
+export YOUJI_PDF_WORKER="$PWD/moteary/pdf_worker.py"
+pnpm --dir web release
+go build -buildvcs=false -ldflags '-X github.com/usememos/memos/internal/version.Version=26.11.0' -o build/youji ./cmd/memos
+MOTEARY_BINARY="$PWD/build/youji" ./moteary/run-local.sh
+```
+
+缺少配置或可用解析器时，网页明确提示未启用；不会悄悄转用云服务。请求使用现有登录鉴权与同源 API。PDF 字节会发送到**当前有记服务器**进行本地解析，因此须信任该实例；“本地”不是指全部在浏览器内处理。解析阶段仅内存处理，不创建 Memo/附件；每实例同时最多一项，忙时提示稍后重试；取消请求会中止子进程，服务端另有时间、输入和输出限制。
+
+演示只用仓库 `tests/moteary/fixtures/synthetic-chinese.pdf`：
+
+1. 登录合成账户，打开工作台，选择 PDF 与分类，点击「本地解析并预览」。
+2. 展开第 1、2 页，核对中文与英文正文；扫描无文字页明确说明，不冒充 OCR。
+3. 点击「保存原件与可检索正文」，观察逐项结果，打开原件记录与页段。原件 ZIP 与正文仅自己可见；当前空间/筛选可能隐藏它，直达链接仍可用。
+4. 用关键词「中文检索水杉」及「文件」类型找回页段，卡片显示文件名、页码和命中上下文。再次保存会核验原文与原件，不覆盖人工修改。
+5. 清理前点击「检查这份导入的清理范围」。核对计划记录与未关联附件 ID，明确确认包含所有评论（含归档/嵌套）后再删除。新增未确认上传会要求重新预览。
+
+网页 PDF 专用归档名包含账户派生的记录 ID。写入失败后重试会查同账户、同名、未关联的原件，校验内层文件 SHA 后复用；响应丢失后也可重新找到已提交附件。多个候选时停止保存，先显示清理范围。已确认未关联附件可显式清理，不根据可编辑正文链接决定目标，不抢已关联附件。这是**网页 PDF 流程**的改进，不代表旧 CLI/普通批量已实现自动复用。
+
+刷新后重新选择相同文件名、字节及分类可重新核验；改变文件或分类不会清理此前上传。没有服务端持久任务队列或事务式 source-group；跨客户端并发仍可能产生额外上传，核验与删除间仍无 CAS。删除前暂停其他设备编辑；当前入口不证明备份/对象存储物理擦除。未修改的原件与正文才能自动核验清理，修改过的记录需人工处理。
+
+真实模块/API 验收（不等同浏览器点击）：
+
+```sh
+YOUJI_PDF_PYTHON="$PWD/.venv-pdf/bin/python" python tests/moteary/run_pdf_web_e2e.py
+```
+
+本轮证据、失败与未验收项见 `PDF_WORKSPACE_QA_20261118.md`。

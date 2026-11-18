@@ -1,0 +1,288 @@
+{
+  "syntheticOnly": true,
+  "tests": [
+    {
+      "check": "MD import and idempotent retry",
+      "passed": true
+    },
+    {
+      "check": "memo is PRIVATE",
+      "passed": true
+    },
+    {
+      "check": "MD archived original exact byte SHA256",
+      "passed": true
+    },
+    {
+      "check": "anonymous cannot read private memo",
+      "passed": true,
+      "detail": {
+        "status": 401
+      }
+    },
+    {
+      "check": "anonymous cannot read private original",
+      "passed": true,
+      "detail": {
+        "status": 401
+      }
+    },
+    {
+      "check": "Chinese keyword and source tag retrieve original",
+      "passed": true
+    },
+    {
+      "check": "Scoped Chinese search returns owned original",
+      "passed": true
+    },
+    {
+      "check": "Category search does not leak other category",
+      "passed": true
+    },
+    {
+      "check": "Quoted search cannot broaden CEL scope",
+      "passed": true
+    },
+    {
+      "check": "UI exact account scoped list query",
+      "passed": true,
+      "detail": {
+        "orderBy": "create_time desc"
+      }
+    },
+    {
+      "check": "21KB Chinese memo rejected against real 8192-byte quota before upload",
+      "passed": true
+    },
+    {
+      "check": "Quota rejection leaves attachment count unchanged",
+      "passed": true
+    },
+    {
+      "check": "Quota rejection leaves memo count unchanged",
+      "passed": true
+    },
+    {
+      "check": "Actual UI guard rejects previously CLI imported SHA",
+      "passed": true
+    },
+    {
+      "check": "CLI rejects possible UI-origin duplicate without claiming equivalence",
+      "passed": true
+    },
+    {
+      "check": "Cross-entry conflict writes no memo or attachment",
+      "passed": true
+    },
+    {
+      "check": "long text interruption reports partial state",
+      "passed": true
+    },
+    {
+      "check": "long text resume verifies prefix and completes remaining parts",
+      "passed": true
+    },
+    {
+      "check": "long text full retry creates no duplicate records",
+      "passed": true
+    },
+    {
+      "check": "long index and every part are private",
+      "passed": true
+    },
+    {
+      "check": "long chunks reconstruct exact UTF8 source without truncation",
+      "passed": true
+    },
+    {
+      "check": "long index archive preserves full original SHA256",
+      "passed": true
+    },
+    {
+      "check": "long text chunks retrievable with account scoped keyword",
+      "passed": true
+    },
+    {
+      "check": "batch CLI first run exits successfully",
+      "passed": true
+    },
+    {
+      "check": "batch receipt has two confirmed imports",
+      "passed": true
+    },
+    {
+      "check": "batch sources are actually PRIVATE",
+      "passed": true
+    },
+    {
+      "check": "batch retry revalidates remote originals",
+      "passed": true
+    },
+    {
+      "check": "batch receipts contain no credentials",
+      "passed": true
+    },
+    {
+      "check": "batch changed source stops without overwrite",
+      "passed": true
+    },
+    {
+      "check": "JPEG archived original byte preservation",
+      "passed": true,
+      "detail": {
+        "beforeBytes": 686,
+        "afterBytes": 686,
+        "archiveBytes": 828,
+        "originalReportedSaved": "saved"
+      }
+    },
+    {
+      "check": "JPEG idempotent retry",
+      "passed": true
+    },
+    {
+      "check": "Unknown-extension original byte preservation",
+      "passed": true,
+      "detail": {
+        "beforeBytes": 686,
+        "afterBytes": 686
+      }
+    },
+    {
+      "check": "synthetic-paper.pdf is PRIVATE with not-run processing",
+      "passed": true
+    },
+    {
+      "check": "synthetic-paper.pdf findable by saved filename",
+      "passed": true
+    },
+    {
+      "check": "synthetic-paper.pdf no parsed body invented",
+      "passed": true
+    },
+    {
+      "check": "synthetic-paper.pdf binary internal marker not falsely searchable",
+      "passed": true
+    },
+    {
+      "check": "synthetic-paper.pdf exact original retrieved",
+      "passed": true
+    },
+    {
+      "check": "synthetic-lecture.wav is PRIVATE with not-run processing",
+      "passed": true
+    },
+    {
+      "check": "synthetic-lecture.wav findable by saved filename",
+      "passed": true
+    },
+    {
+      "check": "synthetic-lecture.wav no parsed body invented",
+      "passed": true
+    },
+    {
+      "check": "synthetic-lecture.wav binary internal marker not falsely searchable",
+      "passed": true
+    },
+    {
+      "check": "synthetic-lecture.wav exact original retrieved",
+      "passed": true
+    },
+    {
+      "check": "other account cannot read private memo",
+      "passed": true,
+      "detail": {
+        "status": 403
+      }
+    },
+    {
+      "check": "other account cannot read private original archive",
+      "passed": true,
+      "detail": {
+        "status": 403
+      }
+    },
+    {
+      "check": "other account cannot fetch binary material archive",
+      "passed": true
+    },
+    {
+      "check": "other account cannot fetch binary material archive",
+      "passed": true
+    },
+    {
+      "check": "other account cannot read long record memos/ml-ccefdb9c426b94c2d89aa49db6d9e0",
+      "passed": true
+    },
+    {
+      "check": "other account cannot read long record memos/mc-756d253e87773036a92beffddc61e7",
+      "passed": true
+    },
+    {
+      "check": "other account cannot read long record memos/mc-ff6121617cb0f51c1efe1c6020c0a4",
+      "passed": true
+    },
+    {
+      "check": "other account cannot read long record memos/mc-1f8d0645eb6f96d02b238050e9f35f",
+      "passed": true
+    },
+    {
+      "check": "other account cannot read long record memos/mc-aa81f6559a5150b840ca3f32679c5f",
+      "passed": true
+    },
+    {
+      "check": "other account cannot read long record memos/mc-23811f29aa820232d74a9dcba74705",
+      "passed": true
+    },
+    {
+      "check": "other account cannot read long record memos/mc-f9d6421dd52a424a030218fcdaf1e6",
+      "passed": true
+    },
+    {
+      "check": "other account cannot download long original",
+      "passed": true
+    },
+    {
+      "check": "other account can independently import identical long source",
+      "passed": true
+    },
+    {
+      "check": "export contains full long original archive",
+      "passed": true
+    },
+    {
+      "check": "exported long original exact bytes",
+      "passed": true
+    },
+    {
+      "check": "upstream export includes original archive",
+      "passed": true
+    },
+    {
+      "check": "exported original exact SHA256",
+      "passed": true
+    },
+    {
+      "check": "restart preserves exact original and replay identity",
+      "passed": true
+    },
+    {
+      "check": "restart preserves archived JPEG and replay identity",
+      "passed": true
+    },
+    {
+      "check": "restart verifies complete long text and original",
+      "passed": true
+    },
+    {
+      "check": "long text refuses to overwrite manual edits",
+      "passed": true
+    },
+    {
+      "check": "public scope mutation rejected on retry",
+      "passed": true
+    }
+  ],
+  "passed": 64,
+  "failed": 0
+}

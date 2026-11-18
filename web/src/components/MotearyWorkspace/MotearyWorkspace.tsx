@@ -27,6 +27,7 @@ import { State } from "@/types/proto/api/common_pb";
 import { type Memo, Visibility } from "@/types/proto/api/memo_service_pb";
 import BatchImport from "./BatchImport";
 import OriginalAudioPreview, { getOriginalAudio } from "./OriginalAudioPreview";
+import PDFImport from "./PDFImport";
 import {
   buildCaptureStarter,
   buildSourceFilter,
@@ -223,6 +224,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
           </aside>
         </section>
 
+        <PDFImport key={`pdf:${userName}`} userName={userName} onSaved={() => void query.refetch()} />
         <BatchImport
           key={userName}
           userName={userName}

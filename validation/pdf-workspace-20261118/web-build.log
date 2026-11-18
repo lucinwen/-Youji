@@ -1,0 +1,286 @@
+$ vite build --mode release --outDir=../server/frontend/dist --emptyOutDir
+vite v8.0.11 building client environment for release...
+[2K
+transforming...Found 1 warning while optimizing generated CSS:
+
+[2m│     color: var(--foreground);[22m
+[2m│   }[22m
+[2m│[22m   ::highlight(memo-search-match) {
+[2m┆[22m               [33m[2m^--[22m 'highlight' is not recognized as a valid pseudo-element. Did you mean ':highlight' (pseudo-class) or is this a typo?[39m
+[2m┆[22m
+[2m│     background-color: var(--warning);[22m
+[2m│     @supports (color: color-mix(in lab, red, red)) {[22m
+
+✓ 3684 modules transformed.
+[lightningcss minify] 'highlight' is not recognized as a valid pseudo-element. Did you mean ':highlight' (pseudo-class) or is this a typo?
+1  |  /*! tailwindcss v4.2.4 | MIT License | https://tailwindcss.com */
+2  |  ...color:var(--background);color:var(--foreground)}::highlight(memo-search-match){background-color:var(--warning)}@su...
+   |                                                                 ^
+3  |
+[lightningcss minify] 'highlight' is not recognized as a valid pseudo-element. Did you mean ':highlight' (pseudo-class) or is this a typo?
+1  |  /*! tailwindcss v4.2.4 | MIT License | https://tailwindcss.com */
+2  |  ...)}@supports (color:color-mix(in lab, red, red)){::highlight(memo-search-match){background-color:color-mix(in oklch...
+   |                                                                 ^
+3  |
+rendering chunks...
+computing gzip size...
+../server/frontend/dist/index.html                                         3.73 kB │ gzip:   1.06 kB
+../server/frontend/dist/assets/KaTeX_Size3-Regular-CTq5MqoE.woff           4.42 kB
+../server/frontend/dist/assets/KaTeX_Size4-Regular-Dl5lxZxV.woff2          4.92 kB
+../server/frontend/dist/assets/KaTeX_Size2-Regular-Dy4dx90m.woff2          5.20 kB
+../server/frontend/dist/assets/KaTeX_Size1-Regular-mCD8mA8B.woff2          5.46 kB
+../server/frontend/dist/assets/KaTeX_Size4-Regular-BF-4gkZK.woff           5.98 kB
+../server/frontend/dist/assets/KaTeX_Size2-Regular-oD1tc_U0.woff           6.18 kB
+../server/frontend/dist/assets/KaTeX_Size1-Regular-C195tn64.woff           6.49 kB
+../server/frontend/dist/assets/KaTeX_Caligraphic-Regular-Di6jR-x-.woff2    6.90 kB
+../server/frontend/dist/assets/KaTeX_Caligraphic-Bold-Dq_IR9rO.woff2       6.91 kB
+../server/frontend/dist/assets/KaTeX_Size3-Regular-DgpXs0kz.ttf            7.58 kB
+../server/frontend/dist/assets/KaTeX_Caligraphic-Regular-CTRA-rTL.woff     7.65 kB
+../server/frontend/dist/assets/KaTeX_Caligraphic-Bold-BEiXGLvX.woff        7.71 kB
+../server/frontend/dist/assets/KaTeX_Script-Regular-D3wIWfF6.woff2         9.64 kB
+../server/frontend/dist/assets/KaTeX_SansSerif-Regular-DDBCnlJ7.woff2     10.34 kB
+../server/frontend/dist/assets/KaTeX_Size4-Regular-DWFBv043.ttf           10.36 kB
+../server/frontend/dist/assets/KaTeX_Script-Regular-D5yQViql.woff         10.58 kB
+../server/frontend/dist/assets/KaTeX_Fraktur-Regular-CTYiF6lA.woff2       11.31 kB
+../server/frontend/dist/assets/KaTeX_Fraktur-Bold-CL6g_b3V.woff2          11.34 kB
+../server/frontend/dist/assets/KaTeX_Size2-Regular-B7gKUWhC.ttf           11.50 kB
+../server/frontend/dist/assets/KaTeX_SansSerif-Italic-C3H0VqGB.woff2      12.02 kB
+../server/frontend/dist/assets/KaTeX_SansSerif-Bold-D1sUS0GD.woff2        12.21 kB
+../server/frontend/dist/assets/KaTeX_Size1-Regular-Dbsnue_I.ttf           12.22 kB
+../server/frontend/dist/assets/KaTeX_SansSerif-Regular-CS6fqUqJ.woff      12.31 kB
+../server/frontend/dist/assets/KaTeX_Caligraphic-Regular-wX97UBjC.ttf     12.34 kB
+../server/frontend/dist/assets/KaTeX_Caligraphic-Bold-ATXxdsX0.ttf        12.36 kB
+../server/frontend/dist/assets/KaTeX_Fraktur-Regular-Dxdc4cR9.woff        13.20 kB
+../server/frontend/dist/assets/KaTeX_Fraktur-Bold-BsDP51OF.woff           13.29 kB
+../server/frontend/dist/assets/KaTeX_Typewriter-Regular-CO6r4hn1.woff2    13.56 kB
+../server/frontend/dist/assets/KaTeX_SansSerif-Italic-DN2j7dab.woff       14.11 kB
+../server/frontend/dist/assets/KaTeX_SansSerif-Bold-DbIhKOiC.woff         14.40 kB
+../server/frontend/dist/assets/KaTeX_Typewriter-Regular-C0xS9mPB.woff     16.02 kB
+../server/frontend/dist/assets/KaTeX_Math-BoldItalic-CZnvNsCZ.woff2       16.40 kB
+../server/frontend/dist/assets/KaTeX_Math-Italic-t53AETM-.woff2           16.44 kB
+../server/frontend/dist/assets/KaTeX_Script-Regular-C5JkGWo-.ttf          16.64 kB
+../server/frontend/dist/assets/KaTeX_Main-BoldItalic-DxDJ3AOS.woff2       16.78 kB
+../server/frontend/dist/assets/KaTeX_Main-Italic-NWA7e6Wa.woff2           16.98 kB
+../server/frontend/dist/assets/KaTeX_Math-BoldItalic-iY-2wyZ7.woff        18.66 kB
+../server/frontend/dist/assets/KaTeX_Math-Italic-DA0__PXp.woff            18.74 kB
+../server/frontend/dist/assets/KaTeX_Main-BoldItalic-SpSLRI95.woff        19.41 kB
+../server/frontend/dist/assets/KaTeX_SansSerif-Regular-BNo7hRIc.ttf       19.43 kB
+../server/frontend/dist/assets/KaTeX_Fraktur-Regular-CB_wures.ttf         19.57 kB
+../server/frontend/dist/assets/KaTeX_Fraktur-Bold-BdnERNNW.ttf            19.58 kB
+../server/frontend/dist/assets/KaTeX_Main-Italic-BMLOBm91.woff            19.67 kB
+../server/frontend/dist/assets/KaTeX_SansSerif-Italic-YYjJ1zSn.ttf        22.36 kB
+../server/frontend/dist/assets/KaTeX_SansSerif-Bold-CFMepnvq.ttf          24.50 kB
+../server/frontend/dist/assets/KaTeX_Main-Bold-Cx986IdX.woff2             25.32 kB
+../server/frontend/dist/assets/KaTeX_Main-Regular-B22Nviop.woff2          26.27 kB
+../server/frontend/dist/assets/KaTeX_Typewriter-Regular-D3Ib7_Hf.ttf      27.55 kB
+../server/frontend/dist/assets/KaTeX_AMS-Regular-BQhdFMY1.woff2           28.07 kB
+../server/frontend/dist/assets/KaTeX_Main-Bold-Jm3AIy58.woff              29.91 kB
+../server/frontend/dist/assets/KaTeX_Main-Regular-Dr94JaBh.woff           30.77 kB
+../server/frontend/dist/assets/KaTeX_Math-BoldItalic-B3XSjfu4.ttf         31.19 kB
+../server/frontend/dist/assets/KaTeX_Math-Italic-flOr_0UB.ttf             31.30 kB
+../server/frontend/dist/assets/KaTeX_Main-BoldItalic-DzxPMmG6.ttf         32.96 kB
+../server/frontend/dist/assets/KaTeX_AMS-Regular-DMm9YOAa.woff            33.51 kB
+../server/frontend/dist/assets/KaTeX_Main-Italic-3WenGoN9.ttf             33.58 kB
+../server/frontend/dist/assets/KaTeX_Main-Bold-waoOVXN0.ttf               51.33 kB
+../server/frontend/dist/assets/KaTeX_Main-Regular-ypZvNtVU.ttf            53.58 kB
+../server/frontend/dist/assets/KaTeX_AMS-Regular-DRggAlZN.ttf             63.63 kB
+../server/frontend/dist/assets/maplibre-gl-worker-d8LlsJT9.js            486.77 kB
+../server/frontend/dist/assets/Map-CKGHnt6k.css                            0.69 kB │ gzip:   0.18 kB
+../server/frontend/dist/assets/EditSession-CkKjxDh2.css                    7.19 kB │ gzip:   1.71 kB
+../server/frontend/dist/assets/leaflet-vendor-vh-t_kPv.css                15.09 kB │ gzip:   6.36 kB
+../server/frontend/dist/assets/katex-CSceNpVM.css                         28.84 kB │ gzip:   7.92 kB
+../server/frontend/dist/assets/positron-CKRTiAqP.css                      82.86 kB │ gzip:  10.71 kB
+../server/frontend/dist/assets/index-BhDjLCEK.css                        186.72 kB │ gzip:  28.90 kB
+../server/frontend/dist/assets/V67O4WWV-wRLeKPQE.js                        0.06 kB │ gzip:   0.08 kB
+../server/frontend/dist/assets/x-CPH4x8Ef.js                               0.15 kB │ gzip:   0.15 kB
+../server/frontend/dist/assets/RVARI57O-C1HTCpMR.js                        0.15 kB │ gzip:   0.14 kB
+../server/frontend/dist/assets/cel-filter-DHWcevQu.js                      0.18 kB │ gzip:   0.16 kB
+../server/frontend/dist/assets/code-xml-BRTMi0cB.js                        0.20 kB │ gzip:   0.17 kB
+../server/frontend/dist/assets/message-square-BwjPBmCa.js                  0.23 kB │ gzip:   0.20 kB
+../server/frontend/dist/assets/rotate-ccw-BBUAfAPa.js                      0.27 kB │ gzip:   0.22 kB
+../server/frontend/dist/assets/Separator-DbhIFKjy.js                       0.36 kB │ gzip:   0.26 kB
+../server/frontend/dist/assets/V44WA6U7-BtdxjxQa.js                        0.37 kB │ gzip:   0.28 kB
+../server/frontend/dist/assets/deriveDefaultCreateTime-W0hkP8WY.js         0.38 kB │ gzip:   0.24 kB
+../server/frontend/dist/assets/loader-PMCt3A_K.js                          0.41 kB │ gzip:   0.24 kB
+../server/frontend/dist/assets/constants-Bf8aoEKe.js                       0.43 kB │ gzip:   0.28 kB
+../server/frontend/dist/assets/5THPTBWS-Df6lTz8w.js                        0.47 kB │ gzip:   0.29 kB
+../server/frontend/dist/assets/sparkles-W2fOV5ss.js                        0.49 kB │ gzip:   0.28 kB
+../server/frontend/dist/assets/NT5JY5WP-DQEuFTSj.js                        0.49 kB │ gzip:   0.35 kB
+../server/frontend/dist/assets/map-pin-OEZFKNF_.js                         0.54 kB │ gzip:   0.34 kB
+../server/frontend/dist/assets/G3MDBVQH-CBZUIlCN.js                        0.55 kB │ gzip:   0.33 kB
+../server/frontend/dist/assets/PermissionDenied-DlpWXUH9.js                0.59 kB │ gzip:   0.37 kB
+../server/frontend/dist/assets/G6GPDDNC-DrqL4IDj.js                        0.60 kB │ gzip:   0.43 kB
+../server/frontend/dist/assets/NotFound-qlcjF-EH.js                        0.70 kB │ gzip:   0.43 kB
+../server/frontend/dist/assets/DKTLEL5E-BgZbO1Sg.js                        0.82 kB │ gzip:   0.40 kB
+../server/frontend/dist/assets/format-CvFBQVpc.js                          0.94 kB │ gzip:   0.54 kB
+../server/frontend/dist/assets/7XWI72E6-Cp2fU9YJ.js                        0.95 kB │ gzip:   0.51 kB
+../server/frontend/dist/assets/4LWW3ZNH-xQZpaTrT.js                        0.97 kB │ gzip:   0.58 kB
+../server/frontend/dist/assets/rolldown-runtime-DWdDZTNf.js                1.08 kB │ gzip:   0.62 kB
+../server/frontend/dist/assets/sun-BqxnMnLi.js                             1.11 kB │ gzip:   0.48 kB
+../server/frontend/dist/assets/preload-helper-ca-nBW7U.js                  1.19 kB │ gzip:   0.68 kB
+../server/frontend/dist/assets/Archived-ZfkC21Bx.js                        1.28 kB │ gzip:   0.79 kB
+../server/frontend/dist/assets/users-BrEbqbnh.js                           1.30 kB │ gzip:   0.61 kB
+../server/frontend/dist/assets/MemoListError-OjtpwI7A.js                   1.37 kB │ gzip:   0.72 kB
+../server/frontend/dist/assets/YIK6JTN6-B78rvc6c.js                        1.39 kB │ gzip:   0.77 kB
+../server/frontend/dist/assets/AdminSignIn-kq2TukbD.js                     1.42 kB │ gzip:   0.77 kB
+../server/frontend/dist/assets/createLucideIcon-DxqpQf-3.js                1.42 kB │ gzip:   0.80 kB
+../server/frontend/dist/assets/MemoViewContext-C_ShIE-2.js                 1.57 kB │ gzip:   0.87 kB
+../server/frontend/dist/assets/PasswordSignInForm-p7-U9CkF.js              1.62 kB │ gzip:   0.92 kB
+../server/frontend/dist/assets/attachment-BW3DyhVC.js                      1.70 kB │ gzip:   0.66 kB
+../server/frontend/dist/assets/UserAvatar-CQNtBbHg.js                      1.72 kB │ gzip:   0.99 kB
+../server/frontend/dist/assets/Setting-zYfXMbzf.js                         1.76 kB │ gzip:   1.00 kB
+../server/frontend/dist/assets/7WLXJQOR-0dHb4jhj.js                        1.95 kB │ gzip:   0.94 kB
+../server/frontend/dist/assets/QQW2P742-Do2N-iEr.js                        1.95 kB │ gzip:   1.06 kB
+../server/frontend/dist/assets/75JW6PN6-DO5_B357.js                        2.17 kB │ gzip:   1.08 kB
+../server/frontend/dist/assets/useFocus-38_mmcsz.js                        2.21 kB │ gzip:   1.07 kB
+../server/frontend/dist/assets/error-Bwqx9MH-.js                           2.26 kB │ gzip:   1.16 kB
+../server/frontend/dist/assets/SignIn-BK2efKYY.js                          2.37 kB │ gzip:   1.25 kB
+../server/frontend/dist/assets/Home-DFxBNXAI.js                            2.49 kB │ gzip:   1.42 kB
+../server/frontend/dist/assets/FTXIJQGB-D5_yZcMn.js                        2.54 kB │ gzip:   1.10 kB
+../server/frontend/dist/assets/AuthCallback-CiWJQSG5.js                    2.58 kB │ gzip:   1.30 kB
+../server/frontend/dist/assets/github-light-PZDpZixw.js                    2.74 kB │ gzip:   0.92 kB
+../server/frontend/dist/assets/github-dark-dimmed-BR3MJSOH.js              2.75 kB │ gzip:   0.90 kB
+../server/frontend/dist/assets/html-sanitize-schema-D9L4L1ga.js            2.79 kB │ gzip:   1.31 kB
+../server/frontend/dist/assets/react-dom-Bpkn6eRK.js                       3.59 kB │ gzip:   1.36 kB
+../server/frontend/dist/assets/useIdentityProviderQueries-C-RV1EDT.js      3.63 kB │ gzip:   1.85 kB
+../server/frontend/dist/assets/EXE5EH6O-BOdXSgc4.js                        3.69 kB │ gzip:   1.70 kB
+../server/frontend/dist/assets/SignUp-k5j8sY-C.js                          3.73 kB │ gzip:   1.81 kB
+../server/frontend/dist/assets/S63OEDPG-Dr5QrKXi.js                        4.09 kB │ gzip:   1.91 kB
+../server/frontend/dist/assets/Placeholder-CgIJZESh.js                     4.78 kB │ gzip:   1.94 kB
+../server/frontend/dist/assets/Y5LQLG3M-D3Inv-3t.js                        5.13 kB │ gzip:   2.45 kB
+../server/frontend/dist/assets/CGIZI67J-Bu1ZGxVh.js                        5.33 kB │ gzip:   2.67 kB
+../server/frontend/dist/assets/LocationPicker-CwJWwoa1.js                  5.58 kB │ gzip:   2.53 kB
+../server/frontend/dist/assets/HPNUA7RO-DFTJQaQx.js                        5.74 kB │ gzip:   2.83 kB
+../server/frontend/dist/assets/UGRSUGA2-C_vlr5rO.js                        6.42 kB │ gzip:   3.02 kB
+../server/frontend/dist/assets/SG5TVYLW-D5TuCbGt.js                        7.08 kB │ gzip:   3.20 kB
+../server/frontend/dist/assets/6BEWHPQE-CQF1XeXu.js                        7.45 kB │ gzip:   3.34 kB
+../server/frontend/dist/assets/GH6G3TJC-ClGQjoYC.js                        7.58 kB │ gzip:   3.44 kB
+../server/frontend/dist/assets/CredentialFields-B4Q88Alx.js                7.70 kB │ gzip:   3.28 kB
+../server/frontend/dist/assets/jsx-runtime-DG5cC31z.js                     8.07 kB │ gzip:   3.02 kB
+../server/frontend/dist/assets/CustomIcon-DTxUzhB5.js                      8.26 kB │ gzip:   3.64 kB
+../server/frontend/dist/assets/24BXRY42-BJQBJi2P.js                        8.39 kB │ gzip:   3.75 kB
+../server/frontend/dist/assets/dayModel-CN_AyXyQ.js                        8.54 kB │ gzip:   4.04 kB
+../server/frontend/dist/assets/About-BAjvLHNQ.js                           8.88 kB │ gzip:   3.64 kB
+../server/frontend/dist/assets/4FHPYW2L-B8cAk1T-.js                        8.97 kB │ gzip:   4.13 kB
+../server/frontend/dist/assets/LF3NJQAX-B8MgYp8H.js                        9.27 kB │ gzip:   4.18 kB
+../server/frontend/dist/assets/lazy-DmmUuGlk.js                            9.77 kB │ gzip:   3.57 kB
+../server/frontend/dist/assets/BGW36YJW-D1yO-2L7.js                       10.00 kB │ gzip:   4.92 kB
+../server/frontend/dist/assets/MemoDetail-Btl7SQm8.js                     10.64 kB │ gzip:   4.68 kB
+../server/frontend/dist/assets/VINGRCPA-DybIfufc.js                       11.10 kB │ gzip:   4.84 kB
+../server/frontend/dist/assets/P67P66DB-pwjXJGCu.js                       11.63 kB │ gzip:   5.16 kB
+../server/frontend/dist/assets/dist-nK_GJU-G.js                           11.93 kB │ gzip:   4.75 kB
+../server/frontend/dist/assets/WQ63CJYP-Cx1yvdER.js                       12.08 kB │ gzip:   5.46 kB
+../server/frontend/dist/assets/6PIGVMFT-B_mX_i1n.js                       12.18 kB │ gzip:   3.25 kB
+../server/frontend/dist/assets/G76NGGFM-CNVP0Xjm.js                       12.20 kB │ gzip:   5.13 kB
+../server/frontend/dist/assets/button-_qVza8_Z.js                         13.10 kB │ gzip:   5.26 kB
+../server/frontend/dist/assets/VBUCM3YD-Craxq8Dx.js                       13.48 kB │ gzip:   5.69 kB
+../server/frontend/dist/assets/PFLLLM7K-CGMEQ2Cy.js                       13.50 kB │ gzip:   5.53 kB
+../server/frontend/dist/assets/JAD36DTZ-BPtqDt8Y.js                       14.50 kB │ gzip:   6.29 kB
+../server/frontend/dist/assets/N7OWWQHY-C9o0yeFe.js                       14.79 kB │ gzip:   6.06 kB
+../server/frontend/dist/assets/LRZCOFJZ-BEyXYQmd.js                       15.18 kB │ gzip:   5.92 kB
+../server/frontend/dist/assets/AudioAttachmentItem-DBfIGcxK.js            15.34 kB │ gzip:   6.18 kB
+../server/frontend/dist/assets/5XYWFMKW-DMspQjaW.js                       16.59 kB │ gzip:   6.99 kB
+../server/frontend/dist/assets/MemoViews-oW9DnVzU.js                      16.59 kB │ gzip:   5.49 kB
+../server/frontend/dist/assets/PagedMemoList-DJ_ip7iw.js                  18.39 kB │ gzip:   7.97 kB
+../server/frontend/dist/assets/N5NF2FGY-By-uXKfw.js                       19.07 kB │ gzip:   7.39 kB
+../server/frontend/dist/assets/DNNCRC2E-BxEvRPY9.js                       20.51 kB │ gzip:   7.68 kB
+../server/frontend/dist/assets/WL6DNKX4-BjUwuXKu.js                       20.80 kB │ gzip:   8.63 kB
+../server/frontend/dist/assets/MemoShareImageDialog-wjdRxA2N.js           21.48 kB │ gzip:   8.37 kB
+../server/frontend/dist/assets/Attachments-nDOUHLVu.js                    21.85 kB │ gzip:   6.71 kB
+../server/frontend/dist/assets/Calendar-DkJq_FIM.js                       22.25 kB │ gzip:   9.44 kB
+../server/frontend/dist/assets/J77NQRCJ-CAcvICVp.js                       23.87 kB │ gzip:   9.68 kB
+../server/frontend/dist/assets/WelcomeGuide-B2fibp74.js                   25.08 kB │ gzip:   9.38 kB
+../server/frontend/dist/assets/useSpaceQueries-Cm-jFBQg.js                25.33 kB │ gzip:   7.30 kB
+../server/frontend/dist/assets/utils-vendor-uHgwQpzL.js                   25.70 kB │ gzip:   9.76 kB
+../server/frontend/dist/assets/Inboxes-CDLk33mV.js                        26.94 kB │ gzip:   7.15 kB
+../server/frontend/dist/assets/STHDNR4A-CeycwpyN.js                       27.28 kB │ gzip:  11.86 kB
+../server/frontend/dist/assets/utils-BJnlq-91.js                          27.31 kB │ gzip:   8.70 kB
+../server/frontend/dist/assets/OT7W3RNY-D3pl-VTf.js                       27.47 kB │ gzip:  11.31 kB
+../server/frontend/dist/assets/PVFCHRLY-dkg69E3c.js                       27.70 kB │ gzip:  11.55 kB
+../server/frontend/dist/assets/IX6Z2TVR-B_HNY1Ku.js                       28.58 kB │ gzip:  11.18 kB
+../server/frontend/dist/assets/E67EBMDD-B8oeIDzM.js                       30.14 kB │ gzip:  11.44 kB
+../server/frontend/dist/assets/sanitized-html-DMAtkPxJ.js                 30.81 kB │ gzip:  12.17 kB
+../server/frontend/dist/assets/HQRGC5D7-Cv74Zgoe.js                       31.80 kB │ gzip:  12.34 kB
+../server/frontend/dist/assets/A4UD2L5Z-BYjnNMVv.js                       34.60 kB │ gzip:  12.83 kB
+../server/frontend/dist/assets/PreviewImageDialog-w9is0MHN.js             35.80 kB │ gzip:  13.05 kB
+../server/frontend/dist/assets/EFYWJBJK-BooVzuo7.js                       37.33 kB │ gzip:  15.38 kB
+../server/frontend/dist/assets/useControlled-_VlcP4ii.js                  37.87 kB │ gzip:  13.88 kB
+../server/frontend/dist/assets/NewMemoContext-Dz3FnkwU.js                 39.09 kB │ gzip:  13.10 kB
+../server/frontend/dist/assets/emoji-data-F34KMG36-2hfyR7_m.js            40.61 kB │ gzip:  17.38 kB
+../server/frontend/dist/assets/MemoView-B-mOjq85.js                       41.05 kB │ gzip:  15.74 kB
+../server/frontend/dist/assets/PUAMC4MJ-CZfgBbom.js                       41.26 kB │ gzip:  15.65 kB
+../server/frontend/dist/assets/XOYAOB3S-CSBbbSw5.js                       42.05 kB │ gzip:  15.77 kB
+../server/frontend/dist/assets/64PMEAB3-DWtZOC6b.js                       44.55 kB │ gzip:  16.41 kB
+../server/frontend/dist/assets/zh-Hans-Ayx8CsLk.js                        47.24 kB │ gzip:  18.48 kB
+../server/frontend/dist/assets/Map-Cv6VYHST.js                            47.55 kB │ gzip:  14.15 kB
+../server/frontend/dist/assets/en-GB-D3csDgg9.js                          47.67 kB │ gzip:  16.46 kB
+../server/frontend/dist/assets/en-Ds5vy5M2.js                             47.70 kB │ gzip:  16.43 kB
+../server/frontend/dist/assets/zh-Hant-DKpVeyxV.js                        47.87 kB │ gzip:  18.45 kB
+../server/frontend/dist/assets/da-BIolO45t.js                             50.23 kB │ gzip:  17.88 kB
+../server/frontend/dist/assets/nb-yvZHJC9-.js                             50.32 kB │ gzip:  17.88 kB
+../server/frontend/dist/assets/et-7Yeve9th.js                             50.62 kB │ gzip:  18.31 kB
+../server/frontend/dist/assets/nn-B9V-uPrw.js                             50.74 kB │ gzip:  17.85 kB
+../server/frontend/dist/assets/id-Cn-PENX5.js                             50.79 kB │ gzip:  17.31 kB
+../server/frontend/dist/assets/sv-H8SIZiGH.js                             51.30 kB │ gzip:  18.10 kB
+../server/frontend/dist/assets/sl-B2jc-Dg2.js                             51.41 kB │ gzip:  18.67 kB
+../server/frontend/dist/assets/useOpenInteractionType-CBZSqQNK.js         51.58 kB │ gzip:  17.69 kB
+../server/frontend/dist/assets/hr-Z3LNB8ji.js                             51.61 kB │ gzip:  18.72 kB
+../server/frontend/dist/assets/nl-Bzy12DsB.js                             52.16 kB │ gzip:  18.30 kB
+../server/frontend/dist/assets/fi-CnH9HHso.js                             52.87 kB │ gzip:  18.78 kB
+../server/frontend/dist/assets/pt-PT-xcSNUCG1.js                          53.01 kB │ gzip:  18.52 kB
+../server/frontend/dist/assets/it-DgznGGY_.js                             53.03 kB │ gzip:  18.28 kB
+../server/frontend/dist/assets/tr-K0xq7ZhP.js                             53.08 kB │ gzip:  18.39 kB
+../server/frontend/dist/assets/pt-BR-CXxsxKLO.js                          53.10 kB │ gzip:  18.57 kB
+../server/frontend/dist/assets/gl-BLllc0ab.js                             53.19 kB │ gzip:  18.48 kB
+../server/frontend/dist/assets/pl-FoqSTeTH.js                             53.55 kB │ gzip:  19.31 kB
+../server/frontend/dist/assets/cs-DcfKdDcV.js                             53.65 kB │ gzip:  19.46 kB
+../server/frontend/dist/assets/i18n-BFG3VwuD.js                           53.82 kB │ gzip:  17.69 kB
+../server/frontend/dist/assets/sk-CwpHd1Vg.js                             53.85 kB │ gzip:  19.41 kB
+../server/frontend/dist/assets/lt-CAcpn6J0.js                             54.12 kB │ gzip:  19.36 kB
+../server/frontend/dist/assets/ro-BdcweUsz.js                             54.18 kB │ gzip:  18.90 kB
+../server/frontend/dist/assets/ca-0NXYPYly.js                             54.27 kB │ gzip:  18.65 kB
+../server/frontend/dist/assets/lv-C23QHrcb.js                             54.31 kB │ gzip:  19.01 kB
+../server/frontend/dist/assets/es-CAzgrWSj.js                             54.32 kB │ gzip:  18.65 kB
+../server/frontend/dist/assets/de-C28eELpH.js                             54.72 kB │ gzip:  19.10 kB
+../server/frontend/dist/assets/az-8sRi8AKH.js                             54.81 kB │ gzip:  18.72 kB
+../server/frontend/dist/assets/fr-BPjZf0fH.js                             56.02 kB │ gzip:  19.15 kB
+../server/frontend/dist/assets/hu-p4Lt_BYI.js                             56.04 kB │ gzip:  19.80 kB
+../server/frontend/dist/assets/ko-bTANQ-GQ.js                             56.62 kB │ gzip:  18.97 kB
+../server/frontend/dist/assets/he-oGIC4urg.js                             60.79 kB │ gzip:  18.72 kB
+../server/frontend/dist/assets/vi-Cc4Dxcxa.js                             61.06 kB │ gzip:  18.88 kB
+../server/frontend/dist/assets/ja-BTR2gpsT.js                             62.69 kB │ gzip:  19.69 kB
+../server/frontend/dist/assets/ar-BB4_5ebY.js                             65.93 kB │ gzip:  19.66 kB
+../server/frontend/dist/assets/timestamp-BKvAlXCt.js                      66.47 kB │ gzip:  17.71 kB
+../server/frontend/dist/assets/EditSession-DqPo2JUK.js                    66.51 kB │ gzip:  24.64 kB
+../server/frontend/dist/assets/fa-C9vbAqeF.js                             70.89 kB │ gzip:  20.11 kB
+../server/frontend/dist/assets/sr-BR5vUedO.js                             72.95 kB │ gzip:  21.24 kB
+../server/frontend/dist/assets/full.esm-MJzUPOg1.js                       75.08 kB │ gzip:  26.54 kB
+../server/frontend/dist/assets/uk-BbiShG8_.js                             78.29 kB │ gzip:  21.77 kB
+../server/frontend/dist/assets/ru-Cm4di3QY.js                             78.86 kB │ gzip:  22.09 kB
+../server/frontend/dist/assets/bg-DSLnz3Cj.js                             79.15 kB │ gzip:  21.47 kB
+../server/frontend/dist/assets/Moteary-OohRONZg.js                        79.53 kB │ gzip:  30.32 kB
+../server/frontend/dist/assets/el-Dxb-SaQ8.js                             82.66 kB │ gzip:  22.61 kB
+../server/frontend/dist/assets/hi-lmVDo142.js                             93.66 kB │ gzip:  21.29 kB
+../server/frontend/dist/assets/mr-DyGgIqPs.js                             94.25 kB │ gzip:  21.47 kB
+../server/frontend/dist/assets/th-DyNLQaUf.js                             94.30 kB │ gzip:  20.37 kB
+../server/frontend/dist/assets/ka-GE-NPpJXdPu.js                         101.71 kB │ gzip:  21.29 kB
+../server/frontend/dist/assets/leaflet-vendor-Bmhe10U3.js                148.82 kB │ gzip:  43.38 kB
+../server/frontend/dist/assets/BasemapLayer-C09qhyvS.js                  194.41 kB │ gzip:  60.06 kB
+../server/frontend/dist/assets/AuthContext-CIv4mTCW.js                   248.93 kB │ gzip:  79.36 kB
+../server/frontend/dist/assets/katex-BptDq8oc.js                         256.96 kB │ gzip:  77.00 kB
+../server/frontend/dist/assets/FormContext-D6CFBk-p.js                   302.67 kB │ gzip:  97.42 kB
+../server/frontend/dist/assets/default-CqarsM1l.js                       405.77 kB │ gzip: 168.50 kB
+../server/frontend/dist/assets/index-CyKtwTH7.js                         880.43 kB │ gzip: 282.41 kB
+../server/frontend/dist/assets/positron-Cuk86M6y.js                      995.05 kB │ gzip: 265.06 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+[33m[PLUGIN_TIMINGS] Warning:[0m Your build spent significant time in plugins. Here is a breakdown:
+  - @rolldown/plugin-babel (86%)
+  - vite:css (5%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+
+✓ built in 20.83s
