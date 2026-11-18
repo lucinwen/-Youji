@@ -1,0 +1,10 @@
+{
+  "base_commit": "a6e09a0133dff68b10f12c8280e565d356002114",
+  "status": "blocked",
+  "url": "http://127.0.0.1:5231/moteary",
+  "observed": "Browser reported net::ERR_CONNECTION_REFUSED. The server launcher reported startup, but a later separate executor request also returned connection refused. Cross-tool reachability is not established.",
+  "interaction_executed": false,
+  "narrow_screen_tested": false,
+  "unsafe_sandbox_flags_added": false,
+  "model_executed": false
+}

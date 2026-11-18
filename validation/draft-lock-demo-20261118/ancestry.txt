@@ -1,0 +1,17 @@
+2bc02a239ab84ae399c9b4be90add499ad416593 fix: bound source reads and preserve batch recovery receipts
+d581fefbf5ec3fcee1672195f6e642bb9127cb38 test: verify large audio chunking and clarify import limits
+ee402bd17f3dc1c63dc9b033618f48dbd2133f8f test: verify large audio HTTP download and export round trip
+7634441e535522d3f573ffc30f4822b454ca2899 test: restore export fixtures and prepare browser round-trip checkpoint
+dbdaef0cf8b4fa62f6038b381648d15d89486275 feat: preview and recover verified original audio from batch archives
+6ef162a3d1e7d888a75c835848915597ed5f7dcf feat: retrieve personal sources by kind and local calendar range
+0b9d9f3cddda752c77a4277a90f36f249a4cb654 feat: add local PDF text retrieval and explicit import cleanup
+ad8730767cfe93a2dd0b57c9245cdccf2d01159e feat: add private web PDF processing and recoverable uploads
+922b5a787ce488025dd9f13b282f47fa416a21d5 feat: add optional local semantic retrieval with source verification
+39c9d9bf97e4e4115dd9556e7ec8e5661cbadddb feat: continue verified retrieval across older records and assess offline ASR
+6950c4de33c8a4510fc8d9192df104a38fb874d3 feat: preserve audio originals with reviewed transcripts and recovery receipts
+c5d37719934c5577940374c42ade7c3382a44072 Improve capture navigation and portable audio draft recovery
+7a0f412bd9f8f5ffd89d906bcbabd93ef5525c8e Add bounded single-chat JSON preview and recoverable import
+9c505ca395ce3462e2b96799c3cc99f105aa9505 Add inert local HTML text import with private original recovery
+41162cfb7eec18c208764d3443bd7d1efa3104b9 Add manual chat and daily text capture with verified private original recovery
+ce5f0b0ab5bd9623144565643a7bc6e26b7c7122 Add opt-in local draft recovery and clean demo startup with validation
+a6e09a0133dff68b10f12c8280e565d356002114 Fix concurrent manual text imports with a SQLite original-and-memo transaction

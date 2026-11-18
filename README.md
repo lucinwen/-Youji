@@ -1,4 +1,4 @@
-# Moteary 拾微 · 个人生活知识库 Demo
+# 有记 Youji · 个人生活知识库 Demo
 
 基于完整 Memos 开源应用构建的生活/工作资料采集工作台。当前重点是**多来源原件采集、PRIVATE 保存、重复导入完整性验证**，不是完整 AI 知识生态已完成的声明。
 
@@ -15,22 +15,37 @@
 - [上游说明](moteary/UPSTREAM_README.md)
 - [MIT 许可证](LICENSE)；新增依赖许可位于 `moteary/licenses/`。
 
-## 快速启动
+## 当前累计草稿与启动
 
-需要 Go 1.27.2、Node 24、仓库 packageManager 声明的 pnpm（11.0.1）：
+可拉取分支：`feat/transactional-drafts-demo-20261118`。此分支包含前序 PR #1–17；不需要逐个合并，也不表示这些草稿已经合并 main。
 
-```sh
-cd web
-pnpm install --frozen-lockfile
-pnpm release
-cd ..
-go build -buildvcs=false -ldflags "-X github.com/usememos/memos/internal/version.Version=26.11.0" -o build/moteary ./cmd/memos
-./build/moteary --addr 127.0.0.1 --port 5231 --data ./demo-data --config-apply off
+```bash
+git clone --single-branch --branch feat/transactional-drafts-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
+cd youji-demo
+pnpm --dir web install --frozen-lockfile
+pnpm --dir web release
+mkdir -p build
+go build -o build/youji ./cmd/memos
+python3 scripts/youji_demo_start.py --binary build/youji --data "$HOME/youji-demos/fresh-demo" --port 5231
+python3 scripts/youji_demo_start.py --binary build/youji --data "$HOME/youji-demos/fresh-demo" --port 5231 --run
 ```
 
-浏览器访问 http://localhost:5231 ，注册本地账号后打开 `/moteary`。不要将本机数据目录、API 令牌或真实日记提交到仓库。
+需要 Node 24、pnpm 11.0.1、Go 1.27.2、Python 3；依赖安装可能联网，不是离线安装包。脚本先只打印计划，`--run` 才启动，拒绝覆盖已有非空目录。浏览器打开 `http://127.0.0.1:5231/moteary`，创建合成演示账户。不要提交数据目录、密码、令牌或真实日记。
 
-## 2026-11-12 检查点
+停止后保留同一数据目录。再次启动已有演示时，不使用“新实例”脚本，而执行：
+
+```bash
+env -i LANG=C.UTF-8 "$PWD/build/youji" --addr 127.0.0.1 --port 5231 \
+  --data "$HOME/youji-demos/fresh-demo" --driver sqlite --dsn '' --unix-sock '' --config-apply off
+```
+
+[完整运行与重启步骤、三分钟合成走查](moteary/DEMO_RUNBOOK.md) · [本地草稿与隐私边界](moteary/LOCAL_DRAFTS.md) · [SQLite 手动文本事务导入](moteary/ATOMIC_MANUAL_IMPORT.md)。默认不启用模型；先用手动粘贴→PRIVATE保存→关键词查回→原件核对。微信仅支持手动提供文本，不是直接接入。
+
+已有 PDF 文本解析、可选语义候选检索、HTML/聊天 JSON 原件导入与音频人工稿等功能，配置及各轮证据见 [功能记录](moteary/README.md)。语义候选可能没有答案；自动语音识别的真人评估保持暂停。真实浏览器、手机、跨设备同步仍未完成验收；组件与 HTTP 测试不能替代这些结论。
+
+本轮 [验证报告](moteary/DRAFT_LOCK_DEMO_QA_20261118.md) 区分组件、原生锁、真实 HTTP 与未完成的浏览器验收。
+
+## 2026-11-12 历史检查点（不代表当前完整范围）
 - 已实现：来源类别/批注、完整编辑器、显式单文件和批量 CLI、浏览器批量预检/保存/停止、原件 ZIP 保真、SHA-256 回读、PRIVATE 与修改冲突保护。
 - 已运行：33项Python测试；23项真实SQLite/HTTP断言；195文件1647项前端测试；lint/typecheck；生产SPA和完整Go二进制构建。
 - **未验收**：新增批量UI的真实浏览器端到端（测试浏览器无法连接执行环境loopback）；Windows/iOS真机；完整离线跨端同步；真实模型、OCR/ASR及语义问答。

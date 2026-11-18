@@ -6,7 +6,14 @@
 
 ## 1. 准备程序
 
-从 GitHub 克隆后进入需要演示的分支（分支名以对应草稿 PR 为准），不要在已有实例的数据目录里构建或启动。查看状态，不覆盖未提交工作：
+本轮可拉取的累计草稿是 `feat/transactional-drafts-demo-20261118`，包含 PR #1–17 的前序提交，不需要逐个合并或 cherry-pick。它不是 main 或正式发行版。只在新目录执行：
+
+```bash
+git clone --single-branch --branch feat/transactional-drafts-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
+cd youji-demo
+```
+
+不要在已有实例的数据目录里构建或启动。查看状态，不覆盖未提交工作：
 
 ```bash
 git status --short
