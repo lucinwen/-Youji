@@ -106,7 +106,7 @@ def run():
                     (output / 'web-module-http.log').write_text(redact(result.stdout + result.stderr))
                     if result.returncode:
                         raise RuntimeError('Manual text module HTTP test failed; see sanitized log')
-                    passed('actual frontend manual file/paste module: PRIVATE, bytes, literal content, retry, injected response loss, conflict, isolation and deletion')
+                    passed('actual frontend manual file/paste module with jsdom draft restore: PRIVATE, bytes, retry, injected response loss, conflict, isolation and deletion')
                     stage = 'restart persistence and final deletion'
                     memos = call('memos', token=token).get('memos', [])
                     assert len(memos) == 1

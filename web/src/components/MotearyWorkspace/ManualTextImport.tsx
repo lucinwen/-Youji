@@ -2,9 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import type { AudioReceipt } from "./audioImport";
+import ManualDraftControls from "./ManualDraftControls";
 import { type ManualSource, type ManualTextPlan, prepareManualText, preparePastedText, SOURCES, saveManualText } from "./manualTextImport";
 
-export default function ManualTextImport({ userName, onSaved }: { userName: string; onSaved: () => void }) {
+export default function ManualTextImport(props: { userName: string; onSaved: () => void }) {
+  return <ManualTextImportSession key={props.userName} {...props} />;
+}
+
+function ManualTextImportSession({ userName, onSaved }: { userName: string; onSaved: () => void }) {
   const [mode, setMode] = useState<"paste" | "file">("paste");
   const [text, setText] = useState("");
   const [file, setFile] = useState<File>();
@@ -15,6 +20,8 @@ export default function ManualTextImport({ userName, onSaved }: { userName: stri
   const [busy, setBusy] = useState<"" | "预览" | "保存">("");
   const [message, setMessage] = useState("");
   const [receipt, setReceipt] = useState<AudioReceipt>();
+  const [knownAttachments, setKnownAttachments] = useState<string[]>([]);
+  const [successfulSave, setSuccessfulSave] = useState(0);
   const active = useRef<AbortController | null>(null);
   const fileInput = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
@@ -65,10 +72,16 @@ export default function ManualTextImport({ userName, onSaved }: { userName: stri
         }
       } else if (plan) {
         const result = await saveManualText(plan, job.signal, (value) => {
-          if (current()) setReceipt(value);
+          if (current()) {
+            setReceipt(value);
+            if (value.attachment) setKnownAttachments((previous) => [...new Set([...previous, value.attachment!])]);
+          }
         });
         if (current()) {
           setReceipt(result);
+          if (result.attachment) setKnownAttachments((previous) => [...new Set([...previous, result.attachment!])]);
+          if (mode === "paste" && (result.status === "imported" || result.status === "verified"))
+            setSuccessfulSave((previous) => previous + 1);
           setMessage(
             result.status === "verified"
               ? "已有原件与正文已核验，未重复创建。"
@@ -92,7 +105,8 @@ export default function ManualTextImport({ userName, onSaved }: { userName: stri
   return (
     <section aria-label="手动文本导入" className="min-w-0 space-y-3 p-3">
       <p className="text-sm">
-        1 粘贴或选择 → 2 本地预览 → 3 确认私有保存。仅支持 UTF-8，最多 128 KiB。刷新后未保存内容会丢失，请手动保留原文件或文字。
+        1 粘贴或选择 → 2 本地预览 → 3 确认私有保存。仅支持 UTF-8，最多 128
+        KiB。未明确启用本地草稿时，刷新后未保存内容会丢失，请手动保留原文件或文字。
       </p>
       <p className="text-sm">
         手动粘贴文字或选择 TXT / Markdown
@@ -187,6 +201,19 @@ export default function ManualTextImport({ userName, onSaved }: { userName: stri
           ))}
         </select>
       </label>
+      <ManualDraftControls
+        owner={userName}
+        mode={mode}
+        value={{ text, title, source }}
+        busy={!!busy}
+        successfulSave={successfulSave}
+        onRestore={(draft) => {
+          invalidatePreview();
+          setText(draft.text);
+          setTitle(draft.title);
+          setSource(draft.source);
+        }}
+      />
       <Button
         variant="outline"
         className="min-h-11"
@@ -244,6 +271,10 @@ export default function ManualTextImport({ userName, onSaved }: { userName: stri
           <Link className="inline-flex min-h-11 items-center underline" to={`/${receipt.memo}`}>
             打开文本记录 / 核对写入状态
           </Link>
+          <p>
+            本会话全部已知附件回执：{knownAttachments.length ? knownAttachments.join("、") : "尚无附件 ID"}
+            。这些信息不会自动持久化，请刷新前保留；多个标签页并发保存可能留下未关联附件，请在附件管理核对。
+          </p>
           <p>
             更改输入后需重新预览；上次回执仍保留供核对。保存失败可用同一计划重试。刷新前请保留原文件或粘贴内容、来源、标题及回执。多份附件残留请人工核对，不自动删除。
           </p>

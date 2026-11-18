@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { Code, ConnectError } from "@connectrpc/connect";
 import { unzipSync } from "fflate";
 import { expect, it, vi } from "vitest";
+import { deleteManualDraft, readManualDraft, writeManualDraft } from "@/components/MotearyWorkspace/manualDraftStore";
 import { prepareManualText, preparePastedText, saveManualText } from "@/components/MotearyWorkspace/manualTextImport";
 import { Visibility } from "@/types/proto/api/memo_service_pb";
 
@@ -146,9 +147,20 @@ it.skipIf(!process.env.YOUJI_MANUAL_TEXT_WEB_QA)(
 
       // Paste also uses a real private record and a byte-preserving original.
       const pastedText = "PastedManualNeedle 合成粘贴原文\n```\n#source/not-a-real-tag\n```";
-      const pasted = await preparePastedText(pastedText, config.owner, options);
+      // jsdom localStorage persists through a simulated editor lifecycle; this is not a browser refresh test.
+      const local = writeManualDraft(config.owner, { text: pastedText, ...options }, null);
+      expect(readManualDraft("users/synthetic-other-local")).toBeNull();
+      const restoredDraft = readManualDraft(config.owner);
+      expect(restoredDraft?.value.text).toBe(pastedText);
+      const pasted = await preparePastedText(restoredDraft!.value.text, config.owner, restoredDraft!.value);
       expect(pasted.text).toBe(pastedText);
       const pastedReceipt = await saveManualText(pasted, signal(), vi.fn());
+      // A page lost after the actual server commit can restore the same text and verify, not create twice.
+      const retryDraft = readManualDraft(config.owner)!;
+      const retriedPlan = await preparePastedText(retryDraft.value.text, config.owner, retryDraft.value);
+      expect((await saveManualText(retriedPlan, signal(), vi.fn())).status).toBe("verified");
+      deleteManualDraft(config.owner, local.raw);
+      expect(readManualDraft(config.owner)).toBeNull();
       const pastedSaved = await call("GET", pastedReceipt.memo);
       expect(pastedSaved.visibility).toBe("PRIVATE");
       const pastedDownload = await realFetch(archiveURL(pastedSaved.attachments[0]), {

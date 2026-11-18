@@ -38,7 +38,7 @@ const preview = async () => {
   await screen.findByLabelText("手动文本预览");
 };
 const save = () => {
-  fireEvent.click(screen.getByRole("checkbox"));
+  fireEvent.click(screen.getByRole("checkbox", { name: /我已核对内容/ }));
   fireEvent.click(screen.getByRole("button", { name: "保存文本原件与正文" }));
 };
 beforeEach(() => {
@@ -87,18 +87,18 @@ describe("Manual text import UI", () => {
   it.each(["text", "title", "source", "mode"])("invalidates preview and confirmation when %s changes", async (field) => {
     mount();
     await preview();
-    fireEvent.click(screen.getByRole("checkbox"));
+    fireEvent.click(screen.getByRole("checkbox", { name: /我已核对内容/ }));
     if (field === "text") fireEvent.change(screen.getByLabelText("待导入文字"), { target: { value: "changed" } });
     else if (field === "title") fireEvent.change(screen.getByLabelText("文本标题"), { target: { value: "changed" } });
     else if (field === "source") fireEvent.change(screen.getByLabelText("文本来源"), { target: { value: "diary" } });
     else fireEvent.click(screen.getByRole("button", { name: "选择文本文件" }));
     expect(screen.queryByLabelText("手动文本预览")).not.toBeInTheDocument();
-    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+    expect(screen.queryByRole("checkbox", { name: /我已核对内容/ })).not.toBeInTheDocument();
     expect(api.saveManualText).not.toHaveBeenCalled();
     if (field !== "mode") {
       fireEvent.click(screen.getByRole("button", { name: "本地预览文字" }));
       await screen.findByLabelText("手动文本预览");
-      expect(screen.getByRole("checkbox")).not.toBeChecked();
+      expect(screen.getByRole("checkbox", { name: /我已核对内容/ })).not.toBeChecked();
     }
   });
   it("keeps failure receipts and the plan for retry, without clearing receipts when inputs change", async () => {

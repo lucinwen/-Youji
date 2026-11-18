@@ -1,0 +1,59 @@
+$ tsc --noEmit --skipLibCheck && biome check src tests
+src/components/MotearyWorkspace/ManualDraftControls.tsx format ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Formatter would have printed the following content:
+
+     74  74 │           setError(cause instanceof Error ? cause.message : "无法核对本地草稿，已停止自动保存。");
+     75  75 │         }
+     76     │ - ······setEnabled(false);·setRiskAccepted(false);·setLoaded(false);·setRestoreConfirmed(false);·setDeleteConfirmed(false);
+         76 │ + ······setEnabled(false);
+         77 │ + ······setRiskAccepted(false);
+         78 │ + ······setLoaded(false);
+         79 │ + ······setRestoreConfirmed(false);
+         80 │ + ······setDeleteConfirmed(false);
+     77  81 │       };
+     78  82 │       window.addEventListener("storage", changed);
+    ······· │
+    224 228 │                   disabled={busy || mode !== "paste" || enabled || !loaded || !restoreConfirmed}
+    225 229 │                   onClick={() => {
+    226     │ - ················try·{
+    227     │ - ··················const·current·=·readManualDraft(owner);
+    228     │ - ··················if·(!current·||·current.raw·!==·expected.current)·throw·new·Error("本地草稿已变化，未替换当前输入。请重新检查并确认恢复。");
+    229     │ - ··················onRestore({·text:·current.value.text,·title:·current.value.title,·source:·current.value.source·});
+    230     │ - ··················owned.current·=·true;
+    231     │ - ··················setAdopted(true);
+    232     │ - ··················setRestoreConfirmed(false);
+    233     │ - ··················setMessage("已显式恢复到输入区，未上传，自动保存仍关闭；请重新预览并确认保存。记录保存成功后将尝试清除本轮草稿。");
+    234     │ - ················}·catch·(cause)·{
+    235     │ - ··················setEnabled(false);·setLoaded(false);·setRiskAccepted(false);·setRestoreConfirmed(false);·setDeleteConfirmed(false);
+    236     │ - ··················setError(cause·instanceof·Error·?·cause.message·:·"恢复前核对失败，未替换当前输入。");
+    237     │ - ················}
+        230 │ + ··················try·{
+        231 │ + ····················const·current·=·readManualDraft(owner);
+        232 │ + ····················if·(!current·||·current.raw·!==·expected.current)
+        233 │ + ······················throw·new·Error("本地草稿已变化，未替换当前输入。请重新检查并确认恢复。");
+        234 │ + ····················onRestore({·text:·current.value.text,·title:·current.value.title,·source:·current.value.source·});
+        235 │ + ····················owned.current·=·true;
+        236 │ + ····················setAdopted(true);
+        237 │ + ····················setRestoreConfirmed(false);
+        238 │ + ····················setMessage("已显式恢复到输入区，未上传，自动保存仍关闭；请重新预览并确认保存。记录保存成功后将尝试清除本轮草稿。");
+        239 │ + ··················}·catch·(cause)·{
+        240 │ + ····················setEnabled(false);
+        241 │ + ····················setLoaded(false);
+        242 │ + ····················setRiskAccepted(false);
+        243 │ + ····················setRestoreConfirmed(false);
+        244 │ + ····················setDeleteConfirmed(false);
+        245 │ + ····················setError(cause·instanceof·Error·?·cause.message·:·"恢复前核对失败，未替换当前输入。");
+        246 │ + ··················}
+    238 247 │                   }}
+    239 248 │                 >
+
+
+Checked 714 files in 485ms. No fixes applied.
+Found 1 error.
+check ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Some errors were emitted while running checks.
+
+
+[ELIFECYCLE] Command failed with exit code 1.
