@@ -31,7 +31,10 @@ func (s *APIService) registerYoujiManualRoutes(mux *runtime.ServeMux) error {
 	if err := mux.HandlePath(http.MethodPost, "/api/youji/manual-text/import", s.importYoujiManual); err != nil {
 		return err
 	}
-	return mux.HandlePath(http.MethodPost, "/api/youji/html-text/import", s.importYoujiHTML)
+	if err := mux.HandlePath(http.MethodPost, "/api/youji/html-text/import", s.importYoujiHTML); err != nil {
+		return err
+	}
+	return mux.HandlePath(http.MethodPost, "/api/youji/chat-json/import", s.importYoujiChat)
 }
 
 // The route selects this specification; clients cannot choose the identity namespace or limits.
@@ -47,6 +50,10 @@ func manualTextSpec() youjiTextSpec {
 
 func htmlTextSpec() youjiTextSpec {
 	return youjiTextSpec{"html-text-v1", "mwh-", "ymh-", []string{".html", ".htm"}, 512 << 10, 3 << 20}
+}
+
+func chatTextSpec() youjiTextSpec {
+	return youjiTextSpec{"telegram-chat-v1", "mwc-", "ymc-", []string{".json"}, 512 << 10, 3 << 20}
 }
 
 func youjiManualIdentity(owner, filename string, data []byte) (string, string) {
@@ -101,6 +108,11 @@ func youjiTextArchive(spec youjiTextSpec, request youjiManualRequest) ([]byte, e
 		!extensionAllowed {
 		return nil, errors.New("invalid manual input")
 	}
+	// Match the frontend UTF-8 decoder's BOM handling for syntax validation only.
+	// Hashing and ZIP storage retain every original byte. This is not Telegram schema validation.
+	if spec.domain == "telegram-chat-v1" && !json.Valid(bytes.TrimPrefix(request.Data, []byte{0xef, 0xbb, 0xbf})) {
+		return nil, errors.New("invalid chat JSON")
+	}
 	for _, r := range request.Filename {
 		if r < 32 || r == 127 {
 			return nil, errors.New("invalid filename")
@@ -127,6 +139,10 @@ func (s *APIService) importYoujiManual(w http.ResponseWriter, r *http.Request, _
 
 func (s *APIService) importYoujiHTML(w http.ResponseWriter, r *http.Request, _ map[string]string) {
 	s.importYoujiText(w, r, htmlTextSpec())
+}
+
+func (s *APIService) importYoujiChat(w http.ResponseWriter, r *http.Request, _ map[string]string) {
+	s.importYoujiText(w, r, chatTextSpec())
 }
 
 func (s *APIService) importYoujiText(w http.ResponseWriter, r *http.Request, spec youjiTextSpec) {

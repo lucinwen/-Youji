@@ -1,0 +1,68 @@
+{
+  "source_checkpoint": "e8fead38b945d1b72b78fd5a0dbff214636c6e48",
+  "business_change_checkpoint": "534653b173ad1b499a433e9f2f765b38c4acf782",
+  "binary_version": "26.11.18-dev.e8fead3",
+  "binary_sha256": "51dba984c16729af5ffd59021130810028b7fe24d219830a4ab0b553c1a7b53f",
+  "fallback_pr": 19,
+  "fallback_commit": "363f4b52fe1fc4914dc447f95ae828850dd06a10",
+  "checks": {
+    "go_api_race": {
+      "passed": 13
+    },
+    "frontend_full": {
+      "passed": 2014,
+      "skipped": 11
+    },
+    "frontend_targeted_before_three_filename_cases": {
+      "passed": 105
+    },
+    "lint": "passed",
+    "production_frontend_and_go_build": "passed",
+    "demo_start_and_preflight": {
+      "passed": 10
+    },
+    "real_http": {
+      "independent/chat-atomic-independent.json": {
+        "passed": 6,
+        "binary_sha256": "51dba984c16729af5ffd59021130810028b7fe24d219830a4ab0b553c1a7b53f"
+      },
+      "chat-http/chat-http.json": {
+        "passed": 3,
+        "binary_sha256": "51dba984c16729af5ffd59021130810028b7fe24d219830a4ab0b553c1a7b53f"
+      },
+      "multisource/multisource-http.json": {
+        "passed": 3,
+        "binary_sha256": "51dba984c16729af5ffd59021130810028b7fe24d219830a4ab0b553c1a7b53f"
+      },
+      "html-http/html-http.json": {
+        "passed": 4,
+        "binary_sha256": "51dba984c16729af5ffd59021130810028b7fe24d219830a4ab0b553c1a7b53f"
+      },
+      "manual-http/manual-text-http.json": {
+        "passed": 4,
+        "binary_sha256": "51dba984c16729af5ffd59021130810028b7fe24d219830a4ab0b553c1a7b53f"
+      }
+    }
+  },
+  "browser": {
+    "status": "blocked",
+    "sandbox": true,
+    "reason": "socket() Operation not permitted",
+    "attempts": 1,
+    "tested_candidate": "PR19; browser could not start"
+  },
+  "model_executed": false,
+  "limitations": [
+    "SQLite chat JSON transaction only; not audio/PDF/legacy batch or other databases",
+    "No actual browser/mobile/Windows acceptance or user timing",
+    "Completed response deliberately discarded; no true network cut or transaction crash",
+    "No physical erasure, backup deletion, production load or universal Telegram compatibility claim",
+    "Real ASR assessment remains paused; no model executed"
+  ],
+  "toolchains": {
+    "node": "24.22.1",
+    "pnpm_actual": "11.25.0",
+    "pnpm_declared": "11.0.1",
+    "go": "1.27.2"
+  }
+}

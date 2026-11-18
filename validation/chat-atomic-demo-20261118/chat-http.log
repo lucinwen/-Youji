@@ -1,0 +1,20 @@
+{
+  "kind": "real HTTP/SQLite and actual frontend module; not browser",
+  "model_executed": false,
+  "binary_sha256": "51dba984c16729af5ffd59021130810028b7fe24d219830a4ab0b553c1a7b53f",
+  "checks": [
+    {
+      "check": "anonymous memo access denied; local chat preview requires no processor",
+      "passed": true
+    },
+    {
+      "check": "actual chat TypeScript module uses real API: save/retry/response-loss recovery/search/account isolation/delete",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "check": "restart preserves chat memo and original; final deletion removes memo and attachment rows",
+      "passed": true
+    }
+  ]
+}
