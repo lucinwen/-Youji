@@ -1,0 +1,14 @@
+test_cli_missing_model_fails_closed_without_details (test_audio_worker.AudioWorkerTests.test_cli_missing_model_fails_closed_without_details) ... ok
+test_collect_consumes_every_segment_and_rejects_late_failure (test_audio_worker.AudioWorkerTests.test_collect_consumes_every_segment_and_rejects_late_failure) ... ok
+test_collect_empty_and_invalid_timestamp (test_audio_worker.AudioWorkerTests.test_collect_empty_and_invalid_timestamp) ... ok
+test_manifest_full_hash_and_metadata (test_audio_worker.AudioWorkerTests.test_manifest_full_hash_and_metadata) ... ok
+test_manifest_rejects_paths_duplicates_and_unverified_config (test_audio_worker.AudioWorkerTests.test_manifest_rejects_paths_duplicates_and_unverified_config) ... ok
+test_real_pyav_decodes_short_synthetic_wav (test_audio_worker.AudioWorkerTests.test_real_pyav_decodes_short_synthetic_wav) ... ok
+test_real_pyav_rejects_corruption_and_long_wav (test_audio_worker.AudioWorkerTests.test_real_pyav_rejects_corruption_and_long_wav) ... ok
+test_transcribe_uses_cpu_fixed_zh_vad_and_array (test_audio_worker.AudioWorkerTests.test_transcribe_uses_cpu_fixed_zh_vad_and_array) ... ok
+test_unknown_duration_decoder_stops_at_first_over_limit_frame (test_audio_worker.AudioWorkerTests.test_unknown_duration_decoder_stops_at_first_over_limit_frame) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.374s
+
+OK

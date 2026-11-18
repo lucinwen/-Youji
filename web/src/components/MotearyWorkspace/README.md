@@ -95,3 +95,9 @@ URLs or browser storage. Missing source tags remain visible under all sources.
 `tests/moteary/run_retrieval_e2e.py` starts a disposable real SQLite/HTTP instance and checks
 synthetic diary/podcast records, date boundaries, literal keywords, pagination, account
 isolation and restart persistence. It is separate from the unverified browser smoke harness.
+
+## Audio review
+
+`AudioImport` is a separate opt-in workflow: local Blob listening, explicit machine preview (default-disabled backend), UTF-8/manual transcript, user correction and explicit private save. `audioImport.ts` keeps original archive and both transcript versions in one Memo with a stable owner/audio-hash/filename ID. It verifies retries and unlinked originals and emits recovery receipts without silently deleting uploads. Machine text is never automatically saved or presented as correct. See `moteary/LOCAL_AUDIO.md` for bounds and blocked ASR evaluation; module/HTTP verification does not certify actual browser playback.
+
+Semantic candidates can be dismissed explicitly as not answering the question. An offline event clears old excerpts and cancels pending requests; coming back online never automatically resends content. Similarity is still not answerability.

@@ -1,0 +1,40 @@
+{
+  "base_commit": "39c9d9bf97e4e4115dd9556e7ec8e5661cbadddb",
+  "branch": "feat/audio-review-20261118",
+  "binary_sha256": "4dbf5db81fb17a06fd4cd387d6df16f556efcebed97561a63e9abb249974fb1a",
+  "frontend_full": {
+    "passed": 1768,
+    "skipped": 3,
+    "exit": 0
+  },
+  "frontend_final_targeted": {
+    "passed": 76,
+    "exit": 0
+  },
+  "lint": "passed",
+  "frontend_and_go_build": "passed",
+  "go_expanded": {
+    "passing_packages": 16,
+    "exit": 1,
+    "failure": "existing TestUserWebhookSigningSecretLifecycle: example.com DNS network unreachable"
+  },
+  "go_targeted": {
+    "scope": "Audio/PDF/Retrieval/Gateway race",
+    "exit": 0,
+    "seconds": 4.252
+  },
+  "python_audio_non_inference": {
+    "passed": 9
+  },
+  "python_evaluation_guards": {
+    "passed": 5
+  },
+  "real_http": {
+    "groups_passed": 3,
+    "model_executed": false,
+    "restart_original_bytes_verified": true
+  },
+  "browser": "blocked: normal sandbox socket permission",
+  "real_asr": "blocked by automatic approval review after unexpected Microsoft telemetry; first sample partial only; no retry",
+  "private_data_or_weights_uploaded": false
+}

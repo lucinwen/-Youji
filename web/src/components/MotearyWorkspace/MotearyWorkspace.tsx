@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils";
 import { ROUTES } from "@/router/routes";
 import { State } from "@/types/proto/api/common_pb";
 import { type Memo, Visibility } from "@/types/proto/api/memo_service_pb";
+import AudioImport from "./AudioImport";
 import BatchImport from "./BatchImport";
 import OriginalAudioPreview, { getOriginalAudio } from "./OriginalAudioPreview";
 import PDFImport from "./PDFImport";
@@ -225,6 +226,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
           </aside>
         </section>
 
+        <AudioImport key={`audio:${userName}`} userName={userName} onSaved={() => void query.refetch()} />
         <PDFImport key={`pdf:${userName}`} userName={userName} onSaved={() => void query.refetch()} />
         <BatchImport
           key={userName}

@@ -1,0 +1,7 @@
+RUN  v4.1.5 /workspace/scratch/10a41183bc23/youji-next/web
+
+
+ Test Files  5 passed (5)
+      Tests  76 passed (76)
+   Start at  19:42:53
+   Duration  13.86s (transform 607ms, setup 819ms, import 1.85s, tests 6.25s, environment 3.75s)

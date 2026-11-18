@@ -69,6 +69,27 @@ describe("Semantic retrieval opt-in UI", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent(message);
     expect(fetchMock).toHaveBeenCalledOnce();
   });
+  it("clears misleading candidates locally without treating similarity as an answer", async () => {
+    fetchMock.mockResolvedValueOnce(response({ available: true })).mockResolvedValueOnce(response(result));
+    mount();
+    submit();
+    await screen.findByText(result.hits[0].excerpt);
+    fireEvent.click(screen.getByRole("button", { name: "这些候选没有回答我的问题" }));
+    expect(screen.queryByText(result.hits[0].excerpt)).not.toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent("没有记录为答案");
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+  it("clears displayed excerpts on an offline event without automatically retrying", async () => {
+    fetchMock.mockResolvedValueOnce(response({ available: true })).mockResolvedValueOnce(response(result));
+    mount();
+    submit();
+    await screen.findByText(result.hits[0].excerpt);
+    fireEvent(window, new Event("offline"));
+    expect(screen.queryByText(result.hits[0].excerpt)).not.toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent("旧候选已清除");
+    fireEvent(window, new Event("online"));
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
   it("keeps errors distinct from empty successful results", async () => {
     fetchMock.mockResolvedValueOnce(response({ available: true })).mockResolvedValueOnce(response({}, 500));
     mount();
@@ -96,7 +117,7 @@ describe("Semantic retrieval opt-in UI", () => {
     expect(screen.queryByText(result.hits[0].excerpt)).not.toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
-  it.each(["cancel", "scope", "account", "unmount", "invalidation"])("ignores late search results after %s", async (reason) => {
+  it.each(["cancel", "scope", "account", "unmount", "invalidation", "offline"])("ignores late search results after %s", async (reason) => {
     queryClient.setQueryData(["memos", "list"], []);
     let finish: ((value: Response) => void) | undefined;
     fetchMock.mockResolvedValueOnce(response({ available: true })).mockImplementationOnce(
@@ -110,6 +131,7 @@ describe("Semantic retrieval opt-in UI", () => {
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
     const signal = fetchMock.mock.calls[1][1].signal;
     if (reason === "cancel") fireEvent.click(screen.getByRole("button", { name: "取消语义找回" }));
+    else if (reason === "offline") fireEvent(window, new Event("offline"));
     else if (reason === "invalidation")
       await act(async () => {
         await queryClient.invalidateQueries({ queryKey: ["memos"] });

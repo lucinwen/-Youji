@@ -1,0 +1,76 @@
+{
+  "dataset": "google/fleurs",
+  "revision": "70bb2e84b976b7e960aa89f1c648e09c59f894dd",
+  "config": "cmn_hans_cn",
+  "split": "validation/dev",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "FLEURS: Few-shot Learning Evaluation of Universal Representations of Speech; Conneau et al., 2022, Google",
+  "paper": "https://arxiv.org/abs/2205.12446",
+  "dataset_card": "https://huggingface.co/datasets/google/fleurs/blob/70bb2e84b976b7e960aa89f1c648e09c59f894dd/README.md",
+  "archive_url": "https://huggingface.co/datasets/google/fleurs/resolve/70bb2e84b976b7e960aa89f1c648e09c59f894dd/data/cmn_hans_cn/audio/dev.tar.gz",
+  "archive_sha256": "3bc33212d5974eef7feb04bc4792458d6cd7e14ff10a1a24772f3c45ea87a822",
+  "reference_url": "https://huggingface.co/datasets/google/fleurs/resolve/70bb2e84b976b7e960aa89f1c648e09c59f894dd/data/cmn_hans_cn/dev.tsv",
+  "reference_sha256": "6b4efd804b543048feb278db06f3b58b5ea171cdd4ba072e328ad630ca25384b",
+  "reference_git_blob": "bd100387f1cc9861653500cbfeda3270d0e8dddf",
+  "selection": "First five distinct sentence IDs in dev.tsv order with 0 < num_samples <= 320000; fixed before decoding; no outcome-based exclusion",
+  "audio_type": "Published human read speech, not synthesized; corpus is not user/private material",
+  "modifications": "None to WAV bytes or reference text. Selecting a subset only; CER normalization is reported separately.",
+  "samples": [
+    {
+      "sentence_id": "1636",
+      "filename": "15119654797764315030.wav",
+      "reference": "西班牙人开始了长达三个世纪的殖民时期。",
+      "dataset_normalized_reference": "西 班 牙 人 开 始 了 长 达 三 个 世 纪 的 殖 民 时 期",
+      "num_samples": 78720,
+      "expected_duration_seconds": 4.92,
+      "sha256": "7029eafa1b9a46916d1ba75c744a9c3283443dd5d00d48cb0d647992217a9cb0",
+      "bytes": 314938,
+      "archive_member": "dev/15119654797764315030.wav"
+    },
+    {
+      "sentence_id": "1608",
+      "filename": "6229499241916815991.wav",
+      "reference": "“我姐姐和她的朋友不见了，路上有两个残疾人坐着轮椅，有人跳过去帮他们推轮椅”，阿尔芒·范思哲说道。",
+      "dataset_normalized_reference": "我 姐 姐 和 她 的 朋 友 不 见 了 路 上 有 两 个 残 疾 人 坐 着 轮 椅 有 人 跳 过 去 帮 他 们 推 轮 椅 阿 尔 芒 范 思 哲 说 道",
+      "num_samples": 144960,
+      "expected_duration_seconds": 9.06,
+      "sha256": "25a1b2cfd01c5d46ab6c366409bb885989cdbde83fc85c2dcf6432d22f3ec53b",
+      "bytes": 579898,
+      "archive_member": "dev/6229499241916815991.wav"
+    },
+    {
+      "sentence_id": "1639",
+      "filename": "6873735086472854552.wav",
+      "reference": "学生往往是最挑剔的读者，所以博客作者开始努力提高写作水平，避免受到批判。",
+      "dataset_normalized_reference": "学 生 往 往 是 最 挑 剔 的 读 者 所 以 博 客 作 者 开 始 努 力 提 高 写 作 水 平 避 免 受 到 批 判",
+      "num_samples": 249280,
+      "expected_duration_seconds": 15.58,
+      "sha256": "e7060f38dbe0a35eb37471a29accd4ae5adf788126b31ae36a4f2133e29eca4e",
+      "bytes": 997178,
+      "archive_member": "dev/6873735086472854552.wav"
+    },
+    {
+      "sentence_id": "1652",
+      "filename": "6493646763526361467.wav",
+      "reference": "摩尔多瓦 (Moldova) 的主要宗教是东正教。",
+      "dataset_normalized_reference": "摩 尔 多 瓦 moldova 的 主 要 宗 教 是 东 正 教",
+      "num_samples": 64320,
+      "expected_duration_seconds": 4.02,
+      "sha256": "1e3ec466c58e35af554a9994d73378180b7a44178b8e7643fce308ab11582a7f",
+      "bytes": 257338,
+      "archive_member": "dev/6493646763526361467.wav"
+    },
+    {
+      "sentence_id": "1530",
+      "filename": "8462371175358088591.wav",
+      "reference": "按照原计划，它将在周二被砍倒，但在法庭紧急裁决后幸免遇难。",
+      "dataset_normalized_reference": "按 照 原 计 划 它 将 在 周 二 被 砍 倒 但 在 法 庭 紧 急 裁 决 后 幸 免 遇 难",
+      "num_samples": 142080,
+      "expected_duration_seconds": 8.88,
+      "sha256": "b320f3d558317f92df286d6cd9a76840a408034451b6cca1af735a4cda896acf",
+      "bytes": 568378,
+      "archive_member": "dev/8462371175358088591.wav"
+    }
+  ]
+}
