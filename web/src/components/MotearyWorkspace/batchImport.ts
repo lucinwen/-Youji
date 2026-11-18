@@ -108,16 +108,34 @@ export async function readOriginalArchive(response: Response, signal: AbortSigna
 export async function verifyOriginalArchive(bytes: Uint8Array, filename: string, expectedHash: string): Promise<Uint8Array> {
   if (bytes.length > MAX_FILE + 1024 * 1024 || !/^[a-f0-9]{64}$/.test(expectedHash)) throw new Error("原件校验信息无效。");
   let entryCount = 0;
+  let originalSize = 0;
   const entries = unzipSync(bytes, {
     filter: (entry) => {
       entryCount++;
-      return entry.originalSize <= MAX_FILE;
+      // fflate calls this before allocating the decoded buffer. Never decode an
+      // extra entry (including duplicate names, which its result object hides).
+      if (
+        entryCount !== 1 ||
+        entry.name !== filename ||
+        !Number.isSafeInteger(entry.originalSize) ||
+        entry.originalSize < 0 ||
+        entry.originalSize > MAX_FILE ||
+        !Number.isSafeInteger(entry.size) ||
+        entry.size < 0 ||
+        entry.size > bytes.length ||
+        (entry.compression !== 0 && entry.compression !== 8) ||
+        (entry.compression === 0 && entry.size !== entry.originalSize)
+      )
+        throw new Error("原件校验未通过，已停止。");
+      originalSize = entry.originalSize;
+      return true;
     },
   });
   if (
     entryCount !== 1 ||
     Object.keys(entries).length !== 1 ||
     !Object.hasOwn(entries, filename) ||
+    entries[filename].length !== originalSize ||
     entries[filename].length > MAX_FILE ||
     (await hash(entries[filename])) !== expectedHash
   )

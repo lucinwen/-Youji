@@ -53,7 +53,10 @@ const SOURCE_ICONS = {
 const categories = Object.entries(CATEGORY_LABELS) as [CaptureCategory, string][];
 const memoPath = (name: string) => `/memos/${encodeURIComponent(name.split("/").at(-1) ?? "")}`;
 
-function SourceCard({ memo }: { memo: Memo }) {
+function SourceCard({ memo, search }: { memo: Memo; search: string }) {
+  const matchIndex = search ? memo.content.indexOf(search) : -1;
+  const snippetStart = Math.max(0, matchIndex - 48);
+  const snippetEnd = Math.min(memo.content.length, matchIndex + search.length + 48);
   const originalAudio = getOriginalAudio(memo);
   const kind = getSourceKind(memo);
   const Icon = kind === "unknown" ? BookOpenIcon : SOURCE_ICONS[kind];
@@ -76,6 +79,16 @@ function SourceCard({ memo }: { memo: Memo }) {
           {getSourceVisibility(memo.visibility)}
         </p>
         <h3 className="mb-4 line-clamp-2 min-h-12 break-words text-[15px] leading-6 font-medium">{getSourceTitle(memo.content)}</h3>
+        {matchIndex >= 0 && (
+          <p className="mb-4 whitespace-pre-wrap break-words text-xs leading-6 text-muted-foreground" aria-label="正文命中上下文">
+            <span className="font-medium">正文命中： </span>
+            {snippetStart > 0 ? "…" : ""}
+            {memo.content.slice(snippetStart, matchIndex)}
+            <mark className="rounded bg-amber-100 px-0.5 text-amber-950 dark:bg-amber-900 dark:text-amber-50">{search}</mark>
+            {memo.content.slice(matchIndex + search.length, snippetEnd)}
+            {snippetEnd < memo.content.length ? "…" : ""}
+          </p>
+        )}
         {memo.attachments.length > 0 && (
           <div className="mb-3 text-xs leading-5 text-muted-foreground" aria-label="附件与检索范围">
             <p>附件已关联，不代表内容已解析。PDF、音频、图片不会自动提取、转写或 OCR。</p>
@@ -153,8 +166,8 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
               <SproutIcon className="size-6" strokeWidth={1.5} />
             </span>
             <div>
-              <div className="text-xl font-semibold tracking-[0.12em]">拾微</div>
-              <div className="text-[9px] tracking-[0.24em] text-muted-foreground">MOTEARY · 个人素材工作台</div>
+              <div className="text-xl font-semibold tracking-[0.12em]">有记</div>
+              <div className="text-[9px] tracking-[0.24em] text-muted-foreground">Youji · 个人素材工作台</div>
             </div>
           </div>
           <Link to={ROUTES.HOME} className="flex items-center gap-2 text-xs text-muted-foreground underline-offset-4 hover:underline">
@@ -279,7 +292,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
                 </h3>
                 <p className="text-xs leading-6 text-muted-foreground">{SOURCE_INFO[capture.kind].instruction}</p>
                 <p className="mt-1 text-[11px] leading-5 text-muted-foreground">
-                  若有未完成的草稿，会优先恢复原草稿。草稿不是已保存记录；保存成功才会出现在下方列表。取消会保留草稿。新建个人片段默认仅自己可见，空间片段默认空间成员可见；恢复草稿保留原可见范围，请保存前核对。
+                  若有未完成的草稿，会优先恢复原草稿。草稿不是已保存记录；保存成功后可直接打开记录，下方列表受当前筛选条件限制。取消会保留草稿。新建个人片段默认仅自己可见，空间片段默认空间成员可见；恢复草稿保留原可见范围，请保存前核对。
                 </p>
               </div>
               <MemoEditor
@@ -307,10 +320,12 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
           {savedName && (
             <div
               role="status"
+              aria-label="记录保存结果"
               className="mt-4 flex flex-wrap items-center gap-2 rounded-lg border border-emerald-800/15 bg-emerald-100/30 px-4 py-3 text-xs dark:bg-emerald-900/15"
             >
               <CheckIcon className="size-4" />
               已保存到当前 Memos 实例。
+              当前来源、日期、分类、空间或关键词筛选可能不包含新记录；可直接打开，或通过下方“查看全部个人记录”找回。
               <Link to={memoPath(savedName)} className="underline underline-offset-4">
                 查看这份记录
               </Link>
@@ -371,7 +386,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
                   onChange={(event) => setRetrievalDraft({ ...retrievalDraft, kind: event.target.value as SourceKind | "all" })}
                   className="mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-border bg-card px-3"
                 >
-                  <option value="all">全部来源（含未标记）</option>
+                  <option value="all">所有类型（本工作台内）</option>
                   {SOURCE_KINDS.map((kind) => (
                     <option key={kind} value={kind}>
                       {SOURCE_INFO[kind].label}
@@ -492,8 +507,21 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
               : query.isError
                 ? "未能核对最新状态。"
                 : `当前已加载 ${memos.length} 条${query.hasNextPage ? "，还有更多" : ""}。`}
-            其他记录仍在原时间线。
           </p>
+          <div className="mb-4 rounded-xl border border-border bg-card px-4 py-3 text-xs leading-6" aria-label="找回其他记录">
+            <p className="text-muted-foreground">
+              编辑时移除 #拾微 标签，记录会离开这个工作台，但不会因此删除。可在个人时间线找回，重新添加 #拾微 后回到这里。
+            </p>
+            <div className="flex flex-wrap gap-x-5 gap-y-1">
+              <Link to={ROUTES.HOME} className="underline underline-offset-4">
+                查看全部个人记录
+              </Link>
+              <Link to={ROUTES.ARCHIVED} className="underline underline-offset-4">
+                查看我的归档记录
+              </Link>
+            </div>
+            <p className="text-muted-foreground">个人时间线显示未归档记录；若仍找不到，请检查时间线筛选条件或归档。</p>
+          </div>
           {query.isError && (
             <div role="alert" className="mb-4 rounded-xl border border-destructive/30 bg-card p-4 text-sm">
               <p className="mb-2">来源读取失败。已显示的记录可能不是最新状态；不会将失败显示成空收藏。</p>
@@ -510,7 +538,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
           ) : memos.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {memos.map((memo) => (
-                <SourceCard key={memo.name} memo={memo} />
+                <SourceCard key={memo.name} memo={memo} search={search} />
               ))}
             </div>
           ) : (
@@ -543,7 +571,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
             保存位置：当前 Memos 实例 · 本设备离线可用性未验证 · 本工作台不自动触发提取或 AI 整理
           </p>
           <p className="mt-1 text-[11px] leading-6 text-muted-foreground">
-            普通图片上传可能处理图像，不保证原始字节不变。原有转写与处理结果请在记录或附件详情查看。拾微工作台基于完整
+            普通图片上传可能处理图像，不保证原始字节不变。原有转写与处理结果请在记录或附件详情查看。有记工作台基于完整
             Memos，原有时间线、搜索、附件与空间功能保留。
           </p>
         </footer>

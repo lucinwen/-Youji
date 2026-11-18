@@ -1,0 +1,69 @@
+{
+  "kind": "real pypdf, SQLite and HTTP; not browser E2E",
+  "checks": [
+    {
+      "check": "real pinned parser extracts Chinese and English with page numbers",
+      "passed": true
+    },
+    {
+      "check": "three PRIVATE records saved to real SQLite",
+      "passed": true
+    },
+    {
+      "check": "Chinese keyword/category/source retrieves page text linked to original",
+      "passed": true
+    },
+    {
+      "check": "downloaded original PDF bytes identical",
+      "passed": true
+    },
+    {
+      "check": "second ordinary account and anonymous cannot read original; second account cannot search/read derivatives",
+      "passed": true
+    },
+    {
+      "check": "repeat validates bodies and original archives without duplicate records",
+      "passed": true
+    },
+    {
+      "check": "same PDF with changed category refused before upload",
+      "passed": true
+    },
+    {
+      "check": "real partial writes recover without duplicates after simulated client record-boundary interruption",
+      "passed": true
+    },
+    {
+      "check": "restart/relogin preserves keyword retrieval and verified retry",
+      "passed": true
+    },
+    {
+      "check": "edited derived text causes retry conflict and remains unchanged",
+      "passed": true
+    },
+    {
+      "check": "other account cannot confirm or delete owner PDF group",
+      "passed": true
+    },
+    {
+      "check": "cleanup preview does not write; injected body links cannot select deletion targets",
+      "passed": true
+    },
+    {
+      "check": "cleanup requires explicit acknowledgement of upstream archived/nested comment cascade",
+      "passed": true
+    },
+    {
+      "check": "resumable explicit cleanup removes all planned records/archives/search hits and acknowledged archived comment and preserves unrelated memo",
+      "passed": true
+    },
+    {
+      "check": "injected memo 500 after real attachment upload: exact orphan ID reported; retry leaves one explicitly identified orphan requiring manual cleanup",
+      "passed": true
+    },
+    {
+      "check": "lost response after real memo commit: retry verifies without new attachments",
+      "passed": true
+    }
+  ]
+}

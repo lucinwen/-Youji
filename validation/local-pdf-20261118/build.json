@@ -1,0 +1,7 @@
+{
+  "binary": "build/youji (not committed)",
+  "sha256": "ba1c64e7583ad0351c6742677cdfa962d3aa1029fb2f6d9c293380071ad5a711",
+  "go": "go1.27.2",
+  "frontend": "production release embedded from final working tree",
+  "buildExitCode": 0
+}

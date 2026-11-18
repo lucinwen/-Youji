@@ -30,6 +30,18 @@ view.setUint32(40, 16, true);
 const sha256 = createHash("sha256").update(bytes).digest("hex");
 const original = { name: "attachments/synthetic-1", filename: "合成.wav", type: "audio/wav", sha256 };
 const archive = new Uint8Array(zipSync({ [original.filename]: bytes }));
+// Fixtures from zipSync have no ZIP comment; walk central-directory records.
+const centralEntries = (zip: Uint8Array) => {
+  const data = new DataView(zip.buffer, zip.byteOffset, zip.byteLength);
+  const offsets: number[] = [];
+  let offset = data.getUint32(zip.length - 6, true);
+  const count = data.getUint16(zip.length - 14, true);
+  for (let index = 0; index < count; index++) {
+    offsets.push(offset);
+    offset += 46 + data.getUint16(offset + 28, true) + data.getUint16(offset + 30, true) + data.getUint16(offset + 32, true);
+  }
+  return { data, offsets };
+};
 const memo = () =>
   create(MemoSchema, {
     content: `原件 SHA-256：\`${sha256}\``,
@@ -172,5 +184,33 @@ describe("bounded verified original audio", () => {
   it("rejects a ZIP containing a compressed original above the decoded limit", async () => {
     const oversized = zipSync({ [original.filename]: new Uint8Array(MAX_FILE + 1) });
     await expect(verifyOriginalArchive(oversized, original.filename, sha256)).rejects.toThrow("校验未通过");
+  });
+  it("rejects extra highly compressed entries before attempting their decoding", async () => {
+    const zip = zipSync({ [original.filename]: bytes, "extra-a.bin": new Uint8Array(MAX_FILE), "extra-b.bin": new Uint8Array(MAX_FILE) });
+    expect(zip.length).toBeLessThan(100_000);
+    const { data, offsets } = centralEntries(zip);
+    // If the filter admits this entry, fflate throws 'unknown compression type'
+    // instead of our validation error. No second decoded allocation is allowed.
+    data.setUint16(offsets[1] + 10, 99, true);
+    await expect(verifyOriginalArchive(zip, original.filename, sha256)).rejects.toThrow("校验未通过");
+  });
+  it("rejects a non-target first entry before attempting its decoding", async () => {
+    const zip = zipSync({ "wrong.wav": new Uint8Array(MAX_FILE), [original.filename]: bytes });
+    const { data, offsets } = centralEntries(zip);
+    data.setUint16(offsets[0] + 10, 99, true);
+    await expect(verifyOriginalArchive(zip, original.filename, sha256)).rejects.toThrow("校验未通过");
+  });
+  it("rejects duplicate names before decoding the second entry", async () => {
+    const zip = zipSync({ "a.wav": bytes, "b.wav": new Uint8Array(MAX_FILE) });
+    const { data, offsets } = centralEntries(zip);
+    zip[offsets[1] + 46] = "a".charCodeAt(0);
+    data.setUint16(offsets[1] + 10, 99, true);
+    await expect(verifyOriginalArchive(zip, "a.wav", sha256)).rejects.toThrow("校验未通过");
+  });
+  it.each([0, bytes.length - 1, MAX_FILE + 1])("rejects inconsistent stored-entry size %s", async (size) => {
+    const zip = zipSync({ [original.filename]: bytes }, { level: 0 });
+    const { data, offsets } = centralEntries(zip);
+    data.setUint32(offsets[0] + 24, size, true);
+    await expect(verifyOriginalArchive(zip, original.filename, sha256)).rejects.toThrow("校验未通过");
   });
 });
