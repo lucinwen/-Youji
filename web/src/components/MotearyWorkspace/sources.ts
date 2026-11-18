@@ -104,6 +104,10 @@ export function getSourceKind(memo: Pick<Memo, "tags">): SourceKind | "unknown" 
 }
 
 export function getSourceTitle(content: string): string {
+  if (content.startsWith("# 有记手动文本\n")) {
+    const title = content.match(/^## 标题、来源与原文件名（用户提供）\r?\n(`{3,})\r?\n([^\r\n]+)\r?\n/m)?.[2];
+    if (title) return title.slice(0, 110);
+  }
   const pdfHeading = content.match(/^# 有记 PDF (.+)$/m)?.[1];
   if (pdfHeading) {
     const filename = content.match(/^原文件名：\r?\n(`{3,})\r?\n([^\r\n]+)\r?\n\1(?:\r?\n|$)/m)?.[2];

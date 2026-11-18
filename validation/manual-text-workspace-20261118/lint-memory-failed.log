@@ -1,0 +1,3 @@
+$ tsc --noEmit --skipLibCheck && biome check src tests
+Killed
+[ELIFECYCLE] Command failed with exit code 137.

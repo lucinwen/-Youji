@@ -29,6 +29,7 @@ import AudioImport from "./AudioImport";
 import BatchImport from "./BatchImport";
 import ChatImport from "./ChatImport";
 import HTMLImport from "./HTMLImport";
+import ManualTextImport from "./ManualTextImport";
 import OriginalAudioPreview, { getOriginalAudio } from "./OriginalAudioPreview";
 import PDFImport from "./PDFImport";
 import SemanticSearch from "./SemanticSearch";
@@ -194,6 +195,13 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
           >
             音频与校订
           </a>
+          <a
+            href="#manual-text-import"
+            className="min-h-11 rounded-lg border border-border px-3 py-3"
+            onClick={() => document.getElementById("manual-text-import")?.setAttribute("open", "")}
+          >
+            粘贴聊天与文字
+          </a>
           <a href="#source-collection" className="min-h-11 rounded-lg border border-border px-3 py-3">
             查找资料
           </a>
@@ -351,6 +359,10 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
 
         <div className="mb-9 space-y-3" aria-label="原件导入入口">
           <p className="text-xs text-muted-foreground">按需要展开一种导入方式。收起面板保留填写内容，也不会取消正在进行的操作。</p>
+          <details id="manual-text-import" className="scroll-mt-4 rounded-xl border border-border p-3">
+            <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium">微信聊天、朋友对话与日常文字（手动提供）</summary>
+            <ManualTextImport key={`manual:${userName}`} userName={userName} onSaved={() => void query.refetch()} />
+          </details>
           <details
             id="audio-import"
             className="scroll-mt-4 rounded-xl border border-border p-3"
