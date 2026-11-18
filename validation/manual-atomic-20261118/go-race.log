@@ -1,0 +1,62 @@
+=== RUN   TestYoujiManualIdentityMatchesFrontend
+--- PASS: TestYoujiManualIdentityMatchesFrontend (0.00s)
+=== RUN   TestYoujiManualArchiveBoundedAndDeterministic
+--- PASS: TestYoujiManualArchiveBoundedAndDeterministic (0.00s)
+=== RUN   TestYoujiManualGatewayRequiresAuthentication
+--- PASS: TestYoujiManualGatewayRequiresAuthentication (0.01s)
+PASS
+ok  	github.com/usememos/memos/server/api	1.107s
+=== RUN   TestYoujiManualCreateVerifyAndOwner
+--- PASS: TestYoujiManualCreateVerifyAndOwner (0.08s)
+=== RUN   TestYoujiManualExistingPairConflicts
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_memo_SET_content='edited'
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_memo_SET_visibility='PUBLIC'
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_memo_SET_row_status='ARCHIVED'
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_memo_SET_space_id=42
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_creator_id=2
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_uid='different'
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_filename='different.zip'
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_type='text/plain'
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_size=4
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_blob=x'6e6577'
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_storage_type='LOCAL'
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_reference='external'
+=== RUN   TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_memo_id=NULL
+=== RUN   TestYoujiManualExistingPairConflicts/INSERT_INTO_attachment(uid,creator_id,memo_id)_SELECT_'extra',1,id_FROM_memo
+--- PASS: TestYoujiManualExistingPairConflicts (1.22s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_memo_SET_content='edited' (0.11s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_memo_SET_visibility='PUBLIC' (0.08s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_memo_SET_row_status='ARCHIVED' (0.08s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_memo_SET_space_id=42 (0.07s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_creator_id=2 (0.07s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_uid='different' (0.08s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_filename='different.zip' (0.08s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_type='text/plain' (0.07s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_size=4 (0.09s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_blob=x'6e6577' (0.08s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_storage_type='LOCAL' (0.07s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_reference='external' (0.18s)
+    --- PASS: TestYoujiManualExistingPairConflicts/UPDATE_attachment_SET_memo_id=NULL (0.08s)
+    --- PASS: TestYoujiManualExistingPairConflicts/INSERT_INTO_attachment(uid,creator_id,memo_id)_SELECT_'extra',1,id_FROM_memo (0.08s)
+=== RUN   TestYoujiManualRollbackOnAttachmentFailure
+--- PASS: TestYoujiManualRollbackOnAttachmentFailure (0.08s)
+=== RUN   TestYoujiManualDoesNotClaimOrphanUID
+--- PASS: TestYoujiManualDoesNotClaimOrphanUID (0.07s)
+=== RUN   TestYoujiManualQuotaAndOrphans
+=== RUN   TestYoujiManualQuotaAndOrphans/upload
+=== RUN   TestYoujiManualQuotaAndOrphans/memo
+=== RUN   TestYoujiManualQuotaAndOrphans/storage
+--- PASS: TestYoujiManualQuotaAndOrphans (0.34s)
+    --- PASS: TestYoujiManualQuotaAndOrphans/upload (0.08s)
+    --- PASS: TestYoujiManualQuotaAndOrphans/memo (0.10s)
+    --- PASS: TestYoujiManualQuotaAndOrphans/storage (0.08s)
+=== RUN   TestYoujiManualConcurrentIdempotencyAndQuota
+=== RUN   TestYoujiManualConcurrentIdempotencyAndQuota/true
+=== RUN   TestYoujiManualConcurrentIdempotencyAndQuota/false
+--- PASS: TestYoujiManualConcurrentIdempotencyAndQuota (0.38s)
+    --- PASS: TestYoujiManualConcurrentIdempotencyAndQuota/true (0.20s)
+    --- PASS: TestYoujiManualConcurrentIdempotencyAndQuota/false (0.18s)
+=== RUN   TestYoujiManualRejectsInvalidAndCancelled
+--- PASS: TestYoujiManualRejectsInvalidAndCancelled (0.06s)
+PASS
+ok  	github.com/usememos/memos/store/db/sqlite	3.271s

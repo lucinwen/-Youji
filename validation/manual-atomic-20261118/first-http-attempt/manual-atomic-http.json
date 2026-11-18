@@ -1,0 +1,18 @@
+{
+  "status": "failed",
+  "kind": "real HTTP and isolated SQLite; no browser",
+  "binary_sha256": "9c9c3955a4094b60b068467d4c34239820c631950faf22aa35b9ee6dc4ce48e0",
+  "model_executed": false,
+  "checks": [
+    {
+      "check": "eight concurrent identical imports",
+      "status": "failed",
+      "error": "HTTPError: HTTP Error 403: Forbidden"
+    }
+  ],
+  "limitations": [
+    "Client discards one completed response; not an actual network interruption or crash during transaction",
+    "SQLite only; other database drivers not exercised",
+    "Deletion checks live rows, not physical erasure or backups"
+  ]
+}
