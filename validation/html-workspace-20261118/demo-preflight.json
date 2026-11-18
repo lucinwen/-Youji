@@ -1,0 +1,22 @@
+{
+  "kind": "fresh-local-demo-preflight",
+  "server_contacted": false,
+  "models_executed": false,
+  "model_env_set": {
+    "YOUJI_AUDIO_PYTHON": false,
+    "YOUJI_AUDIO_WORKER": false,
+    "YOUJI_AUDIO_MODEL": false,
+    "YOUJI_PDF_PYTHON": false,
+    "YOUJI_PDF_WORKER": false,
+    "YOUJI_RETRIEVAL_PYTHON": false,
+    "YOUJI_RETRIEVAL_WORKER": false,
+    "YOUJI_RETRIEVAL_MODEL": false
+  },
+  "data_state": "new",
+  "binary": {
+    "executable": true,
+    "version": "26.11.18-dev.524edac",
+    "status": "ok"
+  },
+  "ok": true
+}

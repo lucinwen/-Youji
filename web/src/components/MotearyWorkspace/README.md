@@ -118,3 +118,5 @@ confirmation resets. See `moteary/LOCAL_AUDIO.md` for sensitivity and trust limi
 and `moteary/DEMO_RUNBOOK.md` for a model-disabled fresh-instance demonstration.
 
 `ChatImport` / `chatImport.ts` 提供有界的 Telegram 单聊天 JSON 预览、显式 PRIVATE 保存与原件回溯。文字仅作为文本展示；复用已有单原件保存/校验/重试协议，不调用 ASR。兼容与隐私边界见 `moteary/LOCAL_CHAT.md`。
+
+`HTMLImport` 使用 `htmlImport.ts` 调度专用 `html.worker.ts`，由 parse5 AST 提取纯文本；不创建 DOM 或渲染原 HTML。Worker 的运行时网络 API 拒绝是纵深防御，不是完整沙箱。原件私有保存/恢复复用已有协议。详见 `moteary/LOCAL_HTML.md`。
