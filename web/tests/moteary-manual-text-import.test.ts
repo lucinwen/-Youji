@@ -11,7 +11,10 @@ import {
 import { getSourceTitle } from "@/components/MotearyWorkspace/sources";
 
 const saveAudio = vi.hoisted(() => vi.fn());
+const getCurrentUser = vi.hoisted(() => vi.fn());
 vi.mock("@/components/MotearyWorkspace/audioImport", () => ({ saveAudio }));
+vi.mock("@/connect", () => ({ authServiceClient: { getCurrentUser } }));
+vi.mock("@/auth-state", () => ({ getAccessToken: () => "synthetic-refreshed-token" }));
 const owner = "users/synthetic";
 const options = { source: "wechat" as const, title: "合成对话" };
 const encode = (text: string) => new TextEncoder().encode(text);
@@ -27,13 +30,15 @@ beforeEach(() => {
   vi.stubGlobal("fetch", fetchMock);
   fetchMock.mockReset();
   saveAudio.mockReset();
+  getCurrentUser.mockReset().mockResolvedValue({ user: { name: owner } });
 });
 afterEach(() => {
-  expect(fetchMock).not.toHaveBeenCalled();
+  expect(saveAudio).not.toHaveBeenCalled();
   vi.unstubAllGlobals();
 });
 
 describe("manual UTF-8 originals and pasted snapshots", () => {
+  afterEach(() => expect(fetchMock).not.toHaveBeenCalled());
   it.each([
     "普通合成标题",
     "```<img src=x onerror=alert(1)>",
@@ -149,6 +154,8 @@ describe("manual UTF-8 originals and pasted snapshots", () => {
   });
 
   it.each([
+    ".notes.txt",
+    " notes.txt",
     "../secret.txt",
     "bad\\name.md",
     "file.html",
@@ -188,14 +195,129 @@ describe("manual UTF-8 originals and pasted snapshots", () => {
     expect(plan.item.content).toContain("预览时文本快照，不是平台导出或媒体备份");
     expect(saveAudio).not.toHaveBeenCalled();
   });
+});
 
-  it("forwards the exact plan, cancellation signal and receipt callback to the established save protocol", async () => {
-    const plan = await preparePastedText("保存合成原文", owner, options);
+describe("dedicated transactional manual-text save", () => {
+  it.each(["imported", "verified"])("authenticates first and sends exact bytes only to the new endpoint for %s", async (status) => {
+    const data = new Uint8Array([0xef, 0xbb, 0xbf, ...encode("合成原文\r\n😀")]);
+    const plan = await prepareManualText(file(data), owner, options);
+    fetchMock.mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({ memo: `memos/${plan.item.id}`, attachment: "attachments/synthetic", status, sha256: plan.item.sha256 }),
+      ),
+    );
     const signal = new AbortController().signal;
     const receipt = vi.fn();
-    const result = { status: "verified", memo: `memos/${plan.item.id}` };
-    saveAudio.mockResolvedValue(result);
-    expect(await saveManualText(plan, signal, receipt)).toBe(result);
-    expect(saveAudio).toHaveBeenCalledExactlyOnceWith(plan.item, signal, receipt);
+    const result = await saveManualText(plan, signal, receipt);
+    expect(result).toEqual(expect.objectContaining({ status, attachment: "attachments/synthetic", sha256: plan.item.sha256 }));
+    expect(receipt.mock.calls.map(([value]) => value.status)).toEqual(["prepared", "save-unknown", status]);
+    expect(fetchMock).toHaveBeenCalledExactlyOnceWith(
+      "/api/youji/manual-text/import",
+      expect.objectContaining({
+        method: "POST",
+        signal,
+        credentials: "same-origin",
+        redirect: "error",
+        cache: "no-store",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer synthetic-refreshed-token" },
+      }),
+    );
+    expect(getCurrentUser).toHaveBeenCalledWith({}, { signal });
+    expect(getCurrentUser.mock.invocationCallOrder[0]).toBeLessThan(fetchMock.mock.invocationCallOrder[0]);
+    const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(Object.keys(body).sort()).toEqual(["content", "data", "filename", "owner"]);
+    expect(body).toEqual(expect.objectContaining({ owner, filename: plan.item.filename, content: plan.item.content }));
+    expect([...Buffer.from(body.data, "base64")]).toEqual([...data]);
+  });
+  it("rejects a changed account before POST and does not issue an unknown-write receipt", async () => {
+    const plan = await preparePastedText("合成", owner, options);
+    getCurrentUser.mockResolvedValueOnce({ user: { name: "users/other" } });
+    const receipt = vi.fn();
+    await expect(saveManualText(plan, new AbortController().signal, receipt)).rejects.toThrow("账户已变化");
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(receipt.mock.calls.map(([value]) => value.status)).toEqual(["prepared"]);
+  });
+  it.each([
+    [404, "更新服务器并使用 SQLite"],
+    [501, "更新服务器并使用 SQLite"],
+    [409, "不会覆盖或自动迁移"],
+    [413, "大小限制"],
+    [422, "服务器拒绝输入"],
+    [429, "配额不足或服务正忙"],
+    [403, "无权保存"],
+    [401, "登录已失效"],
+    [500, "保存未能确认"],
+  ] as const)("reports HTTP %s without fallback and retains the unknown-write receipt", async (status, message) => {
+    const plan = await preparePastedText("合成", owner, options);
+    fetchMock.mockResolvedValueOnce(new Response("ignored server body", { status }));
+    const receipt = vi.fn();
+    await expect(saveManualText(plan, new AbortController().signal, receipt)).rejects.toThrow(message);
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(receipt.mock.lastCall?.[0]).toEqual(expect.objectContaining({ memo: `memos/${plan.item.id}`, status: "save-unknown" }));
+  });
+  it("keeps an uncertain receipt when the request response is lost", async () => {
+    const plan = await preparePastedText("合成", owner, options);
+    fetchMock.mockRejectedValueOnce(new TypeError("network failure"));
+    const receipt = vi.fn();
+    await expect(saveManualText(plan, new AbortController().signal, receipt)).rejects.toThrow("结果未知");
+    expect(receipt.mock.lastCall?.[0].status).toBe("save-unknown");
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
+  it.each([
+    { memo: "memos/wrong" },
+    { attachment: "https://example.invalid/remote" },
+    { status: "uploaded" },
+    { sha256: "wrong" },
+  ])("rejects inconsistent successful response fields %#", async (patch) => {
+    const plan = await preparePastedText("合成", owner, options);
+    fetchMock.mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({
+          memo: `memos/${plan.item.id}`,
+          attachment: "attachments/synthetic",
+          status: "imported",
+          sha256: plan.item.sha256,
+          ...patch,
+        }),
+      ),
+    );
+    const receipt = vi.fn();
+    await expect(saveManualText(plan, new AbortController().signal, receipt)).rejects.toThrow("回执与原件不匹配");
+    expect(receipt.mock.lastCall?.[0].status).toBe("save-unknown");
+  });
+  it.each(["invalid JSON", "x".repeat(16 * 1024 + 1)])("bounds and validates the response body %#", async (body) => {
+    const plan = await preparePastedText("合成", owner, options);
+    fetchMock.mockResolvedValueOnce(new Response(body));
+    const receipt = vi.fn();
+    await expect(saveManualText(plan, new AbortController().signal, receipt)).rejects.toThrow("响应格式或大小异常");
+    expect(receipt.mock.lastCall?.[0].status).toBe("save-unknown");
+  });
+  it("does not POST after cancellation while identity refresh is pending", async () => {
+    const plan = await preparePastedText("合成", owner, options);
+    const abort = new AbortController();
+    getCurrentUser.mockImplementationOnce(async () => {
+      abort.abort();
+      return { user: { name: owner } };
+    });
+    await expect(saveManualText(plan, abort.signal, vi.fn())).rejects.toThrow();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+  it("never emits final success after cancellation even if the POST resolved", async () => {
+    const plan = await preparePastedText("合成", owner, options);
+    const abort = new AbortController();
+    fetchMock.mockImplementationOnce(async () => {
+      abort.abort();
+      return new Response(
+        JSON.stringify({
+          memo: `memos/${plan.item.id}`,
+          attachment: "attachments/synthetic",
+          status: "imported",
+          sha256: plan.item.sha256,
+        }),
+      );
+    });
+    const receipt = vi.fn();
+    await expect(saveManualText(plan, abort.signal, receipt)).rejects.toThrow();
+    expect(receipt.mock.lastCall?.[0].status).toBe("save-unknown");
   });
 });

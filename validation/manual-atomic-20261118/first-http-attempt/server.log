@@ -1,0 +1,12 @@
+time=2026-11-18T16:04:09.431-06:00 level=INFO msg="initializing new database with latest schema" file=migration/sqlite/LATEST.sql
+time=2026-11-18T16:04:09.434-06:00 level=INFO msg="database initialized successfully" schemaVersion=26.10.1
+Memos 26.11.18-dev.392389d started successfully!
+Data directory: /tmp/youji-manual-atomic-pry5u5hq
+Database driver: sqlite
+Server running on 127.0.0.1:51975
+Access your memos at: http://127.0.0.1:51975
+Access mode: private
+time=2026-11-18T16:04:09.471-06:00 level=INFO msg="rebuilding memo payloads" fromVersion=0 toVersion=1
+time=2026-11-18T16:04:09.472-06:00 level=INFO msg="rebuilt memo payloads" refreshed=0 skipped=0 failed=0
+time=2026-11-18T16:04:10.015-06:00 level=INFO msg="server shutting down"
+time=2026-11-18T16:04:10.016-06:00 level=INFO msg="memos stopped properly"

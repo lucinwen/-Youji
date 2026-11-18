@@ -62,9 +62,19 @@ it.skipIf(!process.env.YOUJI_MANUAL_TEXT_WEB_QA)(
     });
     vi.stubGlobal("crypto", webcrypto);
     vi.stubGlobal("File", NodeFile);
-    vi.stubGlobal("fetch", (url: string, options: RequestInit = {}) =>
-      realFetch(`${config.base}${url}`, { ...options, headers: { ...options.headers, Authorization: `Bearer ${config.token}` } }),
-    );
+    let loseNextCommittedResponse = false;
+    vi.stubGlobal("fetch", async (url: string, options: RequestInit = {}) => {
+      const response = await realFetch(`${config.base}${url}`, {
+        ...options,
+        headers: { ...options.headers, Authorization: `Bearer ${config.token}` },
+      });
+      if (url === "/api/youji/manual-text/import" && response.ok && loseNextCommittedResponse) {
+        loseNextCommittedResponse = false;
+        await response.arrayBuffer();
+        throw new Error("synthetic committed transaction response loss");
+      }
+      return response;
+    });
     rpc.getCurrentUser.mockImplementation(() => call("GET", "auth/me"));
     rpc.getUserUsage.mockImplementation(async ({ name }) => {
       const value = await call("GET", name);
@@ -181,41 +191,13 @@ it.skipIf(!process.env.YOUJI_MANUAL_TEXT_WEB_QA)(
       expect((await call("GET", search)).memos ?? []).toHaveLength(0);
       expect(await list("attachments")).toHaveLength(0);
 
-      // Real attachment commit followed by a lost client response. No deletion.
-      rpc.createAttachment.mockImplementationOnce(async (args) => {
-        await upload(args);
-        throw new ConnectError("synthetic committed-upload response loss", Code.Unavailable);
-      });
-      const uploadEvents: string[] = [];
-      const recoveryStart = requests.length;
-      await expect(saveManualText(plan, signal(), (r) => uploadEvents.push(r.status))).rejects.toThrow();
-      expect(uploadEvents).toContain("upload-unknown");
-      expect(await list("attachments")).toHaveLength(1);
-      expect(await list("memos")).toHaveLength(0);
-      await saveManualText(plan, signal(), vi.fn());
-      expect(await list("attachments")).toHaveLength(1);
-      expect(await list("memos")).toHaveLength(1);
-      expect(requests.slice(recoveryStart).some((r) => r.method === "DELETE")).toBe(false);
-      await call("DELETE", receipt.memo);
-
-      // Attachment is real and remains recoverable if memo creation fails first.
-      rpc.createMemo.mockRejectedValueOnce(new ConnectError("synthetic pre-commit write failure", Code.Internal));
-      await expect(saveManualText(plan, signal(), vi.fn())).rejects.toThrow();
-      expect(await list("memos")).toHaveLength(0);
-      expect(await list("attachments")).toHaveLength(1);
-      await saveManualText(plan, signal(), vi.fn());
-      expect(await list("attachments")).toHaveLength(1);
-      await call("DELETE", receipt.memo);
-
-      // Real memo commit, lost response; retry verifies and leaves one record for
-      // the Python parent's real process-restart check and final deletion.
-      rpc.createMemo.mockImplementationOnce(async (args) => {
-        await createMemo(args);
-        throw new ConnectError("synthetic committed-memo response loss", Code.Unavailable);
-      });
+      // Both rows are committed by the real endpoint before a client-side lost response.
+      loseNextCommittedResponse = true;
       const memoEvents: string[] = [];
       await expect(saveManualText(plan, signal(), (r) => memoEvents.push(r.status))).rejects.toThrow();
       expect(memoEvents).toContain("save-unknown");
+      expect(await list("memos")).toHaveLength(1);
+      expect(await list("attachments")).toHaveLength(1);
       expect((await saveManualText(plan, signal(), vi.fn())).status).toBe("verified");
       expect(await list("memos")).toHaveLength(1);
       expect(await list("attachments")).toHaveLength(1);

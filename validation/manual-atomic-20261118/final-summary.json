@@ -1,0 +1,34 @@
+{
+  "base_commit": "ce5f0b0ab5bd9623144565643a7bc6e26b7c7122",
+  "source_checkpoint": "f76b46c1e4dfae900e01910e9da7033159f9b39d",
+  "binary_sha256": "f60bab7b1474e9e1702e508193e169b4e41c31618420120f4c6e2d31fa6d954d",
+  "go_race": "API 3 and SQLite 7 top-level tests plus subtests passed; server source unchanged after 1b23513",
+  "frontend_full": {
+    "passed": 1980,
+    "skipped": 6,
+    "source": "1b23513"
+  },
+  "final_targeted_after_filename_patch": {
+    "passed": 88,
+    "source": "f76b46c"
+  },
+  "lint": "passed",
+  "build": "frontend and Go passed",
+  "final_http_concurrency": {
+    "groups_passed": 6,
+    "identical_requests": 8,
+    "imported": 1,
+    "verified": 7,
+    "memo_rows": 1,
+    "attachment_rows": 1,
+    "unlinked_rows": 0
+  },
+  "final_frontend_http_groups_passed": 4,
+  "final_demo_start_checks_passed": 10,
+  "scope": "SQLite manual-text endpoint with database ZIP BLOB only",
+  "other_importers": "unchanged; concurrent orphan risk remains",
+  "browser": "not tested; prior normal-sandbox startup blocked",
+  "model_executed": false,
+  "production_readiness": "not claimed",
+  "initial_failure": "403 due incorrect public owner name; fixed with BuildUserName and reverified"
+}
