@@ -141,7 +141,7 @@ class Client:
                              {'content': item['content'], 'visibility': 'PRIVATE', 'attachments': attachments})
         except Exception:
             # Never delete possibly attached data after an uncertain write.
-            raise RuntimeError('Memo write uncertain; inspect unlinked uploads and retry after checking the source ID ' + item['id'])
+            raise RuntimeError('Memo write uncertain; uploaded attachment=' + a['name'] + '; target=memos/' + item['id'] + '. Inspect this attachment and target before retry; do not delete an attachment that may already be linked.')
         return {'status': 'imported', 'name': memo['name'], 'sha256': item['sha256'], 'attachment': a['name'],
                 'processing': {'original': 'saved', 'ocr': 'not-run', 'transcription': 'not-run', 'ai': 'not-run'}}
 

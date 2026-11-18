@@ -35,3 +35,6 @@ node_modules/
 *.sqlite3
 *.db-wal
 *.db-shm
+
+# Optional local parser environment
+.venv-pdf/

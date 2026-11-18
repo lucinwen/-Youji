@@ -1,6 +1,6 @@
 import { create } from "@bufbuild/protobuf";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { MemoEditorDraftProps } from "@/components/MemoEditor/MemoEditor";
 import MotearyWorkspace from "@/components/MotearyWorkspace/MotearyWorkspace";
@@ -66,6 +66,37 @@ describe("Moteary workspace state boundaries", () => {
     expect(screen.getByTestId("moteary-empty")).toBeInTheDocument();
     expect(screen.getByText(/本设备离线可用性未验证/)).toBeInTheDocument();
   });
+  it("shows the Youji brand while preserving the historical collection tag and draft identity", () => {
+    mount();
+    expect(screen.getByText("有记")).toBeInTheDocument();
+    expect(screen.getByText("Youji · 个人素材工作台")).toBeInTheDocument();
+    expect(useInfiniteMemos.mock.lastCall?.[0].filter).toContain('tag in ["拾微"]');
+    fireEvent.click(screen.getByTestId("moteary-capture-text"));
+    expect(editorProps.current?.draft.scope).toBe("moteary:text:idea");
+    expect(editorProps.current?.draft.content).toContain("#拾微");
+  });
+  it("offers recovery outside the tagged collection even when no tagged records remain", () => {
+    const RecoveryDestination = () => {
+      const location = useLocation();
+      return <p data-testid="recovery-destination">{location.pathname + location.search}</p>;
+    };
+    render(
+      <MemoryRouter initialEntries={["/moteary"]}>
+        <Routes>
+          <Route path="/moteary" element={<MotearyWorkspace userName="users/alice" />} />
+          <Route path="/" element={<RecoveryDestination />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    fireEvent.change(screen.getByLabelText("来源空间"), { target: { value: "spaces/one" } });
+    fireEvent.change(screen.getByLabelText("资料关键词"), { target: { value: "missing record" } });
+    fireEvent.submit(screen.getByRole("form", { name: "搜索我的资料" }));
+    expect(screen.getByTestId("moteary-empty")).toBeInTheDocument();
+    expect(screen.getByLabelText("找回其他记录")).toHaveTextContent("但不会因此删除");
+    expect(screen.getByRole("link", { name: "查看我的归档记录" })).toHaveAttribute("href", "/archived");
+    fireEvent.click(screen.getByRole("link", { name: "查看全部个人记录" }));
+    expect(screen.getByTestId("recovery-destination")).toHaveTextContent(/^\/$/);
+  });
   it("never labels query failure as an empty collection or a successful refresh", () => {
     query.isError = true;
     mount();
@@ -129,6 +160,49 @@ describe("Moteary workspace state boundaries", () => {
     expect(screen.getByRole("link", { name: "查看这份记录" })).toHaveAttribute("href", "/memos/saved");
     expect(screen.queryByTestId("moteary-composer")).not.toBeInTheDocument();
     expect(query.refetch).toHaveBeenCalledOnce();
+  });
+  it("keeps a saved record reachable when the active podcast and past-date filters exclude it", () => {
+    mount();
+    expect(screen.getByRole("option", { name: "所有类型（本工作台内）" })).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("找回来源类型"), { target: { value: "podcast" } });
+    fireEvent.change(screen.getByLabelText("保存结束日期"), { target: { value: "2020-01-01" } });
+    fireEvent.submit(screen.getByRole("form", { name: "搜索我的资料" }));
+    const applied = useInfiniteMemos.mock.lastCall?.[0].filter;
+    fireEvent.click(screen.getByTestId("moteary-capture-text"));
+    fireEvent.click(screen.getByRole("button", { name: "Confirm saved" }));
+    expect(screen.getByRole("status", { name: "记录保存结果" })).toHaveTextContent(
+      "当前来源、日期、分类、空间或关键词筛选可能不包含新记录",
+    );
+    expect(screen.getByRole("link", { name: "查看这份记录" })).toHaveAttribute("href", "/memos/saved");
+    expect(screen.getByRole("link", { name: "查看全部个人记录" })).toHaveAttribute("href", "/");
+    expect(useInfiniteMemos.mock.lastCall?.[0].filter).toBe(applied);
+    expect(screen.getByTestId("moteary-empty")).toBeInTheDocument();
+  });
+  it.each([
+    "明天再想",
+    "[a+b].*",
+    '<img src=x onerror="alert(1)">',
+  ])("shows a literal, safely rendered annotation match for %s only after search submission", (keyword) => {
+    query.data.pages[0].memos = [
+      create(MemoSchema, {
+        name: "memos/annotation",
+        content: `# 会议录音\n\n${"前文".repeat(50)}\n## 我的批注\n讨论前 ${keyword} 讨论后\n${"后文".repeat(50)}`,
+        tags: ["拾微", "source/podcast"],
+      }),
+    ];
+    mount();
+    fireEvent.change(screen.getByLabelText("资料关键词"), { target: { value: keyword } });
+    expect(screen.queryByLabelText("正文命中上下文")).not.toBeInTheDocument();
+    fireEvent.submit(screen.getByRole("form", { name: "搜索我的资料" }));
+    const snippet = screen.getByLabelText("正文命中上下文");
+    expect(snippet).toHaveTextContent("我的批注");
+    expect(snippet).toHaveTextContent(`讨论前 ${keyword} 讨论后`);
+    expect(snippet.querySelector("mark")).toHaveTextContent(keyword);
+    expect(snippet.querySelector("img")).toBeNull();
+    expect(snippet.textContent).not.toContain("前文".repeat(50));
+    expect(snippet.closest("a")).toHaveAttribute("href", "/memos/annotation");
+    fireEvent.click(screen.getByRole("button", { name: "清除搜索" }));
+    expect(screen.queryByLabelText("正文命中上下文")).not.toBeInTheDocument();
   });
   it("shows only the actual loaded count, offers pagination, and does not double-fetch", () => {
     query.hasNextPage = true;

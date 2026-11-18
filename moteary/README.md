@@ -1,4 +1,4 @@
-# Moteary 拾微 · 完整底座集成 Demo
+# 有记 Youji · 完整底座集成 Demo
 
 ## 当前基线
 
@@ -35,7 +35,7 @@ go build -buildvcs=false -ldflags "-X github.com/usememos/memos/internal/version
 python moteary/import_sources.py example.md --kind lecture --note '希望下次演讲时复用' --dry-run
 # 本地环境变量 MOTEARY_API_TOKEN 使用该账户自行生成的令牌，勿放进命令行或版本库
 python moteary/import_sources.py example.md --kind lecture --note '希望下次演讲时复用'
-python -m unittest discover -s tests/moteary -v
+.venv-pdf/bin/python -m unittest discover -s tests/moteary -v
 ```
 
 导入器限单文件 16 MiB；大文件继续走完整产品的原生分块上传。重复导入正常情况下返回 already-imported；原记录已被修改则拒绝覆盖。遇到网络写入结果不确定时保留附件并报告记录 ID，不盲目删除可能已关联的数据。并发重复导入或上传成功而记录写入失败可能留下未关联附件，用户需明确核对后清理。
@@ -114,3 +114,45 @@ python moteary/import_batch.py sources.json --receipt receipt-001.json
 网页与CLI跨入口冲突处理：[CROSS_ENTRY_GUARD_20261112.md](CROSS_ENTRY_GUARD_20261112.md)。
 
 PDF/音频原件、检索与取回边界：[BINARY_MATERIALS_20261112.md](BINARY_MATERIALS_20261112.md)。
+
+
+## 本地 PDF 正文提取（2026-11-18）
+
+有记新增显式本地 PDF 命令行导入，保留完整 PDF 原件，将已有文字按页分段存入 PRIVATE 记录，可在工作台按「文件＋类别＋正文关键词」找回。每段带原件链接、页码、SHA 和解析器版本。它没有网页上传解析按钮、OCR、ASR 或模型推理。普通上传入口仍只保留 PDF 原件。
+
+```sh
+python -m venv .venv-pdf
+.venv-pdf/bin/pip install -r moteary/requirements-pdf.txt
+.venv-pdf/bin/python moteary/import_pdf.py document.pdf --kind work --dry-run
+# 使用本地环境中的 MOTEARY_API_TOKEN，勿写入命令行或仓库
+.venv-pdf/bin/python moteary/import_pdf.py document.pdf --kind work
+.venv-pdf/bin/python -m unittest discover -s tests/moteary -v
+MOTEARY_BINARY=./build/youji .venv-pdf/bin/python tests/moteary/run_pdf_e2e.py
+```
+
+仅 POSIX；固定 pypdf 7.1.1（BSD-3-Clause），许可证保留于 `licenses/pypdf-7.1.1-LICENSE.txt`。不下载模型、不读取 PDF 链接、不执行 PDF JavaScript、不调用云解析。解析子进程不接收 API 凭据，限制 512 MiB 地址空间、10 秒 CPU、15 秒墙钟时间及 2 MiB 输出；这不是完整文件系统/网络沙箱。输入限 16 MiB、64 页、256 KiB 提取文字及 64 段；加密、全扫描无文字、损坏或超限文件明确拒绝，不静默截断。
+
+`--dry-run` 仅在本地解析并输出页数、字节数和 SHA，不输出正文、不访问 API。正式导入先检查完整计划和账户配额，再逐项保存。最终 `complete` 回执才表示全部记录核验完成；中断可重跑同一文件。重试检查 PRIVATE、正文和原件归档，用户修改后的记录会触发冲突。已有其他入口的原件会提示先核对，不自动合并。此预检不保证并发唯一性，旧入口也尚未全向识别 PDF 新入口。
+
+**删除索引不会删除正文与其附件。** 永久删除需逐项删除索引列出的记录，且勿重跑导入。部分写入、未关联附件仍可能留存；没有一键整份删除或自动孤儿清理。正文按代码块呈现以避免提取内容触发图片/HTML，用户可编辑，原始提取段仍保留在附件；排版与阅读顺序必须对照 PDF 核对。没有原 PDF 页内跳转查看器，页码是人工核对线索。
+
+工作台新增「查看全部个人记录」与归档入口；移除历史 `#拾微` 标签后，可从个人时间线找回。展示品牌更新为有记 / Youji，保留旧标签、路由和草稿兼容。恢复导航已做组件测试，真实浏览器删标签找回仍待验收。
+
+详细本轮证据与限制见 `LOCAL_PDF_QA_20261118.md`。
+
+
+### 显式清理一份 PDF 导入
+
+保留原 PDF 文件和原 `--kind`，先预览账户派生的确定记录 ID；不遍历可编辑正文链接：
+
+```sh
+.venv-pdf/bin/python moteary/import_pdf.py document.pdf --kind work --delete-import
+# 核对预览中的 root ID 后，明确永久删除记录及全部评论（包括归档/嵌套回复）
+.venv-pdf/bin/python moteary/import_pdf.py document.pdf --kind work --delete-import --confirm-root memos/mp-REPLACE_WITH_PREVIEW_ID --include-comments
+```
+
+仅清理通过当前账户所有权、PRIVATE、正文及原附件校验的记录；正文已修改或附件集合变化会停止，需人工处理，不强制覆盖。每次执行先全量预检，再逐项重新检查，先正文后索引；中断重跑同一清理命令会跳过已不存在的记录。**执行前停止其他设备编辑**：没有 CAS 或组事务，最后核验后的并发变化仍可能随记录删除。上游删除会包括整个评论子树，必须显式接受 `--include-comments`，不可撤销。
+
+最终回执只确认计划 API 记录已删除/不存在，**不认证存储物理擦除**，也不清理由历史失败上传遗留的未关联附件。上游数据库删除成功但存储清理失败时，重试可能看到 404；这类存储错误需要管理员检查。此入口仅覆盖本版 PDF 导入，不替代旧长文导入的全套清理功能。
+
+上传原件成功但 memo 写入结果不确定时，错误现在列出准确 `attachments/...` 和目标 `memos/...`，以便在附件管理中核查；不要删除可能已关联的原件。自动复用/自动孤儿清理尚未实现，失败后重试仍可能新增一个可定位的未关联附件。
