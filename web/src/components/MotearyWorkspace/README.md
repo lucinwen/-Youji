@@ -76,3 +76,22 @@ and mocked fetch. It is **not browser media-decoder evidence**. The separate
 `scripts/youji_browser_smoke.py` exercises real Chromium decoding, original download and a
 390×844 layout when a suitable browser runtime is available; see the dated QA report for its
 actual execution status.
+
+## Source and saved-date retrieval
+
+The collection search form combines an optional source tag, an inclusive local calendar date
+range and a literal keyword with the existing creator, category and Space constraints. Edits
+remain drafts until **搜索资料** is submitted. Invalid/reversed dates leave the last applied
+query intact and report the error. **重置找回条件** clears source/date/keyword while retaining
+category and Space. The applied range is shown separately from draft inputs.
+
+This reuses Memos' `getLocalDayTimestampRange` and server CEL timestamp filtering. The upper
+bound is the next local midnight, so DST days are not assumed to have 24 hours. Filtering and
+pagination happen on the server, not on just the loaded cards. Dates refer to the memo's
+creation timestamp (which the original editor can change), not the event/recording date.
+Source tags are user supplied, not automatic media classification. No query is persisted in
+URLs or browser storage. Missing source tags remain visible under all sources.
+
+`tests/moteary/run_retrieval_e2e.py` starts a disposable real SQLite/HTTP instance and checks
+synthetic diary/podcast records, date boundaries, literal keywords, pagination, account
+isolation and restart persistence. It is separate from the unverified browser smoke harness.

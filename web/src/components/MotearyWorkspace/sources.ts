@@ -1,3 +1,4 @@
+import { getLocalDayTimestampRange } from "@/lib/calendar-utils";
 import { combineCELFilters } from "@/lib/cel-filter";
 import { buildMemoCreatorFilter } from "@/lib/resource-names";
 import { type Memo, Visibility } from "@/types/proto/api/memo_service_pb";
@@ -60,7 +61,33 @@ export function buildCaptureStarter(kind: SourceKind, category: CaptureCategory)
   return `${tags}\n\n${source}## 我的批注（可不填）\n\n`;
 }
 
-export function buildSourceFilter(userName: string, category: CaptureCategory | "all", spaceName?: string, search = ""): string {
+export interface SourceRetrieval {
+  kind?: SourceKind | "all";
+  from?: string;
+  through?: string;
+}
+
+/** User-selected local calendar days, inclusive at both ends; server query uses an exclusive next-day bound. */
+export function buildSourceRetrievalFilter({ kind = "all", from = "", through = "" }: SourceRetrieval): string | undefined {
+  if (kind !== "all" && !SOURCE_KINDS.includes(kind)) throw new Error("请选择有效的来源类型。");
+  const start = from ? getLocalDayTimestampRange(from) : undefined;
+  const end = through ? getLocalDayTimestampRange(through) : undefined;
+  if ((from && !start) || (through && !end)) throw new Error("请输入有效的保存日期。");
+  if (start && end && start.startTimestamp >= end.endTimestamp) throw new Error("起始日期不能晚于结束日期；原筛选保持不变。");
+  return combineCELFilters(
+    kind !== "all" ? `tag in [${JSON.stringify(`source/${kind}`)}]` : undefined,
+    start ? `created_ts >= timestamp(${start.startTimestamp})` : undefined,
+    end ? `created_ts < timestamp(${end.endTimestamp})` : undefined,
+  );
+}
+
+export function buildSourceFilter(
+  userName: string,
+  category: CaptureCategory | "all",
+  spaceName?: string,
+  search = "",
+  retrieval: SourceRetrieval = {},
+): string {
   if (!userName) throw new Error("A signed-in user is required for the source workspace.");
   return combineCELFilters(
     buildMemoCreatorFilter(userName),
@@ -68,6 +95,7 @@ export function buildSourceFilter(userName: string, category: CaptureCategory | 
     category !== "all" ? `tag in [${JSON.stringify(category)}]` : undefined,
     spaceName ? `space == ${JSON.stringify(spaceName)}` : undefined,
     search.trim() ? `content.contains(${JSON.stringify(search.trim().slice(0, 200))})` : undefined,
+    buildSourceRetrievalFilter(retrieval),
   )!;
 }
 
