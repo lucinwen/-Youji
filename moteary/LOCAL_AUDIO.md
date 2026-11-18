@@ -17,6 +17,29 @@ Machine timestamps are approximate; the explicit pre-save seek buttons do not
 start playback automatically. A hash in editable text checks consistency, not
 source authenticity.
 
+## Explicit correction draft backup
+
+Before refresh or navigation, choose **下载校订草稿 JSON**. This user-triggered file
+contains the human correction and optional machine draft plus owner, filename and
+original SHA-256; it contains sensitive text and must be stored appropriately. It
+includes no audio bytes, makes no network request and does not use browser storage.
+A save receipt contains different information and is not a transcript backup.
+
+To restore, select the same original audio under the same account, leave the human
+correction field empty, and choose **恢复校订草稿 JSON**. Version/schema, 1 MiB file
+limit, 256 KiB human-text bound and source identity are checked. Optional machine
+segments must satisfy the same local API bounds. Existing edits are not silently
+overwritten; back them up before clearing them yourself. Restore only fills this
+page and resets the save-confirmation checkbox; it never uploads, transcribes or
+saves automatically. JSON metadata is editable and proves neither permissions nor
+model authenticity. No service data is read during restore.
+
+The workspace now puts quick capture before folded import panels. Folding retains
+form state and does not cancel active saves; folding the audio panel pauses its
+player. Keyword search remains visible while source/date controls can be folded,
+and applied filter summaries remain visible. Actual phone layout and native
+keyboard behavior still require a suitable browser/device acceptance environment.
+
 ## Recovery and deletion
 
 The importer derives a stable ID from owner, audio hash and filename. Before each

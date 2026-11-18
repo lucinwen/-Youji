@@ -101,3 +101,18 @@ isolation and restart persistence. It is separate from the unverified browser sm
 `AudioImport` is a separate opt-in workflow: local Blob listening, explicit machine preview (default-disabled backend), UTF-8/manual transcript, user correction and explicit private save. `audioImport.ts` keeps original archive and both transcript versions in one Memo with a stable owner/audio-hash/filename ID. It verifies retries and unlinked originals and emits recovery receipts without silently deleting uploads. Machine text is never automatically saved or presented as correct. See `moteary/LOCAL_AUDIO.md` for bounds and blocked ASR evaluation; module/HTTP verification does not certify actual browser playback.
 
 Semantic candidates can be dismissed explicitly as not answering the question. An offline event clears old excerpts and cancels pending requests; coming back online never automatically resends content. Similarity is still not answerability.
+
+## Folded inputs and explicit draft portability
+
+Quick capture precedes the mounted audio/PDF/batch import panels. Native details
+fold heavy forms without discarding their state; closing audio pauses media.
+Keyword entry precedes a foldable source/date group, and submitting a keyword
+preserves those filter values even while folded. Shortcuts open the audio panel
+or return directly to the collection. These are source/component improvements,
+not evidence of real mobile layout or soft-keyboard acceptance.
+
+The audio panel exports a user-triggered JSON correction draft and restores it only
+after exact account/original filename/hash validation. It never persists body text
+in localStorage or uploads during restore. A nonempty correction cannot be replaced;
+confirmation resets. See `moteary/LOCAL_AUDIO.md` for sensitivity and trust limits,
+and `moteary/DEMO_RUNBOOK.md` for a model-disabled fresh-instance demonstration.

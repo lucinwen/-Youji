@@ -207,3 +207,9 @@ The related-passage panel supports explicit continuation beyond the newest 100 r
 The workbench now has a separate audio-and-transcript flow: explicitly preview a selected local original, paste/import and correct a transcript, confirm PRIVATE storage, and find the same source record by saved words. Original ZIP, optional machine draft and correction stay in one Memo. Recovery receipts and verified orphan reuse are included. See [local audio operation and limits](LOCAL_AUDIO.md) and [actual audio QA](AUDIO_WORKSPACE_QA_20261118.md).
 
 A default-disabled local ASR adapter is implemented but not certified: the public-human-Mandarin evaluation was blocked by automatic approval review after an unexpected telemetry connection. It was not retried through another path. Manual transcripts were tested against real HTTP/SQLite; production ASR and real browser/mobile use remain unverified. See [exact evaluation evidence](asr-real-evaluation/README.md).
+
+For a clean model-disabled demonstration, follow [the local demo runbook](DEMO_RUNBOOK.md).
+The workspace now keeps quick capture and keyword search ahead of folded heavy
+controls; audio correction drafts can be explicitly downloaded and restored after
+matching the same original. This does not enable ASR or imply browser/mobile
+acceptance. See [mobile/recovery checkpoint evidence](MOBILE_RECOVERY_QA_20261118.md).

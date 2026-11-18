@@ -3,7 +3,14 @@ import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import AudioImport from "@/components/MotearyWorkspace/AudioImport";
 
-const api = vi.hoisted(() => ({ prepareAudio: vi.fn(), audioWithTranscript: vi.fn(), transcribeAudio: vi.fn(), saveAudio: vi.fn() }));
+const api = vi.hoisted(() => ({
+  prepareAudio: vi.fn(),
+  audioWithTranscript: vi.fn(),
+  transcribeAudio: vi.fn(),
+  saveAudio: vi.fn(),
+  encodeAudioDraft: vi.fn(),
+  restoreAudioDraft: vi.fn(),
+}));
 vi.mock("@/components/MotearyWorkspace/audioImport", () => api);
 const saved = vi.fn();
 const mount = () =>
@@ -23,6 +30,8 @@ beforeEach(() => {
   api.audioWithTranscript.mockReturnValue({});
   api.transcribeAudio.mockReset();
   api.saveAudio.mockReset();
+  api.encodeAudioDraft.mockReset();
+  api.restoreAudioDraft.mockReset();
   Object.defineProperty(URL, "createObjectURL", { configurable: true, value: vi.fn(() => "blob:synthetic") });
   Object.defineProperty(URL, "revokeObjectURL", { configurable: true, value: vi.fn() });
   vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
@@ -134,4 +143,73 @@ it("copies machine text only into an empty human draft and seeks without playing
   fireEvent.click(screen.getByRole("button", { name: "50–60 秒 · 定位" }));
   expect(audio.currentTime).toBe(2);
   expect(HTMLMediaElement.prototype.play).not.toHaveBeenCalled();
+});
+it("downloads a draft only on explicit request and releases its download URL", async () => {
+  const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
+  api.encodeAudioDraft.mockReturnValue('{"edited":"人工核对文字"}');
+  mount();
+  select();
+  edit();
+  expect(api.encodeAudioDraft).not.toHaveBeenCalled();
+  expect(screen.getByText(/JSON 草稿，含人工稿和可选机器稿等敏感正文/)).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "下载校订草稿 JSON" }));
+  await screen.findByText(/已生成草稿下载/);
+  expect(api.encodeAudioDraft).toHaveBeenCalledWith({}, "人工核对文字", undefined);
+  expect(click).toHaveBeenCalledOnce();
+  expect(URL.revokeObjectURL).toHaveBeenCalledWith("blob:synthetic");
+  expect(api.transcribeAudio).not.toHaveBeenCalled();
+  expect(api.saveAudio).not.toHaveBeenCalled();
+});
+it("restores a chosen draft into empty inputs without network actions and resets save confirmation", async () => {
+  api.restoreAudioDraft.mockResolvedValue({ edited: "<script>人工稿</script>", machine: { text: "<img src=x>", segments: [] } });
+  mount();
+  expect(screen.getByLabelText("恢复校订草稿 JSON")).toBeDisabled();
+  select();
+  fireEvent.click(screen.getByRole("checkbox"));
+  fireEvent.change(screen.getByLabelText("恢复校订草稿 JSON"), { target: { files: [new File(["{}"], "draft.json")] } });
+  await screen.findByText(/草稿已恢复到本页/);
+  expect(screen.getByLabelText("人工校订稿")).toHaveValue("<script>人工稿</script>");
+  expect(screen.getByText("<img src=x>").tagName).toBe("PRE");
+  expect(document.querySelector("img")).toBeNull();
+  expect(screen.getByRole("checkbox")).not.toBeChecked();
+  expect(api.transcribeAudio).not.toHaveBeenCalled();
+  expect(api.saveAudio).not.toHaveBeenCalled();
+  expect(saved).not.toHaveBeenCalled();
+});
+it("blocks draft restore over existing human edits", () => {
+  mount();
+  select();
+  edit();
+  expect(screen.getByLabelText("恢复校订草稿 JSON")).toBeDisabled();
+  fireEvent.change(screen.getByLabelText("恢复校订草稿 JSON"), { target: { files: [new File(["{}"], "draft.json")] } });
+  expect(api.restoreAudioDraft).not.toHaveBeenCalled();
+  expect(screen.getByLabelText("人工校订稿")).toHaveValue("人工核对文字");
+});
+it("keeps local edits unchanged when draft source validation fails", async () => {
+  api.restoreAudioDraft.mockRejectedValue(new Error("草稿账户、原文件名或音频 SHA-256 不匹配"));
+  mount();
+  select();
+  fireEvent.change(screen.getByLabelText("恢复校订草稿 JSON"), { target: { files: [new File(["{}"], "draft.json")] } });
+  await screen.findByText(/SHA-256 不匹配/);
+  expect(screen.getByLabelText("人工校订稿")).toHaveValue("");
+  expect(api.saveAudio).not.toHaveBeenCalled();
+});
+it("ignores a late restored draft after cancellation", async () => {
+  let finish: ((value: object) => void) | undefined;
+  api.restoreAudioDraft.mockImplementation(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+  );
+  mount();
+  select();
+  fireEvent.change(screen.getByLabelText("恢复校订草稿 JSON"), { target: { files: [new File(["{}"], "draft.json")] } });
+  await waitFor(() => expect(api.restoreAudioDraft).toHaveBeenCalledOnce());
+  fireEvent.click(screen.getByRole("button", { name: "取消当前操作" }));
+  await act(async () => {
+    finish?.({ edited: "late text" });
+  });
+  expect(screen.getByLabelText("人工校订稿")).toHaveValue("");
+  expect(api.saveAudio).not.toHaveBeenCalled();
 });

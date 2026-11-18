@@ -1,0 +1,42 @@
+{
+  "base_commit": "6950c4de33c8a4510fc8d9192df104a38fb874d3",
+  "branch": "feat/mobile-recovery-20261118",
+  "binary_sha256": "09f0b3606c54281ac4c010b922065a427035284fe87fe0a9d64e345faea87496",
+  "binary_version": "26.11.18-dev.6950c4d",
+  "note": "Binary built from this change tree before commit; version names the parent. No binary, model or audio fixture committed.",
+  "frontend": {
+    "lint": "passed",
+    "tests_passed": 1801,
+    "tests_skipped": 3,
+    "files_passed": 201,
+    "files_skipped": 1,
+    "duration_seconds": 395.64,
+    "release_build": "passed serial retry",
+    "first_build": "exit 137 while full tests ran; retained log"
+  },
+  "demo_preflight_tests": 6,
+  "http": {
+    "kind": "real HTTP/SQLite and actual frontend module; not browser",
+    "model_executed": false,
+    "binary_sha256": "09f0b3606c54281ac4c010b922065a427035284fe87fe0a9d64e345faea87496",
+    "checks": [
+      {
+        "check": "anonymous audio routes denied; unconfigured model returns explicit 503 without persisting data",
+        "passed": true
+      },
+      {
+        "check": "actual audio TypeScript module uses real API: save/retry/response-loss recovery/search/account isolation/delete; manual transcript only",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "check": "restart preserves corrected memo and original; final deletion removes memo and attachment rows",
+        "passed": true
+      }
+    ]
+  },
+  "browser": "blocked: local Chromium socket EPERM; CUA loopback connection refused",
+  "physical_phone": "not tested",
+  "asr": "not run; prior rejected evaluation not retried",
+  "git_stack": "11 ancestor checks passed; PR11 raw mergeable true/clean; no rebase, force push or merge"
+}

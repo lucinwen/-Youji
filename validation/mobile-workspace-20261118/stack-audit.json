@@ -1,0 +1,181 @@
+{
+  "initial": {
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "mergeable": null,
+    "mergeable_state": "unknown",
+    "head": "6950c4de33c8a4510fc8d9192df104a38fb874d3",
+    "base": "39c9d9bf97e4e4115dd9556e7ec8e5661cbadddb"
+  },
+  "later": {
+    "checked_at": "2026-11-18 19:52:28 UTC",
+    "number": 11,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "mergeable": true,
+    "mergeable_state": "clean",
+    "head": "6950c4de33c8a4510fc8d9192df104a38fb874d3",
+    "base": "39c9d9bf97e4e4115dd9556e7ec8e5661cbadddb"
+  },
+  "pull_requests": [
+    {
+      "number": 11,
+      "state": "open",
+      "draft": true,
+      "merged_at": null,
+      "base": "feat/retrieval-coverage-20261118",
+      "base_sha": "39c9d9bf97e4e4115dd9556e7ec8e5661cbadddb",
+      "head": "feat/audio-review-20261118",
+      "head_sha": "6950c4de33c8a4510fc8d9192df104a38fb874d3"
+    },
+    {
+      "number": 10,
+      "state": "open",
+      "draft": true,
+      "merged_at": null,
+      "base": "feat/local-retrieval-20261118",
+      "base_sha": "922b5a787ce488025dd9f13b282f47fa416a21d5",
+      "head": "feat/retrieval-coverage-20261118",
+      "head_sha": "39c9d9bf97e4e4115dd9556e7ec8e5661cbadddb"
+    },
+    {
+      "number": 9,
+      "state": "open",
+      "draft": true,
+      "merged_at": null,
+      "base": "feat/pdf-workspace-flow-20261118",
+      "base_sha": "ad8730767cfe93a2dd0b57c9245cdccf2d01159e",
+      "head": "feat/local-retrieval-20261118",
+      "head_sha": "922b5a787ce488025dd9f13b282f47fa416a21d5"
+    },
+    {
+      "number": 8,
+      "state": "open",
+      "draft": true,
+      "merged_at": null,
+      "base": "feat/local-pdf-text-20261118",
+      "base_sha": "0b9d9f3cddda752c77a4277a90f36f249a4cb654",
+      "head": "feat/pdf-workspace-flow-20261118",
+      "head_sha": "ad8730767cfe93a2dd0b57c9245cdccf2d01159e"
+    },
+    {
+      "number": 7,
+      "state": "open",
+      "draft": true,
+      "merged_at": null,
+      "base": "feat/source-date-retrieval-20261118",
+      "base_sha": "6ef162a3d1e7d888a75c835848915597ed5f7dcf",
+      "head": "feat/local-pdf-text-20261118",
+      "head_sha": "0b9d9f3cddda752c77a4277a90f36f249a4cb654"
+    },
+    {
+      "number": 6,
+      "state": "open",
+      "draft": true,
+      "merged_at": null,
+      "base": "feat/verified-audio-preview-20261117",
+      "base_sha": "dbdaef0cf8b4fa62f6038b381648d15d89486275",
+      "head": "feat/source-date-retrieval-20261118",
+      "head_sha": "6ef162a3d1e7d888a75c835848915597ed5f7dcf"
+    },
+    {
+      "number": 5,
+      "state": "open",
+      "draft": true,
+      "merged_at": null,
+      "base": "test/browser-roundtrip-20261116",
+      "base_sha": "7634441e535522d3f573ffc30f4822b454ca2899",
+      "head": "feat/verified-audio-preview-20261117",
+      "head_sha": "dbdaef0cf8b4fa62f6038b381648d15d89486275"
+    },
+    {
+      "number": 4,
+      "state": "open",
+      "draft": true,
+      "merged_at": null,
+      "base": "test/large-audio-download-20261115",
+      "base_sha": "ee402bd17f3dc1c63dc9b033618f48dbd2133f8f",
+      "head": "test/browser-roundtrip-20261116",
+      "head_sha": "7634441e535522d3f573ffc30f4822b454ca2899"
+    },
+    {
+      "number": 3,
+      "state": "open",
+      "draft": true,
+      "merged_at": null,
+      "base": "fix/large-recording-guidance-20261115",
+      "base_sha": "d581fefbf5ec3fcee1672195f6e642bb9127cb38",
+      "head": "test/large-audio-download-20261115",
+      "head_sha": "ee402bd17f3dc1c63dc9b033618f48dbd2133f8f"
+    },
+    {
+      "number": 2,
+      "state": "open",
+      "draft": true,
+      "merged_at": null,
+      "base": "fix/import-safety-20261115",
+      "base_sha": "2bc02a239ab84ae399c9b4be90add499ad416593",
+      "head": "fix/large-recording-guidance-20261115",
+      "head_sha": "d581fefbf5ec3fcee1672195f6e642bb9127cb38"
+    },
+    {
+      "number": 1,
+      "state": "open",
+      "draft": true,
+      "merged_at": null,
+      "base": "main",
+      "base_sha": "eff6a99703fae36f5ae1830c2935fde39bc76da4",
+      "head": "fix/import-safety-20261115",
+      "head_sha": "2bc02a239ab84ae399c9b4be90add499ad416593"
+    }
+  ],
+  "interpretation": "Initial connector false corresponded to raw GitHub mergeable:null/unknown; later raw GitHub true/clean. No conflict repair or branch rewriting performed.",
+  "local_ancestry": [
+    {
+      "pr": 11,
+      "base_is_ancestor": true
+    },
+    {
+      "pr": 10,
+      "base_is_ancestor": true
+    },
+    {
+      "pr": 9,
+      "base_is_ancestor": true
+    },
+    {
+      "pr": 8,
+      "base_is_ancestor": true
+    },
+    {
+      "pr": 7,
+      "base_is_ancestor": true
+    },
+    {
+      "pr": 6,
+      "base_is_ancestor": true
+    },
+    {
+      "pr": 5,
+      "base_is_ancestor": true
+    },
+    {
+      "pr": 4,
+      "base_is_ancestor": true
+    },
+    {
+      "pr": 3,
+      "base_is_ancestor": true
+    },
+    {
+      "pr": 2,
+      "base_is_ancestor": true
+    },
+    {
+      "pr": 1,
+      "base_is_ancestor": true
+    }
+  ]
+}

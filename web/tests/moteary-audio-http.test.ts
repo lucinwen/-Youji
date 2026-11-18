@@ -3,7 +3,14 @@ import { readFileSync } from "node:fs";
 import { Code, ConnectError } from "@connectrpc/connect";
 import { unzipSync } from "fflate";
 import { expect, it, vi } from "vitest";
-import { audioWithTranscript, prepareAudio, saveAudio, transcribeAudio } from "@/components/MotearyWorkspace/audioImport";
+import {
+  audioWithTranscript,
+  encodeAudioDraft,
+  prepareAudio,
+  restoreAudioDraft,
+  saveAudio,
+  transcribeAudio,
+} from "@/components/MotearyWorkspace/audioImport";
 import { Visibility } from "@/types/proto/api/memo_service_pb";
 
 const rpc = vi.hoisted(() => ({
@@ -73,7 +80,16 @@ it.skipIf(!process.env.YOUJI_AUDIO_WEB_QA)(
     const signal = () => new AbortController().signal;
     try {
       const raw = await prepareAudio(file, config.owner);
-      const plan = audioWithTranscript(raw, "独特合成词松涛 AudioReviewNeedle。这里是用户提供并核对的人工稿。");
+      const edited = "独特合成词松涛 AudioReviewNeedle。这里是用户提供并核对的人工稿。";
+      const backup = new TextEncoder().encode(encodeAudioDraft(raw, edited));
+      // Recreate the selection and parse the portable draft without API writes.
+      const selectedAgain = await prepareAudio(file, config.owner);
+      const restored = await restoreAudioDraft(
+        { size: backup.length, arrayBuffer: async () => new Uint8Array(backup).buffer } as File,
+        selectedAgain,
+      );
+      expect(restored.edited).toBe(edited);
+      const plan = audioWithTranscript(selectedAgain, restored.edited, restored.machine);
       expect((await call("GET", "memos")).memos ?? []).toHaveLength(0);
       const receipt = await saveAudio(plan, signal(), vi.fn());
       expect(receipt.status).toBe("imported");
