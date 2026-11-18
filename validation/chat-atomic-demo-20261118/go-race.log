@@ -1,0 +1,40 @@
+=== RUN   TestYoujiChatIdentityMatchesFrontend
+--- PASS: TestYoujiChatIdentityMatchesFrontend (0.00s)
+=== RUN   TestYoujiChatArchiveOriginalOnlyAndLimits
+--- PASS: TestYoujiChatArchiveOriginalOnlyAndLimits (0.05s)
+=== RUN   TestYoujiChatGatewayAtomicImportAndFixedKind
+2026/11/18 17:10:15 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 17:10:15 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiChatGatewayAtomicImportAndFixedKind (0.11s)
+=== RUN   TestYoujiChatGatewayMaxEscapedBody
+2026/11/18 17:10:15 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 17:10:15 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiChatGatewayMaxEscapedBody (2.78s)
+=== RUN   TestYoujiChatUnsupportedDriverFailsClosed
+2026/11/18 17:10:18 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 17:10:18 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiChatUnsupportedDriverFailsClosed (0.07s)
+=== RUN   TestYoujiHTMLIdentityMatchesFrontend
+--- PASS: TestYoujiHTMLIdentityMatchesFrontend (0.00s)
+=== RUN   TestYoujiHTMLArchiveOriginalOnlyAndLimits
+--- PASS: TestYoujiHTMLArchiveOriginalOnlyAndLimits (0.01s)
+=== RUN   TestYoujiHTMLGatewayAtomicImportAndFixedKind
+2026/11/18 17:10:18 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 17:10:18 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiHTMLGatewayAtomicImportAndFixedKind (0.10s)
+=== RUN   TestYoujiHTMLGatewayMaxEscapedBody
+2026/11/18 17:10:18 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 17:10:18 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiHTMLGatewayMaxEscapedBody (2.54s)
+=== RUN   TestYoujiHTMLUnsupportedDriverFailsClosed
+2026/11/18 17:10:21 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 17:10:21 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiHTMLUnsupportedDriverFailsClosed (0.07s)
+=== RUN   TestYoujiManualIdentityMatchesFrontend
+--- PASS: TestYoujiManualIdentityMatchesFrontend (0.00s)
+=== RUN   TestYoujiManualArchiveBoundedAndDeterministic
+--- PASS: TestYoujiManualArchiveBoundedAndDeterministic (0.00s)
+=== RUN   TestYoujiManualGatewayRequiresAuthentication
+--- PASS: TestYoujiManualGatewayRequiresAuthentication (0.00s)
+PASS
+ok  	github.com/usememos/memos/server/api	6.802s

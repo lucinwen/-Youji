@@ -19,10 +19,10 @@
 
 Windows 用户请使用 [PowerShell / WSL 待验证指南](moteary/WINDOWS_DEMO.md)，不要直接粘贴下面的 Bash 命令。Windows 实机尚未验收。
 
-可拉取分支：`feat/html-atomic-demo-20261118`。此分支包含前序 PR #1–18；不需要逐个合并，也不表示这些草稿已经合并 main。
+可拉取分支：`feat/chat-atomic-demo-20261118`。此分支包含前序 PR #1–19；不需要逐个合并，也不表示这些草稿已经合并 main。
 
 ```bash
-git clone --single-branch --branch feat/html-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
+git clone --single-branch --branch feat/chat-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
 cd youji-demo
 pnpm --dir web install --frozen-lockfile
 pnpm --dir web release
@@ -55,3 +55,7 @@ env -i LANG=C.UTF-8 "$PWD/build/youji" --addr 127.0.0.1 --port 5231 \
 - 基于 Memos 26.11.0 固定提交开发，保留原作者版权，不将完整上游能力冒称自研。上游Go/TypeScript API生成源保留，依赖锁文件保留。
 
 上游自动部署/发布工作流留档在 `moteary/upstream-workflows/`，没有擅自启用自动发布。远端 CI 尚未运行，本地验证结果见报告。
+
+聊天 JSON 的 SQLite 原子保存见 [说明](moteary/CHAT_ATOMIC_IMPORT.md)；[三分钟合成演示卡](moteary/THREE_MINUTE_DEMO.md) 保留 PR #19 固定回退版本，三分钟尚未计时验证。
+
+本轮 [聊天事务验收](moteary/CHAT_ATOMIC_QA_20261118.md) 给出独立八请求并发结果、固定构建与限制。

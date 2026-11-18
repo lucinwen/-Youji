@@ -2,7 +2,7 @@
 
 **状态：Windows 原生构建、PowerShell 命令、WSL2 和 Windows 浏览器均未实测。** 本文按当前源码校对参数，提供待验证的操作路径；已有启动、SQLite 和 HTTP 证据来自 Linux，不应写成 Windows 验收通过。默认关闭所有可选解析器／模型，不运行 ASR。
 
-这是基于 Memos 的累计开发分支，不是预编译 Windows 发行包，也不需要合并 main。本文使用累计草稿分支 `feat/html-atomic-demo-20261118`；先确认该分支已经上传。若下面的查询没有输出，不要改拉 main 冒充最新版本，请等待发布方给出可拉取的累计分支和提交。
+这是基于 Memos 的累计开发分支，不是预编译 Windows 发行包，也不需要合并 main。本文使用累计草稿分支 `feat/chat-atomic-demo-20261118`；先确认该分支已经上传。若下面的查询没有输出，不要改拉 main 冒充最新版本，请等待发布方给出可拉取的累计分支和提交。
 
 ## 原生 Windows：PowerShell 路径
 
@@ -18,9 +18,9 @@ node --version
 pnpm.cmd --version
 go version
 
-git ls-remote --heads https://github.com/lucinwen/-Youji.git refs/heads/feat/html-atomic-demo-20261118
+git ls-remote --heads https://github.com/lucinwen/-Youji.git refs/heads/feat/chat-atomic-demo-20261118
 # 确认上一条有对应分支 SHA，再执行：
-git clone --single-branch --branch feat/html-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
+git clone --single-branch --branch feat/chat-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
 if ($LASTEXITCODE -ne 0) { throw '克隆失败，请先核对分支是否发布。' }
 Set-Location .\youji-demo
 git status --short
@@ -97,7 +97,7 @@ wsl
 
 ```bash
 cd ~
-git clone --single-branch --branch feat/html-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
+git clone --single-branch --branch feat/chat-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
 cd youji-demo
 pnpm --dir web install --frozen-lockfile && pnpm --dir web release
 mkdir -p build

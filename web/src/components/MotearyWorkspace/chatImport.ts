@@ -1,4 +1,5 @@
-import { type AudioReceipt, saveAudio } from "./audioImport";
+import { saveAtomicOriginal } from "./atomicOriginalImport";
+import type { AudioReceipt } from "./audioImport";
 import type { BatchSource } from "./batchImport";
 
 export type ChatPlan = { item: BatchSource; title: string; transcript: string; messages: number; service: number; media: number };
@@ -22,6 +23,8 @@ export async function prepareChat(file: File, owner: string): Promise<ChatPlan> 
   if (
     !/\.json$/i.test(file.name) ||
     file.name.length > 240 ||
+    file.name.startsWith(".") ||
+    file.name.startsWith(" ") ||
     /[\\/]/.test(file.name) ||
     Array.from(file.name).some((c) => c.charCodeAt(0) < 32 || c.charCodeAt(0) === 127)
   )
@@ -111,6 +114,6 @@ export async function prepareChat(file: File, owner: string): Promise<ChatPlan> 
   };
 }
 
-// Reuse the existing owner-bound, byte-verified single-original save/retry protocol. No ASR call.
+// One owner-bound SQLite transaction, with no fallback to separate attachment uploads. No ASR call.
 export const saveChat = (plan: ChatPlan, signal: AbortSignal, receipt: (value: AudioReceipt) => void) =>
-  saveAudio(plan.item, signal, receipt);
+  saveAtomicOriginal(plan.item, "chat", signal, receipt);

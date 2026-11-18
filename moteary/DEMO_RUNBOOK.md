@@ -8,10 +8,10 @@ Windows 原生或 WSL 路径见 [Windows 指南](WINDOWS_DEMO.md)，目前没有
 
 ## 1. 准备程序
 
-本轮可拉取的累计草稿是 `feat/html-atomic-demo-20261118`，包含 PR #1–18 的前序提交，不需要逐个合并或 cherry-pick。它不是 main 或正式发行版。只在新目录执行：
+本轮可拉取的累计草稿是 `feat/chat-atomic-demo-20261118`，包含 PR #1–19 的前序提交，不需要逐个合并或 cherry-pick。它不是 main 或正式发行版。只在新目录执行：
 
 ```bash
-git clone --single-branch --branch feat/html-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
+git clone --single-branch --branch feat/chat-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
 cd youji-demo
 ```
 
@@ -174,3 +174,7 @@ python3 scripts/youji_demo_start.py --binary build/youji --data "$HOME/youji-dem
 ## 手动文本并发修复的适用版本
 
 最新手动文本保存要求配套服务器和SQLite，原件ZIP在SQLite事务内与记录一起提交；旧服务器/其他数据库不回退旧上传。最短新用户步骤及限制见[事务导入](ATOMIC_MANUAL_IMPORT.md)。三分钟主走查直接使用关键词，语义查询仅作为明确可选分支。浏览器真实双标签和用户计时仍未测。
+
+## 9. 固定回退与三分钟演示
+
+[三分钟合成材料演示卡](THREE_MINUTE_DEMO.md) 固定 PR #19 提交 `363f4b52fe1fc4914dc447f95ae828850dd06a10`，该版本仍保留在 `feat/html-atomic-demo-20261118`。回退时在另一新目录克隆该分支并核对 SHA，沿用本指南的工具链与独立数据目录步骤；不要重置正在使用的目录。当前分支新增的聊天 JSON 事务保存范围见 [说明](CHAT_ATOMIC_IMPORT.md)。

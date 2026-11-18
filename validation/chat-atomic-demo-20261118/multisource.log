@@ -1,0 +1,82 @@
+{
+  "status": "passed",
+  "kind": "actual frontend modules and HTTP/SQLite; no browser",
+  "binary_sha256": "51dba984c16729af5ffd59021130810028b7fe24d219830a4ab0b553c1a7b53f",
+  "html_worker_sha256": "e4d1f1d0f1114b7599031b6b85ba28e44eed87e2bc8e8fba45d6ff8573510cf1",
+  "model_executed": false,
+  "checks": [
+    {
+      "check": "executed worker asset exactly matches worker served by the fixed binary",
+      "status": "passed"
+    },
+    {
+      "check": "same account: paste, production-worker HTML, chat JSON and audio manual text; PRIVATE, exact ZIP originals, verified duplicates, keyword/source and common-topic retrieval",
+      "status": "passed"
+    },
+    {
+      "check": "restart preserves all four exact originals and bodies; unique source/keyword and shared topic still find correct records",
+      "status": "passed"
+    }
+  ],
+  "sources": {
+    "sources": [
+      {
+        "source": "paste",
+        "tag": "text",
+        "needle": "PasteNeedle",
+        "memo": "memos/mwt-7e58d59eef96e411dc7adfe5d0e07c",
+        "filename": "手动文本-399ea588a519.txt",
+        "sha256": "399ea588a519441e9cb5518c686fdac02c8ee8118e6c2bb520d7bd644050cff1",
+        "bytes": 54,
+        "private": true,
+        "duplicate": "verified",
+        "original_bytes_equal": true
+      },
+      {
+        "source": "html",
+        "tag": "link",
+        "needle": "HTMLNeedle",
+        "memo": "memos/mwh-78a5da589e677ed5403a79b848543b",
+        "filename": "synthetic.html",
+        "sha256": "6703c7a2f73303b766ada73e20bbddc5f5147181f8a16e81355c62d16a1ad32b",
+        "bytes": 154,
+        "private": true,
+        "duplicate": "verified",
+        "original_bytes_equal": true
+      },
+      {
+        "source": "chat",
+        "tag": "conversation",
+        "needle": "ChatNeedle",
+        "memo": "memos/mwc-4cfa6aee894702180b4106ec3da304",
+        "filename": "synthetic-chat.json",
+        "sha256": "af790fc466e1f9d82da3fb3a2655e765194552acdb5c9ec63533791c36565a6f",
+        "bytes": 227,
+        "private": true,
+        "duplicate": "verified",
+        "original_bytes_equal": true
+      },
+      {
+        "source": "audio-manual",
+        "tag": "podcast",
+        "needle": "AudioNeedle",
+        "memo": "memos/mwa-f78886fc84c44fc5c6690ca599e9ad",
+        "filename": "synthetic.wav",
+        "sha256": "f751fd7094be088dc785125e4a1a0222a17c2bd20469aa31728ca5e515ed5809",
+        "bytes": 128044,
+        "private": true,
+        "duplicate": "verified",
+        "original_bytes_equal": true
+      }
+    ],
+    "shared_topic_count": 4,
+    "html_worker": "actual production asset under node:worker_threads, not browser",
+    "workers": 1
+  },
+  "limitations": [
+    "Connect-to-REST adapter and Node worker scheduler; no browser, responsive UI or real device acceptance",
+    "Audio is four-second zero PCM with authored synthetic manual text, not speech transcription",
+    "Audio retains its non-atomic save path; this sequential walkthrough does not prove concurrency safety",
+    "All input synthetic; no external website or chat account access"
+  ]
+}

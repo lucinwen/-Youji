@@ -2,8 +2,8 @@ import { webcrypto } from "node:crypto";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { prepareChat, saveChat } from "@/components/MotearyWorkspace/chatImport";
 
-const saveAudio = vi.hoisted(() => vi.fn());
-vi.mock("@/components/MotearyWorkspace/audioImport", () => ({ saveAudio }));
+const saveAtomicOriginal = vi.hoisted(() => vi.fn());
+vi.mock("@/components/MotearyWorkspace/atomicOriginalImport", () => ({ saveAtomicOriginal }));
 const owner = "users/synthetic";
 const message = (id = 1) => ({ id, type: "message", date: "2026-11-18T10:00:00", from: "合成人物", text: "合成消息" });
 const chat = (messages: unknown[] = [message()]) => ({ name: "合成单聊天", type: "personal_chat", id: 123, messages });
@@ -16,11 +16,15 @@ beforeEach(() => {
   vi.stubGlobal("crypto", webcrypto);
   vi.stubGlobal("fetch", fetchMock);
   fetchMock.mockReset();
-  saveAudio.mockReset();
+  saveAtomicOriginal.mockReset();
 });
 afterEach(() => vi.unstubAllGlobals());
 
 describe("Telegram single-chat local parsing", () => {
+  it.each([".hidden.json", " spaced.json", "wrong.txt"])("rejects unsupported original filename %s before saving", async (name) => {
+    await expect(prepareChat(file(chat(), name), owner)).rejects.toThrow("文件名有效");
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
   it("joins strings and text entities without following links or interpreting HTML", async () => {
     const source = chat([
       {
@@ -41,7 +45,7 @@ describe("Telegram single-chat local parsing", () => {
     expect(plan.item.content).toContain("\n````\n");
     expect(plan.item.content).toContain("#source/conversation");
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(saveAudio).not.toHaveBeenCalled();
+    expect(saveAtomicOriginal).not.toHaveBeenCalled();
   });
   it("counts service messages and marks media without claiming media import", async () => {
     const plan = await prepareChat(
@@ -94,7 +98,7 @@ describe("Telegram single-chat local parsing", () => {
   ])("rejects %s before any network or save", async (_label, source) => {
     await expect(prepareChat(file(source), owner)).rejects.toThrow();
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(saveAudio).not.toHaveBeenCalled();
+    expect(saveAtomicOriginal).not.toHaveBeenCalled();
   });
   it("accepts 1000 records and rejects 1001 without truncation", async () => {
     const messages = Array.from({ length: 1000 }, (_, index) => message(index + 1));
@@ -122,9 +126,9 @@ describe("Telegram single-chat local parsing", () => {
     const plan = await prepareChat(file(chat()), owner);
     const signal = new AbortController().signal;
     const receipt = vi.fn();
-    saveAudio.mockResolvedValue({ memo: `memos/${plan.item.id}`, status: "verified" });
+    saveAtomicOriginal.mockResolvedValue({ memo: `memos/${plan.item.id}`, status: "verified" });
     expect(await saveChat(plan, signal, receipt)).toEqual({ memo: `memos/${plan.item.id}`, status: "verified" });
-    expect(saveAudio).toHaveBeenCalledWith(plan.item, signal, receipt);
+    expect(saveAtomicOriginal).toHaveBeenCalledWith(plan.item, "chat", signal, receipt);
     expect(fetchMock).not.toHaveBeenCalled();
   });
 });

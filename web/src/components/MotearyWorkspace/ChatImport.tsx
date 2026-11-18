@@ -77,6 +77,10 @@ export default function ChatImport({ userName, onSaved }: { userName: string; on
         选择 Telegram Desktop 单聊天 JSON；最多 512 KiB、1000
         条。仅解析文字，不连接聊天账户、不访问链接、不导入媒体。原文件可能含敏感身份与消息，请先检查。
       </p>
+      <p className="text-xs text-muted-foreground">
+        保存需新版服务器和 SQLite，原 JSON 的 ZIP 与 PRIVATE
+        记录一同提交；正文仍受账号配额限制。旧版记录可能冲突，请打开核对，不自动覆盖或迁移。
+      </p>
       <label className="block text-sm">
         聊天 JSON 原件
         <input
