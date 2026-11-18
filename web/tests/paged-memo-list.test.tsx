@@ -92,6 +92,21 @@ const renderList = (
   );
 
 describe("<PagedMemoList>", () => {
+  it("does not fetch or reschedule after unmount during the initial auto-fetch delay", async () => {
+    vi.useFakeTimers();
+    try {
+      feed.memos = [memo];
+      feed.hasNextPage = true;
+      const view = renderList();
+      view.unmount();
+      await act(async () => vi.advanceTimersByTimeAsync(1000));
+      expect(feed.fetchNextPage).not.toHaveBeenCalled();
+    } finally {
+      vi.clearAllTimers();
+      vi.useRealTimers();
+    }
+  });
+
   beforeEach(() => {
     view.maxColumns = 1;
     view.compactMode = false;

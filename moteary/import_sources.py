@@ -67,7 +67,7 @@ class Client:
             for memo in result.get('memos', []):
                 name = memo.get('name', '')
                 uid = name.removeprefix('memos/')
-                if uid.startswith(('mui-', 'mul-')):
+                if uid.startswith(('mui-', 'mul-', 'mp-', 'mwp-')):
                     # This is a possible cross-entry duplicate, not proof of equivalent content.
                     raise ValueError('Possible cross-entry original already exists at ' + name +
                                      '; no file uploaded. Review that record and resume via its original entry. No records merged or deleted.')
@@ -129,20 +129,38 @@ class Client:
         with zipfile.ZipFile(buffer, 'w', compression=zipfile.ZIP_STORED) as z:
             z.writestr(item['filename'], item['data'])
         upload_data, upload_name, upload_type = buffer.getvalue(), item['filename'] + '.original.zip', 'application/zip'
-        preview = None
-        if item['type'].startswith('image/'):
-            preview = self.call('POST', 'attachments', {'filename': item['filename'], 'type': item['type'],
-                                'content': base64.b64encode(item['data']).decode()})
-        a = self.call('POST', 'attachments', {'filename': upload_name, 'type': upload_type,
-                     'content': base64.b64encode(upload_data).decode()})
-        attachments = [{'name': a['name']}] + ([{'name': preview['name']}] if preview else [])
+        confirmed = []
+        preview = archive = None
+        stage = 'Preview upload' if item['type'].startswith('image/') else 'Original archive upload'
+
+        def upload(filename, mime, data):
+            response = self.call('POST', 'attachments', {'filename': filename, 'type': mime,
+                                 'content': base64.b64encode(data).decode()})
+            attachment = response.get('name') if isinstance(response, dict) else None
+            if not isinstance(attachment, str) or not attachment.startswith('attachments/') or not attachment.removeprefix('attachments/') or attachment.count('/') != 1:
+                raise ValueError('Upload response did not confirm an attachment ID')
+            confirmed.append(attachment)
+            return attachment
+
         try:
+            if item['type'].startswith('image/'):
+                preview = upload(item['filename'], item['type'], item['data'])
+            stage = 'Original archive upload'
+            archive = upload(upload_name, upload_type, upload_data)
+            attachments = [{'name': archive}] + ([{'name': preview}] if preview else [])
+            stage = 'Memo write'
             memo = self.call('POST', 'memos?' + urlencode({'memoId': item['id']}),
                              {'content': item['content'], 'visibility': 'PRIVATE', 'attachments': attachments})
+            memo_name = memo['name']
         except Exception:
-            # Never delete possibly attached data after an uncertain write.
-            raise RuntimeError('Memo write uncertain; uploaded attachment=' + a['name'] + '; target=memos/' + item['id'] + '. Inspect this attachment and target before retry; do not delete an attachment that may already be linked.')
-        return {'status': 'imported', 'name': memo['name'], 'sha256': item['sha256'], 'attachment': a['name'],
+            # A lost response may still mean the upload/write committed. Preserve
+            # every confirmed ID, never invent the missing ID or delete data.
+            archive_receipt = 'uploaded attachment=' + archive + '; ' if archive else ''
+            preview_receipt = 'uploaded preview=' + preview + '; ' if preview else ''
+            raise RuntimeError(stage + ' uncertain; ' + archive_receipt + preview_receipt +
+                               'confirmed attachments=' + json.dumps(confirmed) + '; target=' + name +
+                               '. An unconfirmed response may still have committed. Inspect these attachments and target before retry; do not delete an attachment that may already be linked.') from None
+        return {'status': 'imported', 'name': memo_name, 'sha256': item['sha256'], 'attachment': archive,
                 'processing': {'original': 'saved', 'ocr': 'not-run', 'transcription': 'not-run', 'ai': 'not-run'}}
 
 def main():

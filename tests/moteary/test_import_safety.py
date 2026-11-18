@@ -4,11 +4,101 @@ import pathlib
 import sys
 import tempfile
 import unittest
+import zipfile
+from urllib.error import HTTPError
 from unittest.mock import patch
 
 sys.path.insert(0, str(pathlib.Path(__file__).parents[2] / 'moteary'))
 import import_sources as sources
 import import_batch as batch
+
+
+class AttachmentRecovery(unittest.TestCase):
+    def setUp(self):
+        self.item = {'id': 'mw-synthetic-image', 'filename': 'synthetic.png',
+                     'data': b'synthetic image bytes', 'type': 'image/png',
+                     'content': 'synthetic image source', 'sha256': sources.hashlib.sha256(b'synthetic image bytes').hexdigest()}
+        self.client = sources.Client('http://127.0.0.1:5231', 'synthetic')
+        self.calls = []
+        self.existing = None
+        self.upload_count = 0
+
+    def install_api(self, fail_archive=False, lose_memo_response=False, unknown_archive=False):
+        def call(method, route, body=None):
+            self.calls.append((method, route, body))
+            if method == 'GET' and route == 'memos/' + self.item['id']:
+                if self.existing is not None:
+                    return self.existing
+                raise HTTPError('', 404, 'missing', {}, None)
+            if route == 'auth/me':
+                return {'user': {'name': 'users/synthetic'}}
+            if route == 'users/synthetic/usage':
+                return {'limits': {'memoContentBytes': 10000}}
+            if method == 'GET' and route.startswith('memos?'):
+                return {'memos': []}
+            if method == 'POST' and route == 'attachments':
+                self.upload_count += 1
+                if self.upload_count == 2 and fail_archive:
+                    raise TimeoutError('archive response lost')
+                if self.upload_count == 2 and unknown_archive:
+                    return {}
+                return {'name': 'attachments/' + ('preview' if self.upload_count == 1 else 'archive')}
+            if method == 'POST' and route.startswith('memos?'):
+                self.existing = dict(body, name='memos/' + self.item['id'])
+                for attachment in self.existing['attachments']:
+                    attachment['filename'] = self.item['filename'] + ('.original.zip' if attachment['name'].endswith('/archive') else '')
+                if lose_memo_response:
+                    raise TimeoutError('memo response lost after commit')
+                raise RuntimeError('memo rejected')
+            raise AssertionError((method, route))
+        self.client.call = call
+
+    def test_preview_receipt_survives_archive_response_loss(self):
+        self.install_api(fail_archive=True)
+        with self.assertRaises(RuntimeError) as caught:
+            self.client.ingest(self.item)
+        message = str(caught.exception)
+        self.assertIn('uploaded preview=attachments/preview;', message)
+        self.assertIn('confirmed attachments=["attachments/preview"]', message)
+        self.assertIn('target=memos/' + self.item['id'], message)
+        self.assertNotIn('uploaded attachment=', message)
+        self.assertFalse(any(method == 'DELETE' for method, _, _ in self.calls))
+        self.assertFalse(any(method == 'POST' and route.startswith('memos?') for method, route, _ in self.calls))
+
+    def test_memo_failure_reports_archive_and_preview(self):
+        self.install_api()
+        with self.assertRaises(RuntimeError) as caught:
+            self.client.ingest(self.item)
+        message = str(caught.exception)
+        self.assertRegex(message, r'uploaded attachment=(attachments/[^;]+);')
+        self.assertIn('uploaded preview=attachments/preview;', message)
+        self.assertIn('confirmed attachments=["attachments/preview", "attachments/archive"]', message)
+        self.assertIn('target=memos/' + self.item['id'], message)
+        self.assertFalse(any(method == 'DELETE' for method, _, _ in self.calls))
+
+    def test_missing_upload_id_is_not_invented(self):
+        self.install_api(unknown_archive=True)
+        with self.assertRaises(RuntimeError) as caught:
+            self.client.ingest(self.item)
+        self.assertNotIn('uploaded attachment=', str(caught.exception))
+        self.assertIn('confirmed attachments=["attachments/preview"]', str(caught.exception))
+        self.assertFalse(any(method == 'POST' and route.startswith('memos?') for method, route, _ in self.calls))
+
+    def test_lost_memo_response_preserves_linked_attachments_and_retry_verifies(self):
+        self.install_api(lose_memo_response=True)
+        with self.assertRaises(RuntimeError):
+            self.client.ingest(self.item)
+        self.assertEqual([a['name'] for a in self.existing['attachments']],
+                         ['attachments/archive', 'attachments/preview'])
+        archived = io.BytesIO()
+        with zipfile.ZipFile(archived, 'w') as archive:
+            archive.writestr(self.item['filename'], self.item['data'])
+        posts_before = sum(method == 'POST' for method, _, _ in self.calls)
+        with patch.object(self.client.opener, 'open', return_value=io.BytesIO(archived.getvalue())):
+            result = self.client.ingest(self.item)
+        self.assertEqual(result['status'], 'already-imported')
+        self.assertEqual(sum(method == 'POST' for method, _, _ in self.calls), posts_before)
+        self.assertFalse(any(method == 'DELETE' for method, _, _ in self.calls))
 
 
 class ImportSafety(unittest.TestCase):

@@ -1,0 +1,15 @@
+{
+  "beforeFix": {
+    "kind": "observed full-suite unhandled rejection",
+    "message": "ReferenceError: document is not defined",
+    "source": "PagedMemoList auto-fetch delay after unmount",
+    "assertionsPassed": 1729,
+    "unhandledErrors": 1,
+    "exitCode": 1
+  },
+  "fix": "invalidate pending delayed work and post-fetch rescheduling on component cleanup",
+  "targetedAfterFix": {
+    "file": "tests/paged-memo-list.test.tsx",
+    "passed": 23
+  }
+}

@@ -104,6 +104,12 @@ export function getSourceKind(memo: Pick<Memo, "tags">): SourceKind | "unknown" 
 }
 
 export function getSourceTitle(content: string): string {
+  const pdfHeading = content.match(/^# 有记 PDF (.+)$/m)?.[1];
+  if (pdfHeading) {
+    const filename = content.match(/^原文件名：\r?\n(`{3,})\r?\n([^\r\n]+)\r?\n\1(?:\r?\n|$)/m)?.[2];
+    if (filename) return `${filename}${pdfHeading.startsWith("正文 · ") ? ` · ${pdfHeading.slice(5)}` : ""}`.slice(0, 110);
+    return `PDF · ${pdfHeading}`.slice(0, 110);
+  }
   const importedTitle = content.match(/^# 拾微原始资料 · (.+)$/m)?.[1];
   if (importedTitle) return importedTitle.slice(0, 110);
   const candidate = content

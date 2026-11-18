@@ -192,6 +192,9 @@ func (s *APIService) NewHandler(ctx context.Context) (http.Handler, error) {
 		runtime.WithErrorHandler(gatewayErrorHandler),
 		runtime.WithIncomingHeaderMatcher(gatewayIncomingHeaderMatcher),
 	)
+	if err := registerYoujiPDFRoutes(gwMux); err != nil {
+		return nil, err
+	}
 	if err := apipb.RegisterInstanceServiceHandlerServer(ctx, gwMux, s); err != nil {
 		return nil, err
 	}
