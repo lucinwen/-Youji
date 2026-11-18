@@ -208,3 +208,34 @@ it("keeps audio recovery controls outside the record navigation link", () => {
   expect(screen.getByTestId("moteary-source-record")).toHaveAttribute("href", "/memos/audio");
   cleanup();
 });
+
+it("applies source/date drafts only on search, preserves the last valid query on error, and resets without losing account scope", () => {
+  spaces.isSpacesError = false;
+  useInfiniteMemos.mockReturnValue(query);
+  query.isPending = false;
+  query.isError = false;
+  query.data.pages[0].memos = [];
+  mount();
+  const original = useInfiniteMemos.mock.lastCall?.[0].filter;
+  fireEvent.change(screen.getByLabelText("找回来源类型"), { target: { value: "podcast" } });
+  fireEvent.change(screen.getByLabelText("保存起始日期"), { target: { value: "2026-11-01" } });
+  fireEvent.change(screen.getByLabelText("保存结束日期"), { target: { value: "2026-11-18" } });
+  expect(useInfiniteMemos.mock.lastCall?.[0].filter).toBe(original);
+  fireEvent.submit(screen.getByRole("form", { name: "搜索我的资料" }));
+  const applied = useInfiniteMemos.mock.lastCall?.[0].filter;
+  expect(applied).toContain('tag in ["source/podcast"]');
+  expect(applied).toContain("created_ts < timestamp(");
+  expect(screen.getByLabelText("已应用找回条件")).toHaveTextContent("播客片段 · 2026-11-01 至 2026-11-18");
+  expect(screen.getByText("当前范围未找到匹配资料")).toBeInTheDocument();
+  fireEvent.change(screen.getByLabelText("保存起始日期"), { target: { value: "2026-11-20" } });
+  fireEvent.submit(screen.getByRole("form", { name: "搜索我的资料" }));
+  expect(screen.getByRole("alert")).toHaveTextContent("起始日期不能晚于结束日期");
+  expect(useInfiniteMemos.mock.lastCall?.[0].filter).toBe(applied);
+  fireEvent.click(screen.getByRole("button", { name: "重置找回条件" }));
+  expect(useInfiniteMemos.mock.lastCall?.[0].filter).toBe(original);
+  expect(screen.getByLabelText("找回来源类型")).toHaveValue("all");
+  expect(screen.getByLabelText("保存起始日期")).toHaveValue("");
+  expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  expect(window.location.search).not.toContain("2026");
+  cleanup();
+});

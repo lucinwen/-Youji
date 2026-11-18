@@ -30,6 +30,7 @@ import OriginalAudioPreview, { getOriginalAudio } from "./OriginalAudioPreview";
 import {
   buildCaptureStarter,
   buildSourceFilter,
+  buildSourceRetrievalFilter,
   CATEGORY_LABELS,
   type CaptureCategory,
   getSourceKind,
@@ -38,6 +39,7 @@ import {
   SOURCE_INFO,
   SOURCE_KINDS,
   type SourceKind,
+  type SourceRetrieval,
 } from "./sources";
 
 const SOURCE_ICONS = {
@@ -114,6 +116,11 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
   const { spaces, isLoadingSpaces, isSpacesError } = useSpaceContext();
   const [searchDraft, setSearchDraft] = useState("");
   const [search, setSearch] = useState("");
+  const [retrievalDraft, setRetrievalDraft] = useState<SourceRetrieval>({});
+  const [retrieval, setRetrieval] = useState<SourceRetrieval>({});
+  const [retrievalError, setRetrievalError] = useState("");
+  const hasRetrieval = !!retrieval.from || !!retrieval.through || (!!retrieval.kind && retrieval.kind !== "all");
+  const hasRetrievalDraft = !!retrievalDraft.from || !!retrievalDraft.through || (!!retrievalDraft.kind && retrievalDraft.kind !== "all");
   const [category, setCategory] = useState<CaptureCategory | "all">("all");
   const [spaceName, setSpaceName] = useState("");
   const [capture, setCapture] = useState<{ kind: SourceKind; category: CaptureCategory; space?: string } | null>(null);
@@ -122,7 +129,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
   const [savedName, setSavedName] = useState<string>();
   const listRef = useRef<HTMLElement>(null);
   const query = useInfiniteMemos({
-    filter: buildSourceFilter(userName, category, spaceName || undefined, search),
+    filter: buildSourceFilter(userName, category, spaceName || undefined, search, retrieval),
     pageSize: 24,
     state: State.NORMAL,
     orderBy: "create_time desc",
@@ -345,9 +352,57 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
             aria-label="搜索我的资料"
             onSubmit={(event) => {
               event.preventDefault();
-              setSearch(searchDraft.trim());
+              try {
+                buildSourceRetrievalFilter(retrievalDraft);
+                setRetrieval({ ...retrievalDraft });
+                setSearch(searchDraft.trim());
+                setRetrievalError("");
+              } catch (error) {
+                setRetrievalError(error instanceof Error ? error.message : "筛选条件无效，原筛选保持不变。");
+              }
             }}
           >
+            <div className="grid w-full min-w-0 gap-3 sm:grid-cols-3">
+              <label className="min-w-0 text-xs">
+                来源类型
+                <select
+                  aria-label="找回来源类型"
+                  value={retrievalDraft.kind ?? "all"}
+                  onChange={(event) => setRetrievalDraft({ ...retrievalDraft, kind: event.target.value as SourceKind | "all" })}
+                  className="mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-border bg-card px-3"
+                >
+                  <option value="all">全部来源（含未标记）</option>
+                  {SOURCE_KINDS.map((kind) => (
+                    <option key={kind} value={kind}>
+                      {SOURCE_INFO[kind].label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="min-w-0 text-xs">
+                保存起始日期
+                <input
+                  aria-label="保存起始日期"
+                  type="date"
+                  value={retrievalDraft.from ?? ""}
+                  onChange={(event) => setRetrievalDraft({ ...retrievalDraft, from: event.target.value })}
+                  className="mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-border bg-card px-3"
+                />
+              </label>
+              <label className="min-w-0 text-xs">
+                保存结束日期
+                <input
+                  aria-label="保存结束日期"
+                  type="date"
+                  value={retrievalDraft.through ?? ""}
+                  onChange={(event) => setRetrievalDraft({ ...retrievalDraft, through: event.target.value })}
+                  className="mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-border bg-card px-3"
+                />
+              </label>
+            </div>
+            <p className="w-full text-xs text-muted-foreground">
+              日期按当前设备时区，包含结束日，依据记录创建时间，不代表事情发生或录音日期。来源按手动标签筛选，不会识别附件内容。修改后点击“搜索资料”应用。
+            </p>
             <input
               type="search"
               aria-label="资料关键词"
@@ -371,6 +426,32 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
               >
                 清除搜索
               </Button>
+            )}
+            {(hasRetrieval || hasRetrievalDraft) && (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => {
+                  setRetrievalDraft({});
+                  setRetrieval({});
+                  setRetrievalError("");
+                  setSearch("");
+                  setSearchDraft("");
+                }}
+              >
+                重置找回条件
+              </Button>
+            )}
+            {hasRetrieval && (
+              <p role="status" className="w-full text-xs" aria-label="已应用找回条件">
+                已应用：{retrieval.kind && retrieval.kind !== "all" ? SOURCE_INFO[retrieval.kind].label : "全部来源"} ·{" "}
+                {retrieval.from || "不限起始"} 至 {retrieval.through || "不限结束"}。仍保留当前分类和空间。
+              </p>
+            )}
+            {retrievalError && (
+              <p role="alert" className="w-full text-xs text-destructive">
+                {retrievalError}
+              </p>
             )}
             <p className="w-full text-xs text-muted-foreground">
               仅在当前账户和所选分类、空间内搜索已保存正文。PDF、音频和图片的附件内部内容尚不可搜索；可以搜索已填写到正文的文件名或批注。关键词不保存在网址或浏览器存储中。
@@ -439,10 +520,10 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
                 data-testid="moteary-empty"
               >
                 <SproutIcon className="mx-auto mb-4 size-7 text-[#8a997a]" strokeWidth={1.3} />
-                <h3 className="mb-2 text-sm font-medium">{search ? "当前范围未找到匹配资料" : "这里，留给你自己的片段"}</h3>
+                <h3 className="mb-2 text-sm font-medium">{search || hasRetrieval ? "当前范围未找到匹配资料" : "这里，留给你自己的片段"}</h3>
                 <p className="text-xs leading-6 text-muted-foreground">
-                  {search
-                    ? "可以换一个关键词，或清除搜索后检查分类、空间。没有匹配结果不代表资料已丢失。未解析的 PDF、音频与图片内部内容暂不能搜索，请尝试文件名或批注。"
+                  {search || hasRetrieval
+                    ? "可以换一个关键词，或重置找回条件后检查分类、空间。没有匹配结果不代表资料已丢失。未解析的 PDF、音频与图片内部内容暂不能搜索，请尝试文件名或批注。"
                     : "这个范围还没有记录。选择上方任一种来源，写下第一条。不需要完整，也不需要马上有用。"}
                 </p>
               </div>

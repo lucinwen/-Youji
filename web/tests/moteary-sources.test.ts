@@ -6,6 +6,7 @@ import { cacheService } from "@/components/MemoEditor/edit/services/cacheService
 import {
   buildCaptureStarter,
   buildSourceFilter,
+  buildSourceRetrievalFilter,
   getSourceKind,
   getSourceTitle,
   getSourceVisibility,
@@ -121,5 +122,59 @@ describe("source visibility labels", () => {
     [Visibility.VISIBILITY_UNSPECIFIED, "可见范围未知 · 请打开记录核对"],
   ])("reports the server visibility %s without assuming privacy", (value, label) => {
     expect(getSourceVisibility(value)).toBe(label);
+  });
+});
+
+describe("source and local calendar retrieval", () => {
+  it("combines source, category, owner, space and literal keyword in one server query", () => {
+    const filter = buildSourceFilter("users/alice", "work", "spaces/team", 'quote" || true', {
+      kind: "podcast",
+      from: "2026-11-01",
+      through: "2026-11-18",
+    });
+    for (const clause of [
+      'creator == "users/alice"',
+      'tag in ["拾微"]',
+      'tag in ["work"]',
+      'space == "spaces/team"',
+      'tag in ["source/podcast"]',
+      `content.contains(${JSON.stringify('quote" || true')})`,
+      "created_ts >= timestamp(",
+      "created_ts < timestamp(",
+    ])
+      expect(filter).toContain(clause);
+  });
+  it("allows one-sided ranges and includes the whole final local day", () => {
+    expect(buildSourceRetrievalFilter({ from: "2026-11-18" })).toBe(
+      `(created_ts >= timestamp(${new Date(2026, 10, 18).getTime() / 1000}))`,
+    );
+    expect(buildSourceRetrievalFilter({ through: "2026-11-18" })).toBe(
+      `(created_ts < timestamp(${new Date(2026, 10, 19).getTime() / 1000}))`,
+    );
+    expect(() => buildSourceRetrievalFilter({ from: "2026-11-18", through: "2026-11-18" })).not.toThrow();
+    expect(buildSourceRetrievalFilter({ kind: "all" })).toBeUndefined();
+  });
+  it.each([
+    "2026-02-30",
+    "2026-13-01",
+    "not-a-date",
+    '2026-01-01") || true',
+  ])("refuses malformed calendar date %s instead of broadening the query", (from) => {
+    expect(() => buildSourceRetrievalFilter({ from })).toThrow("有效的保存日期");
+  });
+  it("refuses reversed ranges and unknown source types", () => {
+    expect(() => buildSourceRetrievalFilter({ from: "2026-11-19", through: "2026-11-18" })).toThrow("原筛选保持不变");
+    expect(() => buildSourceRetrievalFilter({ kind: "invalid" as "file" })).toThrow("有效的来源类型");
+  });
+  it("uses local next midnight across daylight saving transitions", () => {
+    const filter = buildSourceRetrievalFilter({ from: "2026-03-08", through: "2026-03-08" });
+    // This test file is also run explicitly with TZ=America/New_York.
+    const eastern = Intl.DateTimeFormat().resolvedOptions().timeZone === "America/New_York";
+    const start = Date.parse(eastern ? "2026-03-08T05:00:00Z" : "2026-03-08T00:00:00Z") / 1000;
+    const end = Date.parse(eastern ? "2026-03-09T04:00:00Z" : "2026-03-09T00:00:00Z") / 1000;
+    if (eastern || Intl.DateTimeFormat().resolvedOptions().timeZone === "UTC") {
+      expect(filter).toBe(`(created_ts >= timestamp(${start})) && (created_ts < timestamp(${end}))`);
+      expect(end - start).toBe(eastern ? 23 * 3600 : 24 * 3600);
+    }
   });
 });
