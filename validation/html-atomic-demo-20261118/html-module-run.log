@@ -1,0 +1,30 @@
+{
+  "kind": "real HTTP/SQLite and actual frontend module; not browser",
+  "model_executed": false,
+  "worker_evidence": {
+    "workers": 3,
+    "trap_requests": 0,
+    "cancelled_after_start": true,
+    "scheduler": "node:worker_threads; actual production worker asset, not browser"
+  },
+  "binary_sha256": "78bae9615f9cc59fc97ee272ed2b2baf9ad09b9b261efd639433c60d7308d315",
+  "checks": [
+    {
+      "check": "embedded parser license texts served byte-for-byte from the built binary",
+      "passed": true
+    },
+    {
+      "check": "anonymous memo access denied; local HTML preview requires no processor",
+      "passed": true
+    },
+    {
+      "check": "actual HTML TypeScript module uses real API: save/retry/response-loss recovery/search/account isolation/delete",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "check": "restart preserves HTML memo and original; final deletion removes memo and attachment rows",
+      "passed": true
+    }
+  ]
+}

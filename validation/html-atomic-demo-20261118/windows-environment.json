@@ -1,0 +1,9 @@
+{
+  "host": "Linux",
+  "powershell": null,
+  "windows_powershell": null,
+  "wine": null,
+  "windows_runtime_tested": false,
+  "windows_cross_build_completed": false,
+  "model_executed": false
+}

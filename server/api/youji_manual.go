@@ -28,16 +28,38 @@ type youjiManualRequest struct {
 
 func (s *APIService) registerYoujiManualRoutes(mux *runtime.ServeMux) error {
 	// Unresolved custom paths are protected by the shared gateway authorizer.
-	return mux.HandlePath(http.MethodPost, "/api/youji/manual-text/import", s.importYoujiManual)
+	if err := mux.HandlePath(http.MethodPost, "/api/youji/manual-text/import", s.importYoujiManual); err != nil {
+		return err
+	}
+	return mux.HandlePath(http.MethodPost, "/api/youji/html-text/import", s.importYoujiHTML)
+}
+
+// The route selects this specification; clients cannot choose the identity namespace or limits.
+type youjiTextSpec struct {
+	domain, memoPrefix, attachmentPrefix string
+	extensions                           []string
+	rawLimit, requestLimit               int64
+}
+
+func manualTextSpec() youjiTextSpec {
+	return youjiTextSpec{"manual-text-v1", "mwt-", "ymt-", []string{".txt", ".md"}, 128 << 10, 2 << 20}
+}
+
+func htmlTextSpec() youjiTextSpec {
+	return youjiTextSpec{"html-text-v1", "mwh-", "ymh-", []string{".html", ".htm"}, 512 << 10, 3 << 20}
 }
 
 func youjiManualIdentity(owner, filename string, data []byte) (string, string) {
+	return youjiTextIdentity(manualTextSpec(), owner, filename, data)
+}
+
+func youjiTextIdentity(spec youjiTextSpec, owner, filename string, data []byte) (string, string) {
 	digest := sha256.Sum256(data)
 	sum := hex.EncodeToString(digest[:])
 	var encoded bytes.Buffer
 	encoder := json.NewEncoder(&encoded)
 	encoder.SetEscapeHTML(false)
-	_ = encoder.Encode([]string{"manual-text-v1", owner, sum, filename})
+	_ = encoder.Encode([]string{spec.domain, owner, sum, filename})
 	// Match JSON.stringify, including its literal U+2028/U+2029. Preserve escaped backslashes.
 	raw := bytes.TrimSuffix(encoded.Bytes(), []byte{'\n'})
 	var key bytes.Buffer
@@ -60,14 +82,23 @@ func youjiManualIdentity(owner, filename string, data []byte) (string, string) {
 		key.WriteByte(raw[i])
 	}
 	identity := sha256.Sum256(key.Bytes())
-	return "mwt-" + hex.EncodeToString(identity[:])[:30], sum
+	return spec.memoPrefix + hex.EncodeToString(identity[:])[:30], sum
 }
 
 func youjiManualArchive(request youjiManualRequest) ([]byte, error) {
-	if len(request.Data) == 0 || len(request.Data) > 128<<10 || len(request.Content) == 0 || len(request.Content) > 256<<10 ||
+	return youjiTextArchive(manualTextSpec(), request)
+}
+
+// Preserve the original bytes in a ZIP; do not parse HTML, execute it, or fetch its references.
+func youjiTextArchive(spec youjiTextSpec, request youjiManualRequest) ([]byte, error) {
+	extensionAllowed := false
+	for _, extension := range spec.extensions {
+		extensionAllowed = extensionAllowed || strings.HasSuffix(strings.ToLower(request.Filename), extension)
+	}
+	if len(request.Data) == 0 || int64(len(request.Data)) > spec.rawLimit || len(request.Content) == 0 || len(request.Content) > 256<<10 ||
 		!utf8.Valid(request.Data) || !utf8.ValidString(request.Content) || !utf8.ValidString(request.Filename) ||
 		utf8.RuneCountInString(request.Filename) > 240 || !validateFilename(request.Filename) ||
-		!(strings.HasSuffix(strings.ToLower(request.Filename), ".txt") || strings.HasSuffix(strings.ToLower(request.Filename), ".md")) {
+		!extensionAllowed {
 		return nil, errors.New("invalid manual input")
 	}
 	for _, r := range request.Filename {
@@ -91,6 +122,14 @@ func youjiManualArchive(request youjiManualRequest) ([]byte, error) {
 }
 
 func (s *APIService) importYoujiManual(w http.ResponseWriter, r *http.Request, _ map[string]string) {
+	s.importYoujiText(w, r, manualTextSpec())
+}
+
+func (s *APIService) importYoujiHTML(w http.ResponseWriter, r *http.Request, _ map[string]string) {
+	s.importYoujiText(w, r, htmlTextSpec())
+}
+
+func (s *APIService) importYoujiText(w http.ResponseWriter, r *http.Request, spec youjiTextSpec) {
 	ctx := r.Context()
 	user, err := s.fetchCurrentUser(ctx)
 	if err != nil || user == nil {
@@ -110,7 +149,7 @@ func (s *APIService) importYoujiManual(w http.ResponseWriter, r *http.Request, _
 		youjiPDFError(w, 429, "busy")
 		return
 	}
-	decoder := json.NewDecoder(http.MaxBytesReader(w, r.Body, 2<<20))
+	decoder := json.NewDecoder(http.MaxBytesReader(w, r.Body, spec.requestLimit))
 	decoder.DisallowUnknownFields()
 	var input youjiManualRequest
 	if err := decoder.Decode(&input); err != nil {
@@ -126,12 +165,12 @@ func (s *APIService) importYoujiManual(w http.ResponseWriter, r *http.Request, _
 		youjiPDFError(w, 403, "account_changed")
 		return
 	}
-	blob, err := youjiManualArchive(input)
+	blob, err := youjiTextArchive(spec, input)
 	if err != nil {
 		youjiPDFError(w, 422, "invalid_input")
 		return
 	}
-	id, sum := youjiManualIdentity(owner, input.Filename, input.Data)
+	id, sum := youjiTextIdentity(spec, owner, input.Filename, input.Data)
 	prepared, err := s.prepareMemoCreate(ctx, user, &apipb.Memo{Content: input.Content, Visibility: apipb.Visibility_PRIVATE}, id)
 	if err != nil || len(prepared.requiredAttachmentIDs) > 0 || len(prepared.referenceRelations) > 0 {
 		youjiPDFError(w, 422, "invalid_content_or_content_quota")
@@ -142,7 +181,7 @@ func (s *APIService) importYoujiManual(w http.ResponseWriter, r *http.Request, _
 		youjiPDFError(w, 503, "limits_unavailable")
 		return
 	}
-	original := &store.Attachment{UID: "ymt-" + strings.TrimPrefix(id, "mwt-"), CreatorID: user.ID, Filename: input.Filename + ".original.zip", Type: "application/zip", Size: int64(len(blob)), Blob: blob}
+	original := &store.Attachment{UID: spec.attachmentPrefix + strings.TrimPrefix(id, spec.memoPrefix), CreatorID: user.ID, Filename: input.Filename + ".original.zip", Type: "application/zip", Size: int64(len(blob)), Blob: blob}
 	verified, err := importer.ImportYoujiManual(ctx, prepared.memo, original, store.YoujiManualLimits{
 		MemoCount: effective.Entry.GetMemoCount(), StorageBytes: effective.Entry.GetStorageBytes(), UploadBytes: effective.Entry.GetUploadBytes(),
 	})

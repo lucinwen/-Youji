@@ -1,5 +1,7 @@
 # 离线导入本地 HTML：提取文字与原件回溯
 
+> 版本提示：本文保留早期解析/原件验收记录。新版 HTML 保存已改为 SQLite 原文+ZIP同事务，旧版原件可能409而不迁移；当前限制与命令见 [HTML_ATOMIC_IMPORT.md](HTML_ATOMIC_IMPORT.md)。解析 Worker 与 ZIP-only 展示边界保持。
+
 本轮直接使用 [parse5](https://github.com/inikulin/parse5) 8.0.1（MIT）解析 HTML 语法树；使用已有 Memos 私有记录、fflate ZIP 和单原件保存/核验/重试机制。parse5 此前是 jsdom 的间接开发依赖，本轮固定为直接运行依赖，锁文件没有升级其他包。其 entities 8.0.0 依赖为 BSD-2-Clause，完整许可证均在 [licenses](licenses)，并放入 `web/public/licenses/` 随前端和嵌入二进制提供；分发时请保留。未复制其他产品代码。Mozilla Readability 是已评估但未接入的 Apache-2.0 候选；本实现不是它的智能正文识别，也不是 AI 摘要或 OCR。
 
 ## 操作与范围

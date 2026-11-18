@@ -1,15 +1,17 @@
 # 有记本地演示：采集、整理、找回
 
+Windows 原生或 WSL 路径见 [Windows 指南](WINDOWS_DEMO.md)，目前没有 Windows 实机验收。
+
 本指南面向 Linux/macOS 的 Bash 终端，从本仓库当前 checkout 启动独立演示实例。有记直接复用 Memos 应用底座；来源为 Memos 26.11.0、commit `b40d8a7b573774c52b022c8d6537d6baf2129dc0`，MIT 许可证，详见 [UPSTREAM.json](UPSTREAM.json) 和仓库 LICENSE。不要把草稿 PR 当作已经合并的发行版；先记下正在演示的 commit。
 
 默认不启用 PDF 解析、语义检索或语音模型。文本导入、原件保存、人工稿、普通关键词查找不需要模型。自动语音识别的真实验收仍被外连审批阻碍；本指南不提供启用或重跑 ASR 评估的命令。以下演示只使用合成资料。
 
 ## 1. 准备程序
 
-本轮可拉取的累计草稿是 `feat/transactional-drafts-demo-20261118`，包含 PR #1–17 的前序提交，不需要逐个合并或 cherry-pick。它不是 main 或正式发行版。只在新目录执行：
+本轮可拉取的累计草稿是 `feat/html-atomic-demo-20261118`，包含 PR #1–18 的前序提交，不需要逐个合并或 cherry-pick。它不是 main 或正式发行版。只在新目录执行：
 
 ```bash
-git clone --single-branch --branch feat/transactional-drafts-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
+git clone --single-branch --branch feat/html-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
 cd youji-demo
 ```
 
@@ -117,7 +119,7 @@ PY
 
 ## 本地网页与清洁构建复现
 
-网页导入无需模型：选择 UTF-8 HTML、核对纯文本预览后保存。合成样本、资源阻断边界与新目录冻结安装实测见 [LOCAL_HTML.md](LOCAL_HTML.md)。本轮实际使用 pnpm 11.25.0；仓库声明的 11.0.1 不等于本轮已测试版本。原 HTML 只保留在 ZIP，不直接在应用内打开。
+网页导入无需模型：选择 UTF-8 HTML、核对纯文本预览后保存。合成样本、资源阻断边界与新目录冻结安装实测见 [LOCAL_HTML.md](LOCAL_HTML.md)。本轮实际使用 pnpm 11.25.0；仓库声明的 11.0.1 不等于本轮已测试版本。原 HTML 只保留在 ZIP，不直接在应用内打开。新版保存要求配套 SQLite 服务器，规则与多源走查见 [HTML 事务保存](HTML_ATOMIC_IMPORT.md)。
 
 ## 无模型的首次聊天/日常文本体验
 

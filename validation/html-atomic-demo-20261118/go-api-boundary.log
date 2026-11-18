@@ -1,0 +1,14 @@
+=== RUN   TestYoujiHTMLGatewayMaxEscapedBody
+2026/11/18 16:50:07 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 16:50:07 INFO database initialized successfully schemaVersion=26.10.1
+    youji_html_test.go:161:
+            Error Trace:    /workspace/scratch/10a41183bc23/youji-next/server/api/youji_html_test.go:161
+            Error:          Not equal:
+                            expected: 200
+                            actual  : 422
+            Test:           TestYoujiHTMLGatewayMaxEscapedBody
+            Messages:       {"error":"invalid_content_or_content_quota"}
+--- FAIL: TestYoujiHTMLGatewayMaxEscapedBody (0.42s)
+FAIL
+FAIL    github.com/usememos/memos/server/api    0.502s
+FAIL

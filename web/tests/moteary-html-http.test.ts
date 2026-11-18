@@ -50,9 +50,24 @@ it.skipIf(!process.env.YOUJI_HTML_WEB_QA)(
       attachments: value.attachments ?? [],
     });
     vi.stubGlobal("crypto", webcrypto);
-    vi.stubGlobal("fetch", (url: string, options: RequestInit = {}) =>
-      nativeFetch(`${config.base}${url}`, { ...options, headers: { ...options.headers, Authorization: `Bearer ${config.token}` } }),
-    );
+    let loseNextResponse = false;
+    let failNextBeforeSend = false;
+    vi.stubGlobal("fetch", async (url: string, options: RequestInit = {}) => {
+      if (url === "/api/youji/html-text/import" && failNextBeforeSend) {
+        failNextBeforeSend = false;
+        throw new Error("synthetic failure before dispatch");
+      }
+      const response = await nativeFetch(`${config.base}${url}`, {
+        ...options,
+        headers: { ...options.headers, Authorization: `Bearer ${config.token}` },
+      });
+      if (url === "/api/youji/html-text/import" && loseNextResponse && response.ok) {
+        loseNextResponse = false;
+        await response.arrayBuffer();
+        throw new Error("synthetic response loss after actual atomic commit");
+      }
+      return response;
+    });
     rpc.getCurrentUser.mockImplementation(() => call("GET", "auth/me"));
     rpc.getUserUsage.mockImplementation(async ({ name }) => {
       const value = await call("GET", name);
@@ -169,7 +184,7 @@ it.skipIf(!process.env.YOUJI_HTML_WEB_QA)(
       expect((await call("GET", search, undefined, config.otherToken)).memos ?? []).toHaveLength(0);
       // Real owner edit prevents retry from overwriting the correction.
       await call("PATCH", `${receipt.memo}?updateMask=content`, { name: receipt.memo, content: saved.content + "\n人工后续编辑" });
-      await expect(saveHTML(plan, signal(), vi.fn())).rejects.toThrow("已变化");
+      await expect(saveHTML(plan, signal(), vi.fn())).rejects.toThrow("冲突");
       // Another account cannot delete the source or its only archive.
       for (const name of [receipt.memo, attachment.name])
         expect([401, 403, 404]).toContain(
@@ -180,33 +195,22 @@ it.skipIf(!process.env.YOUJI_HTML_WEB_QA)(
       expect((await nativeFetch(originalURL, { headers: { Authorization: `Bearer ${config.token}` } })).status).toBe(404);
       expect((await call("GET", search)).memos ?? []).toHaveLength(0);
       expect((await call("GET", "attachments")).attachments ?? []).toHaveLength(0);
-      // Attachment is durably uploaded but memo creation fails before committing.
-      rpc.createMemo.mockRejectedValueOnce(new ConnectError("synthetic write failure", Code.Internal));
+      // Failure before dispatch makes no write; no separate upload path exists.
+      failNextBeforeSend = true;
       await expect(saveHTML(plan, signal(), vi.fn())).rejects.toThrow("未知");
       expect((await call("GET", "memos")).memos ?? []).toHaveLength(0);
-      expect((await call("GET", "attachments")).attachments).toHaveLength(1);
-      await saveHTML(plan, signal(), vi.fn());
-      expect((await call("GET", "attachments")).attachments).toHaveLength(1);
-      await call("DELETE", receipt.memo);
-      // Actual commit followed by a deliberately lost response at the client boundary.
-      rpc.createAttachment.mockImplementationOnce(async (args) => {
-        await upload(args);
-        throw new ConnectError("synthetic response loss", Code.Unavailable);
-      });
+      expect((await call("GET", "attachments")).attachments ?? []).toHaveLength(0);
+      // Actual atomic commit followed by loss at the client response boundary.
+      loseNextResponse = true;
       const receipts: string[] = [];
       await expect(saveHTML(plan, signal(), (r) => receipts.push(r.status))).rejects.toThrow("未知");
-      expect(receipts).toContain("upload-unknown");
+      expect(receipts).toContain("save-unknown");
+      expect((await call("GET", "memos")).memos).toHaveLength(1);
       expect((await call("GET", "attachments")).attachments).toHaveLength(1);
-      await saveHTML(plan, signal(), vi.fn());
-      expect((await call("GET", "attachments")).attachments).toHaveLength(1);
-      await call("DELETE", receipt.memo);
-      rpc.createMemo.mockImplementationOnce(async (args) => {
-        await createMemo(args);
-        throw new ConnectError("synthetic saved response loss", Code.Unavailable);
-      });
-      await expect(saveHTML(plan, signal(), vi.fn())).rejects.toThrow("未知");
       expect((await saveHTML(plan, signal(), vi.fn())).status).toBe("verified");
       expect((await call("GET", "attachments")).attachments).toHaveLength(1);
+      expect(rpc.createAttachment).not.toHaveBeenCalled();
+      expect(rpc.createMemo).not.toHaveBeenCalled();
     } finally {
       await Promise.all(workers.map((worker) => worker.terminate()));
       await new Promise<void>((resolve) => sensor.close(() => resolve()));

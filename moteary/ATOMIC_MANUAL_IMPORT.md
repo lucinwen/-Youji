@@ -1,6 +1,6 @@
 # 手动文本的 SQLite 事务导入
 
-适用：有记手动粘贴/TXT/Markdown入口，新版前端和新版服务器，SQLite。单原文最多128 KiB，生成正文最多256 KiB，另受账户限制。文件名不能以点或空格开头；预览会提前拒绝。其他数据库返回501，不回退旧上传协议。本轮没有改动音频、PDF、HTML、聊天JSON或批量入口的保存方式。
+适用：有记手动粘贴/TXT/Markdown入口，新版前端和新版服务器，SQLite。单原文最多128 KiB，生成正文最多256 KiB，另受账户限制。文件名不能以点或空格开头；预览会提前拒绝。其他数据库返回501，不回退旧上传协议。本文记录手动入口的事务设计；新版 HTML 另见 [HTML事务说明](HTML_ATOMIC_IMPORT.md)。音频、PDF、聊天JSON和批量入口的旧保存方式仍未改动。
 
 ## 行为
 
@@ -19,7 +19,7 @@ SQLite的IMMEDIATE事务内重验活跃账户，核对已有记录及原件，�
 这是源码草稿，不是预编译发行包。先准备 `DEMO_RUNBOOK.md` 列出的Node/pnpm/Go/Python，再在新目录拉取本轮完整分支：
 
 ```bash
-git clone --single-branch --branch feat/atomic-manual-import-20261118 https://github.com/lucinwen/-Youji.git youji-demo
+git clone --single-branch --branch feat/html-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
 cd youji-demo
 pnpm --dir web install --frozen-lockfile
 pnpm --dir web release
