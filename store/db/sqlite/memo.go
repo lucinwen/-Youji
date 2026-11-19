@@ -129,6 +129,9 @@ func (d *DB) ListMemos(ctx context.Context, find *store.FindMemo) ([]*store.Memo
 	if err := filter.AppendConditions(ctx, engine, find.Filters, filter.DialectSQLite, &where, &args); err != nil {
 		return nil, err
 	}
+	if v := find.ExcludeID; v != nil {
+		where, args = append(where, "`memo`.`id` <> ?"), append(args, *v)
+	}
 	if v := find.ID; v != nil {
 		where, args = append(where, "`memo`.`id` = ?"), append(args, *v)
 	}
@@ -224,7 +227,11 @@ func (d *DB) ListMemos(ctx context.Context, find *store.FindMemo) ([]*store.Memo
 			ORDER BY parent_memo.id LIMIT 1) AS parent_uid`,
 	}
 	if !find.ExcludeContent {
-		fields = append(fields, "`memo`.`content` AS `content`")
+		if find.ContentPrefixLength > 0 {
+			fields = append(fields, fmt.Sprintf("SUBSTR(`memo`.`content`, 1, %d) AS content", find.ContentPrefixLength))
+		} else {
+			fields = append(fields, "`memo`.`content` AS `content`")
+		}
 	}
 
 	query := "SELECT " + strings.Join(fields, ", ") + " FROM `memo` " +

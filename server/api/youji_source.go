@@ -18,7 +18,10 @@ func (s *APIService) registerYoujiSourceRoutes(mux *runtime.ServeMux) error {
 			return err
 		}
 	}
-	return mux.HandlePath(http.MethodGet, "/api/youji/memos/{uid}/source/open", s.youjiSourceOpen)
+	if err := mux.HandlePath(http.MethodGet, "/api/youji/memos/{uid}/source/open", s.youjiSourceOpen); err != nil {
+		return err
+	}
+	return mux.HandlePath(http.MethodGet, "/api/youji/memos/{uid}/source/candidates", s.youjiSourceCandidates)
 }
 func (s *APIService) youjiSource(w http.ResponseWriter, r *http.Request, params map[string]string) {
 	s.serveYoujiSource(w, r, params, false)

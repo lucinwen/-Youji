@@ -70,8 +70,12 @@ type Memo struct {
 }
 
 type FindMemo struct {
-	ID  *int32
-	UID *string
+	// ExcludeID removes a record before pagination, e.g. a review from source candidates.
+	ExcludeID *int32
+	// ContentPrefixLength bounds a preview in SQL characters; zero preserves full content.
+	ContentPrefixLength int
+	ID                  *int32
+	UID                 *string
 
 	IDList  []int32
 	UIDList []string
