@@ -1,0 +1,20 @@
+{
+  "kind": "real HTTP/SQLite and actual frontend module; not browser",
+  "model_executed": false,
+  "binary_sha256": "0a77dc065480003691e638de66de40471f1649ca16d790dd74ec827b9fde37ab",
+  "checks": [
+    {
+      "check": "anonymous audio routes denied; unconfigured model returns explicit 503 without persisting data",
+      "passed": true
+    },
+    {
+      "check": "actual audio TypeScript module uses real API: save/retry/response-loss recovery/search/account isolation/delete; manual transcript only",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "check": "restart preserves corrected memo and original; final deletion removes memo and attachment rows",
+      "passed": true
+    }
+  ]
+}

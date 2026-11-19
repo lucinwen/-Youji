@@ -1,0 +1,62 @@
+=== RUN   TestRequestBodyLimitPerProcedure
+--- PASS: TestRequestBodyLimitPerProcedure (0.00s)
+=== RUN   TestRequestBodyLimitGatewayAudioOnly
+--- PASS: TestRequestBodyLimitGatewayAudioOnly (0.00s)
+=== RUN   TestYoujiAudioImportIdentityMatchesFrontend
+--- PASS: TestYoujiAudioImportIdentityMatchesFrontend (0.00s)
+=== RUN   TestYoujiAudioImportArchiveOriginalOnlyAndLimits
+--- PASS: TestYoujiAudioImportArchiveOriginalOnlyAndLimits (0.30s)
+=== RUN   TestYoujiAudioImportGatewayAtomicImportAndFixedKind
+2026/11/18 18:20:01 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:20:01 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiAudioImportGatewayAtomicImportAndFixedKind (0.14s)
+=== RUN   TestYoujiAudioImportRequestBudgetAndQuota
+2026/11/18 18:20:01 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:20:01 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiAudioImportRequestBudgetAndQuota (1.41s)
+=== RUN   TestYoujiAudioImportDoesNotRelaxTextUTF8
+--- PASS: TestYoujiAudioImportDoesNotRelaxTextUTF8 (0.00s)
+=== RUN   TestYoujiAudioImportUnsupportedDriverFailsClosed
+2026/11/18 18:20:02 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:20:02 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiAudioImportUnsupportedDriverFailsClosed (0.11s)
+=== RUN   TestYoujiChatIdentityMatchesFrontend
+--- PASS: TestYoujiChatIdentityMatchesFrontend (0.00s)
+=== RUN   TestYoujiChatArchiveOriginalOnlyAndLimits
+--- PASS: TestYoujiChatArchiveOriginalOnlyAndLimits (0.03s)
+=== RUN   TestYoujiChatGatewayAtomicImportAndFixedKind
+2026/11/18 18:20:02 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:20:02 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiChatGatewayAtomicImportAndFixedKind (0.12s)
+=== RUN   TestYoujiChatGatewayMaxEscapedBody
+2026/11/18 18:20:03 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:20:03 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiChatGatewayMaxEscapedBody (3.39s)
+=== RUN   TestYoujiChatUnsupportedDriverFailsClosed
+2026/11/18 18:20:06 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:20:06 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiChatUnsupportedDriverFailsClosed (0.08s)
+=== RUN   TestYoujiHTMLIdentityMatchesFrontend
+--- PASS: TestYoujiHTMLIdentityMatchesFrontend (0.00s)
+=== RUN   TestYoujiHTMLArchiveOriginalOnlyAndLimits
+--- PASS: TestYoujiHTMLArchiveOriginalOnlyAndLimits (0.03s)
+=== RUN   TestYoujiHTMLGatewayAtomicImportAndFixedKind
+2026/11/18 18:20:06 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:20:06 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiHTMLGatewayAtomicImportAndFixedKind (0.13s)
+=== RUN   TestYoujiHTMLGatewayMaxEscapedBody
+2026/11/18 18:20:06 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:20:06 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiHTMLGatewayMaxEscapedBody (3.11s)
+=== RUN   TestYoujiHTMLUnsupportedDriverFailsClosed
+2026/11/18 18:20:09 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:20:09 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiHTMLUnsupportedDriverFailsClosed (0.08s)
+=== RUN   TestYoujiManualIdentityMatchesFrontend
+--- PASS: TestYoujiManualIdentityMatchesFrontend (0.00s)
+=== RUN   TestYoujiManualArchiveBoundedAndDeterministic
+--- PASS: TestYoujiManualArchiveBoundedAndDeterministic (0.00s)
+=== RUN   TestYoujiManualGatewayRequiresAuthentication
+--- PASS: TestYoujiManualGatewayRequiresAuthentication (0.01s)
+PASS
+ok  	github.com/usememos/memos/server/api	10.093s

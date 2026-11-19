@@ -34,7 +34,10 @@ func (s *APIService) registerYoujiManualRoutes(mux *runtime.ServeMux) error {
 	if err := mux.HandlePath(http.MethodPost, "/api/youji/html-text/import", s.importYoujiHTML); err != nil {
 		return err
 	}
-	return mux.HandlePath(http.MethodPost, "/api/youji/chat-json/import", s.importYoujiChat)
+	if err := mux.HandlePath(http.MethodPost, "/api/youji/chat-json/import", s.importYoujiChat); err != nil {
+		return err
+	}
+	return mux.HandlePath(http.MethodPost, "/api/youji/audio-original/import", s.importYoujiAudioOriginal)
 }
 
 // The route selects this specification; clients cannot choose the identity namespace or limits.
@@ -54,6 +57,11 @@ func htmlTextSpec() youjiTextSpec {
 
 func chatTextSpec() youjiTextSpec {
 	return youjiTextSpec{"telegram-chat-v1", "mwc-", "ymc-", []string{".json"}, 512 << 10, 3 << 20}
+}
+
+// Audio is archived as opaque bytes; this route never decodes media or runs ASR.
+func audioOriginalSpec() youjiTextSpec {
+	return youjiTextSpec{"audio-v1", "mwa-", "yma-", []string{".wav", ".mp3", ".ogg", ".m4a", ".flac", ".webm"}, 16 << 20, 24 << 20}
 }
 
 func youjiManualIdentity(owner, filename string, data []byte) (string, string) {
@@ -103,7 +111,7 @@ func youjiTextArchive(spec youjiTextSpec, request youjiManualRequest) ([]byte, e
 		extensionAllowed = extensionAllowed || strings.HasSuffix(strings.ToLower(request.Filename), extension)
 	}
 	if len(request.Data) == 0 || int64(len(request.Data)) > spec.rawLimit || len(request.Content) == 0 || len(request.Content) > 256<<10 ||
-		!utf8.Valid(request.Data) || !utf8.ValidString(request.Content) || !utf8.ValidString(request.Filename) ||
+		(spec.domain != "audio-v1" && !utf8.Valid(request.Data)) || !utf8.ValidString(request.Content) || !utf8.ValidString(request.Filename) ||
 		utf8.RuneCountInString(request.Filename) > 240 || !validateFilename(request.Filename) ||
 		!extensionAllowed {
 		return nil, errors.New("invalid manual input")
@@ -143,6 +151,10 @@ func (s *APIService) importYoujiHTML(w http.ResponseWriter, r *http.Request, _ m
 
 func (s *APIService) importYoujiChat(w http.ResponseWriter, r *http.Request, _ map[string]string) {
 	s.importYoujiText(w, r, chatTextSpec())
+}
+
+func (s *APIService) importYoujiAudioOriginal(w http.ResponseWriter, r *http.Request, _ map[string]string) {
+	s.importYoujiText(w, r, audioOriginalSpec())
 }
 
 func (s *APIService) importYoujiText(w http.ResponseWriter, r *http.Request, spec youjiTextSpec) {

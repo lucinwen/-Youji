@@ -1,0 +1,15 @@
+test_empty_and_symlink (test_demo_check.DemoCheckTest.test_empty_and_symlink) ... ok
+test_existing_data_is_not_touched (test_demo_check.DemoCheckTest.test_existing_data_is_not_touched) ... ok
+test_invalid_output_and_timeout_are_sanitized (test_demo_check.DemoCheckTest.test_invalid_output_and_timeout_are_sanitized) ... ok
+test_model_environment_is_redacted_and_refused (test_demo_check.DemoCheckTest.test_model_environment_is_redacted_and_refused) ... ok
+test_new_path_is_not_created (test_demo_check.DemoCheckTest.test_new_path_is_not_created) ... ok
+test_subprocess_is_version_only_and_has_no_inherited_credentials (test_demo_check.DemoCheckTest.test_subprocess_is_version_only_and_has_no_inherited_credentials) ... ok
+test_actual_clean_plan_start_and_existing_data_refusal (test_demo_start.DemoStartTest.test_actual_clean_plan_start_and_existing_data_refusal) ... ok
+test_clean_explicit_plan (test_demo_start.DemoStartTest.test_clean_explicit_plan) ... ok
+test_privileged_or_invalid_port_refused (test_demo_start.DemoStartTest.test_privileged_or_invalid_port_refused) ... ok
+test_refusal_not_overridden (test_demo_start.DemoStartTest.test_refusal_not_overridden) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.572s
+
+OK

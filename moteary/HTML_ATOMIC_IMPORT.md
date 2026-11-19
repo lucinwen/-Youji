@@ -1,6 +1,8 @@
 # HTML 原件与正文的 SQLite 事务保存
 
-本累计分支保留 PR #18；新 HTML 保存入口为 `/api/youji/html-text/import`。它复用现有 SQLite 原文+原件事务，未修改数据库 schema，不新增依赖。只覆盖新版本地 HTML 导入和对应服务器；音频、PDF、聊天 JSON、批量入口仍在旧保存链路。
+本文记录 PR #19 引入的 HTML 事务保存，累计保留 PR #18；HTML 保存入口为 `/api/youji/html-text/import`。它复用现有 SQLite 原文+原件事务，未修改数据库 schema，不新增依赖。PR #19 当时的聊天 JSON、音频、PDF、批量入口仍在旧保存链路，这是历史范围，不代表后续版本状态。
+
+当前已验证冻结候选为 PR #20，分支 `feat/chat-atomic-demo-20261118`，提交 `ca965c73968ff9c47f9938b6e45cabffc5c2c7c9`；该候选已加入[聊天 JSON 事务保存](CHAT_ATOMIC_IMPORT.md)。PR #19 仅是可选单独回退点，不要求先切回。后续 `feat/audio-atomic-demo-20261119` 的音频事务实现及实际通过范围见[音频事务 QA](AUDIO_ATOMIC_QA_20261119.md)；PDF、旧批量等入口不因此获得事务保证。
 
 用户选择 UTF-8 `.html`/`.htm`（最多512 KiB）→现有 parse5 8.0.1 生产 Worker 提取文字→预览并确认→一次认证 POST 保存 PRIVATE 记录和 ZIP BLOB。Worker 不渲染原 HTML，服务器不解析或执行它、不访问来源 URL。原件中脚本与元数据仍保留；提取预览不是脱敏备份，下载不可信原件后不要直接打开。
 
@@ -12,9 +14,9 @@ HTML原文512 KiB、正文256 KiB，JSON请求上限3 MiB以容纳base64与最�
 
 ## 同任务走查
 
-本轮固定生产构建的多源脚本使用同一合成账户、共同主题 `SyntheticSharedTopic`，四种来源为手动文字、HTML、单聊天JSON、4秒静音音频+人工稿。每种原文另有独特关键词；分别预览、保存、重复核验、按来源+关键词找回、下载ZIP比较原字节，再重启查回。音频不运行ASR，聊天JSON不连接任何聊天平台；不使用私人资料。
+PR #19 的固定生产构建多源脚本使用同一合成账户、共同主题 `SyntheticSharedTopic`，四种来源为手动文字、HTML、单聊天JSON、4秒静音音频+人工稿。每种原文另有独特关键词；分别预览、保存、重复核验、按来源+关键词找回、下载ZIP比较原字节，再重启查回。音频不运行ASR，聊天JSON不连接任何聊天平台；不使用私人资料。
 
-这是实际前端模块与HTTP/SQLite测试。HTML运行同一生产worker资产的Node调度，并核对服务端提供的worker与磁盘文件逐字节一致；不是浏览器Worker验收。脚本单独记录二进制和worker SHA。Windows、真实浏览器、手机、用户操作耗时均未测。旧chat/audio的串行重复通过不能外推并发无孤儿。
+这是实际前端模块与HTTP/SQLite测试。HTML运行同一生产worker资产的Node调度，并核对服务端提供的worker与磁盘文件逐字节一致；不是浏览器Worker验收。脚本单独记录二进制和worker SHA。Windows、真实浏览器、手机、用户操作耗时均未测。PR #19 旧 chat/audio 的串行重复通过不能外推并发无孤儿；PR #20 聊天事务证据另见[聊天 QA](CHAT_ATOMIC_QA_20261118.md)，不与历史结果混用。
 
 按 [演示手册](DEMO_RUNBOOK.md) 构建后，在仓库根目录运行（选新的输出目录）：
 
@@ -24,4 +26,4 @@ YOUJI_HTML_QA_OUTPUT=/tmp/youji-html-module python3 tests/moteary/run_html_web_e
 YOUJI_MULTISOURCE_QA_OUTPUT=/tmp/youji-same-task python3 tests/moteary/run_multisource_demo_e2e.py
 ```
 
-结果与本轮构建身份见 `validation/html-atomic-demo-20261118/final-summary.json`。默认关闭可选模型，不重试暂停的真人ASR评估。浏览器正常沙箱此前socket权限阻挡，本轮不关闭沙箱，也不把HTTP通过写成真实网页通过。
+PR #19 历史结果与构建身份见 `validation/html-atomic-demo-20261118/final-summary.json`；在其他提交运行脚本会产生新的证据，不能沿用该固定构建身份。默认关闭可选模型，不重试暂停的真人ASR评估。浏览器正常沙箱此前socket权限阻挡，不关闭沙箱，也不把HTTP通过写成真实网页通过。

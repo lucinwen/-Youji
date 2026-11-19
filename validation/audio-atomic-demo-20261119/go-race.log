@@ -1,0 +1,58 @@
+=== RUN   TestYoujiAudioImportIdentityMatchesFrontend
+--- PASS: TestYoujiAudioImportIdentityMatchesFrontend (0.00s)
+=== RUN   TestYoujiAudioImportArchiveOriginalOnlyAndLimits
+--- PASS: TestYoujiAudioImportArchiveOriginalOnlyAndLimits (0.23s)
+=== RUN   TestYoujiAudioImportGatewayAtomicImportAndFixedKind
+2026/11/18 18:08:57 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:08:57 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiAudioImportGatewayAtomicImportAndFixedKind (0.13s)
+=== RUN   TestYoujiAudioImportRequestBudgetAndQuota
+2026/11/18 18:08:57 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:08:57 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiAudioImportRequestBudgetAndQuota (1.21s)
+=== RUN   TestYoujiAudioImportDoesNotRelaxTextUTF8
+--- PASS: TestYoujiAudioImportDoesNotRelaxTextUTF8 (0.00s)
+=== RUN   TestYoujiAudioImportUnsupportedDriverFailsClosed
+2026/11/18 18:08:58 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:08:58 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiAudioImportUnsupportedDriverFailsClosed (0.07s)
+=== RUN   TestYoujiChatIdentityMatchesFrontend
+--- PASS: TestYoujiChatIdentityMatchesFrontend (0.00s)
+=== RUN   TestYoujiChatArchiveOriginalOnlyAndLimits
+--- PASS: TestYoujiChatArchiveOriginalOnlyAndLimits (0.02s)
+=== RUN   TestYoujiChatGatewayAtomicImportAndFixedKind
+2026/11/18 18:08:58 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:08:59 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiChatGatewayAtomicImportAndFixedKind (0.10s)
+=== RUN   TestYoujiChatGatewayMaxEscapedBody
+2026/11/18 18:08:59 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:08:59 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiChatGatewayMaxEscapedBody (3.08s)
+=== RUN   TestYoujiChatUnsupportedDriverFailsClosed
+2026/11/18 18:09:02 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:09:02 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiChatUnsupportedDriverFailsClosed (0.07s)
+=== RUN   TestYoujiHTMLIdentityMatchesFrontend
+--- PASS: TestYoujiHTMLIdentityMatchesFrontend (0.00s)
+=== RUN   TestYoujiHTMLArchiveOriginalOnlyAndLimits
+--- PASS: TestYoujiHTMLArchiveOriginalOnlyAndLimits (0.03s)
+=== RUN   TestYoujiHTMLGatewayAtomicImportAndFixedKind
+2026/11/18 18:09:02 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:09:02 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiHTMLGatewayAtomicImportAndFixedKind (0.11s)
+=== RUN   TestYoujiHTMLGatewayMaxEscapedBody
+2026/11/18 18:09:02 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:09:02 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiHTMLGatewayMaxEscapedBody (3.24s)
+=== RUN   TestYoujiHTMLUnsupportedDriverFailsClosed
+2026/11/18 18:09:05 INFO initializing new database with latest schema file=migration/sqlite/LATEST.sql
+2026/11/18 18:09:05 INFO database initialized successfully schemaVersion=26.10.1
+--- PASS: TestYoujiHTMLUnsupportedDriverFailsClosed (0.09s)
+=== RUN   TestYoujiManualIdentityMatchesFrontend
+--- PASS: TestYoujiManualIdentityMatchesFrontend (0.00s)
+=== RUN   TestYoujiManualArchiveBoundedAndDeterministic
+--- PASS: TestYoujiManualArchiveBoundedAndDeterministic (0.00s)
+=== RUN   TestYoujiManualGatewayRequiresAuthentication
+--- PASS: TestYoujiManualGatewayRequiresAuthentication (0.01s)
+PASS
+ok  	github.com/usememos/memos/server/api	9.526s

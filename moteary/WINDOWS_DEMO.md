@@ -2,11 +2,11 @@
 
 **状态：Windows 原生构建、PowerShell 命令、WSL2 和 Windows 浏览器均未实测。** 本文按当前源码校对参数，提供待验证的操作路径；已有启动、SQLite 和 HTTP 证据来自 Linux，不应写成 Windows 验收通过。默认关闭所有可选解析器／模型，不运行 ASR。
 
-这是基于 Memos 的累计开发分支，不是预编译 Windows 发行包，也不需要合并 main。本文使用累计草稿分支 `feat/chat-atomic-demo-20261118`；先确认该分支已经上传。若下面的查询没有输出，不要改拉 main 冒充最新版本，请等待发布方给出可拉取的累计分支和提交。
+这是基于 Memos 的累计开发分支，不是预编译 Windows 发行包，也不需要合并 main。本文使用已验证冻结候选 PR #20：累计草稿分支 `feat/audio-atomic-demo-20261119`，提交 `ca965c73968ff9c47f9938b6e45cabffc5c2c7c9`；“已验证”仅指已有 Linux 证据，不包括 Windows。先确认远端分支存在，克隆后核对提交；若查询没有输出，不要改拉 main 冒充最新版本。当前开发分支 `feat/audio-atomic-demo-20261119` 尚未验证，不作为本文的通过依据。
 
 ## 原生 Windows：PowerShell 路径
 
-使用独立的 PowerShell 终端、普通用户权限。需要事先准备 Git、Node.js 24、pnpm 11.0.1、Go 1.27.2，并确保可从终端运行。本文不安装软件、不修改执行策略。项目声明的 pnpm 是 11.0.1；已有 Linux 构建使用过 11.25.0，不能将其算作 Windows 或声明版本的测试。
+使用独立的 PowerShell 终端、普通用户权限。需要事先准备 Git、Node.js 24、pnpm 11.0.1、Go 1.27.2，并确保可从终端运行。本文原生 PowerShell 路径不调用 Python 启动／预检脚本，不要求 Python。本文不安装软件、不修改执行策略。项目声明的 pnpm 是 11.0.1；已有 Linux 构建实测使用 11.25.0，不能将其算作 Windows 或声明版本的测试。
 
 SQLite 使用 `modernc.org/sqlite v1.56.0`，不是要求 CGO 的 `mattn/go-sqlite3`。本地驱动文档列出 Windows 386/amd64/arm64，项目也有 Windows 数据目录分支。因此存在原生构建路径，**不能据此保证整个应用已经能在 Windows 编译运行**。以下以 Windows x64 为主要待验证目标；不建议先安装 C 编译器来“修复 SQLite”。
 
@@ -18,9 +18,9 @@ node --version
 pnpm.cmd --version
 go version
 
-git ls-remote --heads https://github.com/lucinwen/-Youji.git refs/heads/feat/chat-atomic-demo-20261118
+git ls-remote --heads https://github.com/lucinwen/-Youji.git refs/heads/feat/audio-atomic-demo-20261119
 # 确认上一条有对应分支 SHA，再执行：
-git clone --single-branch --branch feat/chat-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
+git clone --single-branch --branch feat/audio-atomic-demo-20261119 https://github.com/lucinwen/-Youji.git youji-demo
 if ($LASTEXITCODE -ne 0) { throw '克隆失败，请先核对分支是否发布。' }
 Set-Location .\youji-demo
 git status --short
@@ -93,12 +93,14 @@ wsl --list --verbose
 wsl
 ```
 
-仅当已进入期望的 WSL2 Linux 发行版，且该环境已准备 Git、Node 24、pnpm 11 和 Go 1.27.2 后，在 **WSL 的 Bash** 中执行：
+仅当已进入期望的 WSL2 Linux 发行版，且该环境已准备 Git、Node 24、pnpm、Go 1.27.2 和 Python 3 后，在 **WSL 的 Bash** 中执行。Python 3 用于随后 Linux 手册的启动／预检脚本及合成样本；项目声明 pnpm 11.0.1，已有 Linux 实测为 11.25.0，两者不可混称通过；WSL2 本身仍未实测。
 
 ```bash
 cd ~
-git clone --single-branch --branch feat/chat-atomic-demo-20261118 https://github.com/lucinwen/-Youji.git youji-demo
+git clone --single-branch --branch feat/audio-atomic-demo-20261119 https://github.com/lucinwen/-Youji.git youji-demo
 cd youji-demo
+git rev-parse HEAD
+python3 --version
 pnpm --dir web install --frozen-lockfile && pnpm --dir web release
 mkdir -p build
 go build -o build/youji ./cmd/memos
