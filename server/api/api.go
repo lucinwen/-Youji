@@ -201,6 +201,9 @@ func (s *APIService) NewHandler(ctx context.Context) (http.Handler, error) {
 		runtime.WithErrorHandler(gatewayErrorHandler),
 		runtime.WithIncomingHeaderMatcher(gatewayIncomingHeaderMatcher),
 	)
+	if err := s.registerYoujiSourceRoutes(gwMux); err != nil {
+		return nil, err
+	}
 	if err := s.registerYoujiDateRoutes(gwMux); err != nil {
 		return nil, err
 	}

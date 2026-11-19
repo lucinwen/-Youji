@@ -1,0 +1,36 @@
+{
+  "kind": "real SQLite/HTTP, synthetic only; no browser/model",
+  "checks": [
+    {
+      "check": "real PR21 database migration preserves legacy record and labels historical created time honestly",
+      "passed": true
+    },
+    {
+      "check": "new capture timestamp; event calendar set/change/leap day/clear; invalid values never partially mutate",
+      "passed": true
+    },
+    {
+      "check": "editing event or native create_time never alters captured timestamp, original content or ZIP bytes",
+      "passed": true
+    },
+    {
+      "check": "native date filtering precedes pagination; default includes legacy unknown; combined owner/keyword/date isolation",
+      "passed": true
+    },
+    {
+      "check": "anonymous and foreign-account metadata reads/writes denied without changing owner data",
+      "passed": true
+    },
+    {
+      "check": "restart/relogin preserves dates, capture provenance, search and original bytes",
+      "passed": true
+    },
+    {
+      "check": "deleted memo has no date metadata or date-search hit",
+      "passed": true
+    }
+  ],
+  "binary_sha256": "e9c0782fac76e96f87c0b5deff69274bf7d30e03b009b5ff0255b4dab079a839",
+  "baseline_sha256": "e55614168cdb55680742ef4d3ccbc6bf19f58e0f07271928bcb4187e5b1598ba",
+  "status": "passed"
+}

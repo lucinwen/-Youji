@@ -1,0 +1,40 @@
+{
+  "kind": "real SQLite/HTTP, synthetic only; no browser/model",
+  "checks": [
+    {
+      "check": "real PR22 database upgrade preserves legacy private review with no automatic reference",
+      "passed": true
+    },
+    {
+      "check": "set and overwrite resolve exact IDs despite identical titles; metadata contains no title/body/snippet",
+      "passed": true
+    },
+    {
+      "check": "foreign/missing/self source, invalid body/login and foreign review access rejected; failed overwrite preserves link",
+      "passed": true
+    },
+    {
+      "check": "source public/protected/archive changes yield neutral unavailable, without cached identity or body",
+      "passed": true
+    },
+    {
+      "check": "review must also remain private for reads, opens, and edits",
+      "passed": true
+    },
+    {
+      "check": "deleted source and same-UID replacement stay unavailable; clear works; open reads current corrected content",
+      "passed": true
+    },
+    {
+      "check": "source metadata does not enter ordinary memo/list/native relations; review text and dates unchanged",
+      "passed": true
+    },
+    {
+      "check": "restart preserves selected source and later explicit clearing",
+      "passed": true
+    }
+  ],
+  "binary_sha256": "e9c0782fac76e96f87c0b5deff69274bf7d30e03b009b5ff0255b4dab079a839",
+  "baseline_sha256": "4acad04d6c29c81cc63682fe227491cb80105d0270ad404ec0d86665e6a0cb7d",
+  "status": "passed"
+}
