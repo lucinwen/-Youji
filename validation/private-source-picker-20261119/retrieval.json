@@ -1,0 +1,41 @@
+{
+  "kind": "real SQLite and HTTP, not browser E2E",
+  "checks": [
+    {
+      "check": "source/category/keyword/date with paginated full results",
+      "passed": true,
+      "records": 2,
+      "pages": 2
+    },
+    {
+      "check": "life diary retrieval",
+      "passed": true,
+      "records": 1,
+      "pages": 1
+    },
+    {
+      "check": "empty match remains empty",
+      "passed": true,
+      "records": 0,
+      "pages": 1
+    },
+    {
+      "check": "keyword operators remain literal",
+      "passed": true,
+      "records": 0,
+      "pages": 1
+    },
+    {
+      "check": "other account cannot retrieve private owner records",
+      "passed": true,
+      "records": 0,
+      "pages": 1
+    },
+    {
+      "check": "same records retrieved after process restart and sign-in",
+      "passed": true,
+      "records": 2,
+      "pages": 2
+    }
+  ]
+}

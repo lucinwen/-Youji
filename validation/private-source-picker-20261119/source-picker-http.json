@@ -1,0 +1,32 @@
+{
+  "kind": "real SQLite/HTTP, synthetic only; no browser/model",
+  "checks": [
+    {
+      "check": "25 candidates across real pages: same-title dates distinguish, review/foreign/public/protected/archived excluded, minimal fields only",
+      "passed": true
+    },
+    {
+      "check": "literal keyword injection stays empty; body keyword beyond label prefix matches without returning body",
+      "passed": true
+    },
+    {
+      "check": "candidate endpoint rejects foreign review and invalid login; extra client creator/filter cannot broaden visibility",
+      "passed": true
+    },
+    {
+      "check": "wrong same-title version edited latest: explicit correct event-date ID survives query/reorder/restart and opens current body, not snapshot",
+      "passed": true
+    },
+    {
+      "check": "selection is not authorization: permission change before save rejected; live selection opens freshly then deletion neutral",
+      "passed": true
+    },
+    {
+      "check": "review privacy required; restart preserves unavailable association without old label/body",
+      "passed": true
+    }
+  ],
+  "binary_sha256": "8b5d56a700ac8ba9c31be4ff0d8acd551c4ce1fbf128ee50d4298e3c52094d83",
+  "baseline_sha256": "e9c0782fac76e96f87c0b5deff69274bf7d30e03b009b5ff0255b4dab079a839",
+  "status": "passed"
+}
