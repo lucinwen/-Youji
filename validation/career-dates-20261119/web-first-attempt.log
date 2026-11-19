@@ -1,0 +1,133 @@
+$ vitest run
+
+ RUN  v4.1.5 /tmp/youji-career-pr21-51d5a06/web
+
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+ ❯ tests/filtered-memo-stats.test.ts (8 tests | 3 failed) 176ms
+     × aggregates by created timestamps when timeBasis is create_time 102ms
+     × aggregates by updated timestamps when timeBasis is update_time 14ms
+     × falls back to created timestamps when updated array is empty (old server) 11ms
+ ❯ tests/locale-resources.test.ts (97 tests | 1 failed) 13148ms
+     × references every English key and reviews every computed key pattern 9560ms
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollTo() method
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/filtered-memo-stats.test.ts > useFilteredMemoStats > aggregates by created timestamps when timeBasis is create_time
+AssertionError: expected { '2026-04-30': 2, '2026-05-01': 1 } to deeply equal { '2026-05-01': 2, '2026-05-02': 1 }
+
+- Expected
++ Received
+
+  {
+-   "2026-05-01": 2,
+-   "2026-05-02": 1,
++   "2026-04-30": 2,
++   "2026-05-01": 1,
+  }
+
+ ❯ tests/filtered-memo-stats.test.ts:67:53
+     65|     const { result } = renderHook(() => useFilteredMemoStats({ userNam…
+     66|
+     67|     expect(result.current.statistics.activityStats).toEqual({ "2026-05…
+       |                                                     ^
+     68|     expect(result.current.statistics.timeBasis).toBe("create_time");
+     69|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/filtered-memo-stats.test.ts > useFilteredMemoStats > aggregates by updated timestamps when timeBasis is update_time
+AssertionError: expected { '2026-05-02': 3 } to deeply equal { '2026-05-03': 3 }
+
+- Expected
++ Received
+
+  {
+-   "2026-05-03": 3,
++   "2026-05-02": 3,
+  }
+
+ ❯ tests/filtered-memo-stats.test.ts:81:53
+     79|     const { result } = renderHook(() => useFilteredMemoStats({ userNam…
+     80|
+     81|     expect(result.current.statistics.activityStats).toEqual({ "2026-05…
+       |                                                     ^
+     82|     expect(result.current.statistics.timeBasis).toBe("update_time");
+     83|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/filtered-memo-stats.test.ts > useFilteredMemoStats > falls back to created timestamps when updated array is empty (old server)
+AssertionError: expected { '2026-04-30': 1 } to deeply equal { '2026-05-01': 1 }
+
+- Expected
++ Received
+
+  {
+-   "2026-05-01": 1,
++   "2026-04-30": 1,
+  }
+
+ ❯ tests/filtered-memo-stats.test.ts:106:53
+    104|     const { result } = renderHook(() => useFilteredMemoStats({ userNam…
+    105|
+    106|     expect(result.current.statistics.activityStats).toEqual({ "2026-05…
+       |                                                     ^
+    107|     expect(warn).toHaveBeenCalled();
+    108|     warn.mockRestore();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/locale-resources.test.ts > locale key usage > references every English key and reviews every computed key pattern
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/locale-resources.test.ts:97:3
+     95|
+     96| describe("locale key usage", () => {
+     97|   it("references every English key and reviews every computed key patt…
+       |   ^
+     98|     const references = collectReferences(sourceFiles);
+     99|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed | 211 passed | 6 skipped (219)
+      Tests  4 failed | 2024 passed | 11 skipped (2039)
+   Start at  09:24:28
+   Duration  118.36s (transform 36.41s, setup 79.95s, import 225.75s, tests 158.16s, environment 364.03s)
+
+[ELIFECYCLE] Test failed. See above for more details.

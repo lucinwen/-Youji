@@ -62,7 +62,9 @@ CREATE TABLE memo (
   visibility TEXT NOT NULL DEFAULT 'PRIVATE',
   pinned BOOLEAN NOT NULL DEFAULT FALSE,
   payload JSONB NOT NULL DEFAULT '{}',
-  space_id INTEGER DEFAULT NULL
+  space_id INTEGER DEFAULT NULL,
+  event_date VARCHAR(10) DEFAULT NULL,
+  captured_ts BIGINT DEFAULT NULL
 );
 
 CREATE INDEX idx_memo_space_id ON memo(space_id, row_status, created_ts DESC, id DESC);
@@ -154,3 +156,5 @@ CREATE TABLE user_identity (
 );
 
 CREATE INDEX idx_user_identity_user_id ON user_identity(user_id);
+
+CREATE INDEX idx_memo_event_date ON memo(creator_id, event_date, row_status);

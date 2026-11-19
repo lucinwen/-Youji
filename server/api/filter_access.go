@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"slices"
+	"strings"
 
 	"github.com/pkg/errors"
 	"google.golang.org/grpc/codes"
@@ -16,6 +17,17 @@ func (s *APIService) validateMemoFilterForUser(ctx context.Context, filterText s
 	engine, err := filterpkg.DefaultEngine()
 	if err != nil {
 		return status.Errorf(codes.Internal, "failed to initialize filter: %v", err)
+	}
+	program, err := engine.Compile(ctx, filterText)
+	if err != nil {
+		return status.Errorf(codes.InvalidArgument, "invalid filter: %v", err)
+	}
+	statement, err := program.Render(filterpkg.RenderOptions{Dialect: s.filterDialect()})
+	if err != nil {
+		return status.Errorf(codes.InvalidArgument, "invalid filter: %v", err)
+	}
+	if strings.Contains(statement.SQL, "event_date") && (user == nil || !dateFilterOwnerBound(program.ConditionTree(), user)) {
+		return status.Error(codes.PermissionDenied, "event date filters require an explicit current-owner conjunction")
 	}
 	return s.validateFilterSpaceAccess(ctx, filterText, engine, user)
 }
@@ -136,6 +148,28 @@ func valueReferencesSpace(value filterpkg.ValueExpr) bool {
 		return value.Field == "space"
 	default:
 		// Other value expressions cannot reference a space.
+	}
+	return false
+}
+
+// A required conjunction prevents owner-private event metadata being probed via
+// public-note filters, statistics, or an OR branch selecting another account.
+func dateFilterOwnerBound(condition filterpkg.Condition, user *store.User) bool {
+	switch c := condition.(type) {
+	case *filterpkg.LogicalCondition:
+		if c.Operator == filterpkg.LogicalAnd {
+			return dateFilterOwnerBound(c.Left, user) || dateFilterOwnerBound(c.Right, user)
+		}
+	case *filterpkg.ComparisonCondition:
+		field, ok := c.Left.(*filterpkg.FieldRef)
+		if !ok || c.Operator != filterpkg.CompareEq {
+			return false
+		}
+		value, ok := c.Right.(*filterpkg.LiteralValue)
+		if !ok {
+			return false
+		}
+		return (field.Name == "creator" && value.Value == BuildUserName(user.Username)) || (field.Name == "creator_id" && value.Value == int64(user.ID))
 	}
 	return false
 }

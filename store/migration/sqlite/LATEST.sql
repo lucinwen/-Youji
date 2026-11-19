@@ -63,7 +63,9 @@ CREATE TABLE memo (
   visibility TEXT NOT NULL CHECK (visibility IN ('PUBLIC', 'PROTECTED', 'PRIVATE', 'SPACE')) DEFAULT 'PRIVATE',
   pinned INTEGER NOT NULL CHECK (pinned IN (0, 1)) DEFAULT 0,
   payload TEXT NOT NULL DEFAULT '{}',
-  space_id INTEGER DEFAULT NULL
+  space_id INTEGER DEFAULT NULL,
+  event_date VARCHAR(10) DEFAULT NULL,
+  captured_ts BIGINT DEFAULT NULL
 );
 
 CREATE INDEX idx_memo_creator_id ON memo(creator_id);
@@ -155,3 +157,5 @@ CREATE TABLE user_identity (
 );
 
 CREATE INDEX idx_user_identity_user_id ON user_identity(user_id);
+
+CREATE INDEX idx_memo_event_date ON memo(creator_id, event_date, row_status);

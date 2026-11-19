@@ -30,6 +30,7 @@ import BatchImport from "./BatchImport";
 import ChatImport from "./ChatImport";
 import HTMLImport from "./HTMLImport";
 import ManualTextImport from "./ManualTextImport";
+import MemoDates from "./MemoDates";
 import OriginalAudioPreview, { getOriginalAudio } from "./OriginalAudioPreview";
 import PDFImport from "./PDFImport";
 import SemanticSearch from "./SemanticSearch";
@@ -59,7 +60,7 @@ const SOURCE_ICONS = {
 const categories = Object.entries(CATEGORY_LABELS) as [CaptureCategory, string][];
 const memoPath = (name: string) => `/memos/${encodeURIComponent(name.split("/").at(-1) ?? "")}`;
 
-function SourceCard({ memo, search }: { memo: Memo; search: string }) {
+function SourceCard({ memo, search, onDatesChanged }: { memo: Memo; search: string; onDatesChanged: () => void }) {
   const matchIndex = search ? memo.content.indexOf(search) : -1;
   const snippetStart = Math.max(0, matchIndex - 48);
   const snippetEnd = Math.min(memo.content.length, matchIndex + search.length + 48);
@@ -124,6 +125,7 @@ function SourceCard({ memo, search }: { memo: Memo; search: string }) {
           <ArrowRightIcon className="ms-auto size-3.5 transition-transform group-hover:translate-x-0.5" />
         </div>
       </Link>
+      <MemoDates name={memo.name} onChanged={onDatesChanged} />
       {originalAudio && (
         <OriginalAudioPreview key={`${originalAudio.name}:${originalAudio.filename}:${originalAudio.sha256}`} original={originalAudio} />
       )}
@@ -138,8 +140,20 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
   const [retrievalDraft, setRetrievalDraft] = useState<SourceRetrieval>({});
   const [retrieval, setRetrieval] = useState<SourceRetrieval>({});
   const [retrievalError, setRetrievalError] = useState("");
-  const hasRetrieval = !!retrieval.from || !!retrieval.through || (!!retrieval.kind && retrieval.kind !== "all");
-  const hasRetrievalDraft = !!retrievalDraft.from || !!retrievalDraft.through || (!!retrievalDraft.kind && retrievalDraft.kind !== "all");
+  const hasRetrieval =
+    !!retrieval.eventFrom ||
+    !!retrieval.eventThrough ||
+    !!retrieval.eventUnknown ||
+    !!retrieval.from ||
+    !!retrieval.through ||
+    (!!retrieval.kind && retrieval.kind !== "all");
+  const hasRetrievalDraft =
+    !!retrievalDraft.eventFrom ||
+    !!retrievalDraft.eventThrough ||
+    !!retrievalDraft.eventUnknown ||
+    !!retrievalDraft.from ||
+    !!retrievalDraft.through ||
+    (!!retrievalDraft.kind && retrievalDraft.kind !== "all");
   const [category, setCategory] = useState<CaptureCategory | "all">("all");
   const [spaceName, setSpaceName] = useState("");
   const [capture, setCapture] = useState<{ kind: SourceKind; category: CaptureCategory; space?: string } | null>(null);
@@ -486,8 +500,50 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
                   />
                 </label>
               </div>
+              <fieldset className="mt-3 grid min-w-0 gap-3 border-t border-border pt-3 sm:grid-cols-3">
+                <legend className="text-xs">按事件发生日期找回（不按时区换算）</legend>
+                <label className="text-xs">
+                  事件起始日期
+                  <input
+                    aria-label="事件起始日期"
+                    type="date"
+                    min="0001-01-01"
+                    max="9999-12-31"
+                    disabled={!!retrievalDraft.eventUnknown}
+                    value={retrievalDraft.eventFrom ?? ""}
+                    onChange={(event) => setRetrievalDraft({ ...retrievalDraft, eventFrom: event.target.value })}
+                    className="mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-border bg-card px-3"
+                  />
+                </label>
+                <label className="text-xs">
+                  事件结束日期
+                  <input
+                    aria-label="事件结束日期"
+                    type="date"
+                    min="0001-01-01"
+                    max="9999-12-31"
+                    disabled={!!retrievalDraft.eventUnknown}
+                    value={retrievalDraft.eventThrough ?? ""}
+                    onChange={(event) => setRetrievalDraft({ ...retrievalDraft, eventThrough: event.target.value })}
+                    className="mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-border bg-card px-3"
+                  />
+                </label>
+                <label className="flex min-h-11 items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={!!retrievalDraft.eventUnknown}
+                    onChange={(event) =>
+                      setRetrievalDraft({ ...retrievalDraft, eventUnknown: event.target.checked, eventFrom: "", eventThrough: "" })
+                    }
+                  />
+                  只看事件日期未知
+                </label>
+                <p className="text-xs text-muted-foreground sm:col-span-3">
+                  不设事件日期条件时，旧记录与未知日期仍显示。可在记录卡片设置、纠正或清除日期。
+                </p>
+              </fieldset>
               <p className="w-full text-xs text-muted-foreground">
-                日期按当前设备时区，包含结束日，依据记录创建时间，不代表事情发生或录音日期。来源按手动标签筛选，不会识别附件内容。修改后点击“搜索资料”应用。
+                保存日期按当前设备时区，包含结束日，依据记录创建时间，不代表事情发生或录音日期。来源按手动标签筛选，不会识别附件内容。修改后点击“搜索资料”应用。
               </p>
             </details>
             {(search || searchDraft) && (
@@ -519,8 +575,10 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
             )}
             {hasRetrieval && (
               <p role="status" className="w-full text-xs" aria-label="已应用找回条件">
-                已应用：{retrieval.kind && retrieval.kind !== "all" ? SOURCE_INFO[retrieval.kind].label : "全部来源"} ·{" "}
-                {retrieval.from || "不限起始"} 至 {retrieval.through || "不限结束"}。仍保留当前分类和空间。
+                已应用：{retrieval.kind && retrieval.kind !== "all" ? SOURCE_INFO[retrieval.kind].label : "全部来源"} · 保存日期{" "}
+                {retrieval.from || "不限起始"} 至 {retrieval.through || "不限结束"}；事件日期{" "}
+                {retrieval.eventUnknown ? "未知" : `${retrieval.eventFrom || "不限起始"} 至 ${retrieval.eventThrough || "不限结束"}`}
+                。仍保留当前分类和空间。
               </p>
             )}
             {retrievalError && (
@@ -599,7 +657,7 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
           ) : memos.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {memos.map((memo) => (
-                <SourceCard key={memo.name} memo={memo} search={search} />
+                <SourceCard key={`${userName}:${memo.name}`} memo={memo} search={search} onDatesChanged={() => void query.refetch()} />
               ))}
             </div>
           ) : (
