@@ -1,0 +1,3 @@
+ok  	github.com/usememos/memos/store/db/sqlite	0.122s
+ok  	github.com/usememos/memos/server/api	2.557s
+ok  	github.com/usememos/memos/store/test	0.353s

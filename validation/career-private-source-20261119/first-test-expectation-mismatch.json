@@ -1,0 +1,17 @@
+{
+  "kind": "real SQLite/HTTP, synthetic only; no browser/model",
+  "checks": [
+    {
+      "check": "real PR22 database upgrade preserves legacy private review with no automatic reference",
+      "passed": true
+    },
+    {
+      "check": "set and overwrite resolve exact IDs despite identical titles; metadata contains no title/body/snippet",
+      "passed": true
+    }
+  ],
+  "binary_sha256": "7ee6861a6e7bae5d8ca603d37f435ac842f3efc41271d028b5e35b526ae67e3f",
+  "baseline_sha256": "4acad04d6c29c81cc63682fe227491cb80105d0270ad404ec0d86665e6a0cb7d",
+  "status": "failed",
+  "error": "AssertionError: 409"
+}
