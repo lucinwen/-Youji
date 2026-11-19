@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "kind": "real HTTP and isolated SQLite; no browser",
+  "binary_sha256": "8b5d56a700ac8ba9c31be4ff0d8acd551c4ce1fbf128ee50d4298e3c52094d83",
+  "model_executed": false,
+  "checks": [
+    {
+      "check": "8 concurrent POSTs: exactly 1 imported + 7 verified, 1 memo, 1 DB ZIP BLOB, zero unlinked attachments; PRIVATE and original bytes",
+      "status": "passed"
+    },
+    {
+      "check": "same original separated by owner; forged owner and cross-account/anonymous access denied; changed content rejected without overwrite",
+      "status": "passed"
+    },
+    {
+      "check": "successful response deliberately discarded after commit; retry verified, no duplicate rows",
+      "status": "passed"
+    },
+    {
+      "check": "owner edit preserved and subsequent identical-original retry returns 409",
+      "status": "passed"
+    },
+    {
+      "check": "restart preserves originals, owner edit, private access and idempotent receipt",
+      "status": "passed"
+    },
+    {
+      "check": "deletion removes live memo and BLOB attachment rows and remains deleted after restart",
+      "status": "passed"
+    }
+  ],
+  "limitations": [
+    "Client discards one completed response; not an actual network interruption or crash during transaction",
+    "SQLite only; other database drivers not exercised",
+    "Deletion checks live rows, not physical erasure or backups"
+  ]
+}

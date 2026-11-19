@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { getRequestToken } from "@/connect";
 import { Visibility } from "@/types/proto/api/memo_service_pb";
+import SourcePicker from "./SourcePicker";
 
 type SourceState = { status: "none" | "unavailable" } | { status: "available"; sourceName: string; content?: string };
 type Action = { kind: "read" | "open" } | { kind: "save"; sourceName: string | null };
@@ -41,13 +42,16 @@ function PrivateSourceEditor({ name }: { name: string }) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [opened, setOpened] = useState(false);
+  const [picking, setPicking] = useState(false);
   const controller = useRef<AbortController | null>(null);
   const alive = useRef(true);
+  const pickerTrigger = useRef<HTMLButtonElement>(null);
 
   const request = async (action: Action) => {
     controller.current?.abort();
     const next = new AbortController();
     controller.current = next;
+    setPicking(false);
     setSource(undefined);
     setDraft("");
     setOpened(false);
@@ -75,6 +79,7 @@ function PrivateSourceEditor({ name }: { name: string }) {
     const hide = () => {
       controller.current?.abort();
       setOpened(false);
+      setPicking(false);
       setSource(undefined);
       setDraft("");
       setBusy(false);
@@ -102,6 +107,7 @@ function PrivateSourceEditor({ name }: { name: string }) {
     controller.current?.abort();
     setBusy(false);
     setOpened(false);
+    setPicking(false);
     setSource(undefined);
     setDraft("");
     setError("");
@@ -109,38 +115,20 @@ function PrivateSourceEditor({ name }: { name: string }) {
   return (
     <div className="border-t border-border px-5 py-3 text-xs" aria-label="私密来源引用">
       <p className="font-medium">来源引用（可选）</p>
-      <p className="mt-1 text-muted-foreground">仅关联自己当前的私密记录。同名材料请用完整 ID 区分；在来源卡片选中并复制“本记录 ID”。</p>
-      <form
-        className="mt-2 flex flex-wrap gap-2"
-        onSubmit={(event) => {
-          event.preventDefault();
-          const sourceName = draft.trim();
-          if (!validName(sourceName)) {
-            setError("请输入完整记录 ID：memos/…");
-            return;
-          }
-          if (sourceName === name) {
-            setError("不能把本记录作为自己的来源。");
-            return;
-          }
-          void request({ kind: "save", sourceName });
-        }}
-      >
-        <label htmlFor={id} className="w-full">
-          来源记录 ID
-        </label>
-        <input
-          id={id}
-          value={draft}
-          onChange={(event) => setDraft(event.target.value)}
-          placeholder="memos/…"
-          maxLength={128}
-          autoComplete="off"
+      <p className="mt-1 text-muted-foreground">搜索自己的私密记录，核对标题、ID 和日期后选择；保存时会再次检查权限。</p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        <Button
+          type="button"
+          size="sm"
+          className="min-h-11"
           disabled={busy}
-          className="min-h-11 min-w-0 flex-1 rounded border border-border bg-card px-2"
-        />
-        <Button type="submit" size="sm" className="min-h-11" disabled={busy}>
-          设置来源
+          ref={pickerTrigger}
+          onClick={() => {
+            close();
+            setPicking(true);
+          }}
+        >
+          选择私密来源
         </Button>
         <Button
           type="button"
@@ -152,7 +140,53 @@ function PrivateSourceEditor({ name }: { name: string }) {
         >
           清除来源
         </Button>
-      </form>
+      </div>
+      {picking && (
+        <SourcePicker
+          name={name}
+          onClose={() => {
+            setPicking(false);
+            pickerTrigger.current?.focus();
+          }}
+          onSelect={(sourceName) => void request({ kind: "save", sourceName })}
+        />
+      )}
+      <details className="mt-2">
+        <summary className="min-h-11 cursor-pointer py-3">高级：直接输入记录 ID</summary>
+        <form
+          className="mt-2 flex flex-wrap gap-2"
+          onSubmit={(event) => {
+            event.preventDefault();
+            const sourceName = draft.trim();
+            if (!validName(sourceName)) {
+              setError("请输入完整记录 ID：memos/…");
+              return;
+            }
+            if (sourceName === name) {
+              setError("不能把本记录作为自己的来源。");
+              return;
+            }
+            void request({ kind: "save", sourceName });
+          }}
+        >
+          <label htmlFor={id} className="w-full">
+            来源记录 ID
+          </label>
+          <input
+            id={id}
+            value={draft}
+            onChange={(event) => setDraft(event.target.value)}
+            placeholder="memos/…"
+            maxLength={128}
+            autoComplete="off"
+            disabled={busy}
+            className="min-h-11 min-w-0 flex-1 rounded border border-border bg-card px-2"
+          />
+          <Button type="submit" size="sm" className="min-h-11" disabled={busy}>
+            设置来源
+          </Button>
+        </form>
+      </details>
       <p className="mt-2 break-all" aria-live="polite">
         {source?.status === "available"
           ? `已关联来源 ID：${source.sourceName}`
@@ -200,7 +234,7 @@ function PrivateSourceEditor({ name }: { name: string }) {
           <p className="break-all">来源 ID：{source.sourceName}</p>
           <pre className="mt-2 max-h-96 overflow-y-auto whitespace-pre-wrap break-words font-sans text-xs">{source.content}</pre>
           <p className="mt-2 text-muted-foreground">
-            本次核对后显示的纯文本；不会执行链接或 Markdown。远端撤回不会瞬间收回已显示内容，请再次核对。
+            显示所选 ID 对应记录的当前正文，不是历史版本快照；不会执行链接或 Markdown。远端撤回不会瞬间收回已显示内容，请再次核对。
           </p>
         </section>
       )}

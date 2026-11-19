@@ -1,0 +1,5 @@
+?   	github.com/usememos/memos/store/db	[no test files]
+ok  	github.com/usememos/memos/store/db/mysql	0.006s [no tests to run]
+ok  	github.com/usememos/memos/store/db/postgres	0.008s [no tests to run]
+ok  	github.com/usememos/memos/store/db/sqlite	0.135s
+ok  	github.com/usememos/memos/server/api	2.022s

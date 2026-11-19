@@ -65,6 +65,7 @@ describe("private source references", () => {
     vi.stubGlobal("fetch", fetch);
     render(view());
     await screen.findByText("未设置来源");
+    fireEvent.click(screen.getByText("高级：直接输入记录 ID"));
     for (const name of ["memos/same-title-a", "memos/same-title-b"]) {
       fireEvent.change(screen.getByLabelText("来源记录 ID"), { target: { value: name } });
       fireEvent.click(screen.getByRole("button", { name: "设置来源" }));
