@@ -110,6 +110,11 @@ func (s Schema) ResolveAlias(name string) (Field, bool) {
 // NewSchema constructs the memo filter schema and CEL environment.
 func NewSchema() Schema {
 	fields := map[string]Field{
+		"event_date": {
+			Name: "event_date", Kind: FieldKindScalar, Type: FieldTypeString,
+			Column:      Column{Table: "memo", Name: "event_date"},
+			Expressions: map[DialectName]string{DialectSQLite: "COALESCE(%s, '')", DialectMySQL: "COALESCE(%s, '')", DialectPostgres: "COALESCE(%s, '')"},
+		},
 		"content": {
 			Name:             "content",
 			Kind:             FieldKindScalar,
@@ -316,6 +321,7 @@ func NewSchema() Schema {
 	}
 
 	envOptions := []cel.EnvOption{
+		cel.Variable("event_date", cel.StringType),
 		cel.Variable("content", cel.StringType),
 		cel.Variable("creator", cel.StringType),
 		cel.Variable("creator_id", cel.IntType),

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -43,6 +44,9 @@ func insertSQLiteMemo(ctx context.Context, tx dbExecutor, create *store.Memo) er
 		payload = string(payloadBytes)
 	}
 	args := []any{create.UID, create.CreatorID, create.Content, create.Visibility, payload, create.SpaceID}
+	fields = append(fields, "`captured_ts`")
+	args = append(args, time.Now().Unix())
+	placeholder = append(placeholder, "?")
 
 	// Add custom timestamps if provided
 	if create.CreatedTs != 0 {

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -43,6 +44,8 @@ func insertPostgresMemo(ctx context.Context, tx *sql.Tx, create *store.Memo) err
 		payload = string(payloadBytes)
 	}
 	args := []any{create.UID, create.CreatorID, create.Content, create.Visibility, payload, create.SpaceID}
+	fields = append(fields, "captured_ts")
+	args = append(args, time.Now().Unix())
 
 	// Add custom timestamps if provided
 	if create.CreatedTs != 0 {

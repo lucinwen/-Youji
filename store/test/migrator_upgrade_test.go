@@ -85,12 +85,16 @@ func requireUpgradePreservesData(ctx context.Context, t *testing.T, previous *st
 	t.Helper()
 	user, err := createTestingHostUser(ctx, previous)
 	require.NoError(t, err)
-	memo, err := previous.CreateMemo(ctx, &store.Memo{
-		UID: "upgrade-sentinel", CreatorID: user.ID, Content: "#upgrade\n- [ ] preserved task", Visibility: store.Private, Pinned: true,
-	})
+	insert := "INSERT INTO memo(uid, creator_id, content, visibility, pinned, payload) VALUES (?, ?, ?, ?, ?, '{}')"
+	if getDriverFromEnv() == "postgres" {
+		insert = "INSERT INTO memo(uid, creator_id, content, visibility, pinned, payload) VALUES ($1, $2, $3, $4, $5, '{}')"
+	}
+	_, err = previous.GetDriver().GetDB().ExecContext(ctx, insert, "upgrade-sentinel", user.ID, "#upgrade\n- [ ] preserved task", store.Private, true)
 	require.NoError(t, err)
-	memo, err = previous.GetMemo(ctx, &store.FindMemo{UID: &memo.UID})
+	uid := "upgrade-sentinel"
+	memo, err := previous.GetMemo(ctx, &store.FindMemo{UID: &uid})
 	require.NoError(t, err)
+
 	view, err := previous.UpsertUserSetting(ctx, &storepb.UserSetting{
 		UserId: user.ID, Key: storepb.UserSetting_MEMO_VIEWS,
 		Value: &storepb.UserSetting_MemoViews{MemoViews: &storepb.MemoViewsUserSetting{

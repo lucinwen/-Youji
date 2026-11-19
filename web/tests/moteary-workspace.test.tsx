@@ -58,6 +58,25 @@ describe("Moteary workspace state boundaries", () => {
     useInfiniteMemos.mockReturnValue(query);
   });
   afterEach(cleanup);
+  it("applies event dates to the server query before pagination and resets to include unknown legacy records", () => {
+    mount();
+    expect(useInfiniteMemos.mock.calls.at(-1)?.[0].filter).not.toContain("event_date");
+    fireEvent.change(screen.getByLabelText("事件起始日期"), { target: { value: "2026-11-14" } });
+    fireEvent.change(screen.getByLabelText("事件结束日期"), { target: { value: "2026-11-16" } });
+    expect(useInfiniteMemos.mock.calls.at(-1)?.[0].filter).not.toContain("event_date");
+    fireEvent.submit(screen.getByRole("form", { name: "搜索我的资料" }));
+    const request = useInfiniteMemos.mock.calls.at(-1)?.[0];
+    expect(request.pageSize).toBe(24);
+    expect(request.filter).toContain('event_date >= "2026-11-14"');
+    expect(request.filter).toContain('event_date <= "2026-11-16"');
+    expect(request.filter).toContain('creator == "users/alice"');
+    fireEvent.click(screen.getByLabelText("只看事件日期未知"));
+    fireEvent.submit(screen.getByRole("form", { name: "搜索我的资料" }));
+    expect(useInfiniteMemos.mock.calls.at(-1)?.[0].filter).toContain('event_date == ""');
+    expect(useInfiniteMemos.mock.calls.at(-1)?.[0].filter).not.toContain("event_date >=");
+    fireEvent.click(screen.getByRole("button", { name: "重置找回条件" }));
+    expect(useInfiniteMemos.mock.calls.at(-1)?.[0].filter).not.toContain("event_date");
+  });
   it("puts quick capture before folded import panels and opens audio through the shortcut", () => {
     mount();
     const quick = screen.getByTestId("moteary-capture-text");
@@ -339,7 +358,7 @@ it("applies source/date drafts only on search, preserves the last valid query on
   const applied = useInfiniteMemos.mock.lastCall?.[0].filter;
   expect(applied).toContain('tag in ["source/podcast"]');
   expect(applied).toContain("created_ts < timestamp(");
-  expect(screen.getByLabelText("已应用找回条件")).toHaveTextContent("播客片段 · 2026-11-01 至 2026-11-18");
+  expect(screen.getByLabelText("已应用找回条件")).toHaveTextContent("播客片段 · 保存日期 2026-11-01 至 2026-11-18");
   expect(screen.getByText("当前范围未找到匹配资料")).toBeInTheDocument();
   fireEvent.change(screen.getByLabelText("保存起始日期"), { target: { value: "2026-11-20" } });
   fireEvent.submit(screen.getByRole("form", { name: "搜索我的资料" }));

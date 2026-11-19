@@ -2,6 +2,7 @@ import { getLocalDayTimestampRange } from "@/lib/calendar-utils";
 import { combineCELFilters } from "@/lib/cel-filter";
 import { buildMemoCreatorFilter } from "@/lib/resource-names";
 import { type Memo, Visibility } from "@/types/proto/api/memo_service_pb";
+import { validEventDate } from "./eventDates";
 
 export const SOURCE_KINDS = ["text", "link", "podcast", "conversation", "image", "file"] as const;
 export type SourceKind = (typeof SOURCE_KINDS)[number];
@@ -65,16 +66,33 @@ export interface SourceRetrieval {
   kind?: SourceKind | "all";
   from?: string;
   through?: string;
+  eventFrom?: string;
+  eventThrough?: string;
+  eventUnknown?: boolean;
 }
 
 /** User-selected local calendar days, inclusive at both ends; server query uses an exclusive next-day bound. */
-export function buildSourceRetrievalFilter({ kind = "all", from = "", through = "" }: SourceRetrieval): string | undefined {
+export function buildSourceRetrievalFilter({
+  kind = "all",
+  from = "",
+  through = "",
+  eventFrom = "",
+  eventThrough = "",
+  eventUnknown = false,
+}: SourceRetrieval): string | undefined {
   if (kind !== "all" && !SOURCE_KINDS.includes(kind)) throw new Error("请选择有效的来源类型。");
+  if ((eventFrom && !validEventDate(eventFrom)) || (eventThrough && !validEventDate(eventThrough)))
+    throw new Error("请输入有效的事件日期。");
+  if (eventFrom && eventThrough && eventFrom > eventThrough) throw new Error("事件起始日期不能晚于结束日期。");
+  if (eventUnknown && (eventFrom || eventThrough)) throw new Error("未知事件日期不能同时指定日期范围。");
   const start = from ? getLocalDayTimestampRange(from) : undefined;
   const end = through ? getLocalDayTimestampRange(through) : undefined;
   if ((from && !start) || (through && !end)) throw new Error("请输入有效的保存日期。");
   if (start && end && start.startTimestamp >= end.endTimestamp) throw new Error("起始日期不能晚于结束日期；原筛选保持不变。");
   return combineCELFilters(
+    eventUnknown ? 'event_date == ""' : undefined,
+    eventFrom ? `event_date >= ${JSON.stringify(eventFrom)}` : undefined,
+    eventThrough ? `(event_date != "") && (event_date <= ${JSON.stringify(eventThrough)})` : undefined,
     kind !== "all" ? `tag in [${JSON.stringify(`source/${kind}`)}]` : undefined,
     start ? `created_ts >= timestamp(${start.startTimestamp})` : undefined,
     end ? `created_ts < timestamp(${end.endTimestamp})` : undefined,

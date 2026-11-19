@@ -63,3 +63,7 @@ env -i LANG=C.UTF-8 "$PWD/build/youji" --addr 127.0.0.1 --port 5231 \
 本轮 [聊天事务验收](moteary/CHAT_ATOMIC_QA_20261118.md) 给出独立八请求并发结果、固定构建与限制。
 
 当前累计分支的 [音频事务验收](moteary/AUDIO_ATOMIC_QA_20261119.md) 包含独立并发与完整16MiB HTTP测试，以及首次失败和修复证据。#20保持冻结；三分钟操作卡不要求切回旧版。
+
+### Career OS 日期试点
+
+独立草稿分支 `feat/career-event-dates-20261119` 提供可选事件日期、只读采集时间与分页前日期筛选；旧记录的历史时间明确标注。参见 [功能、运行与边界](moteary/CAREER_EVENT_DATES.md) 和 [实现前约定](moteary/CAREER_DATES_PRD.md)。来源关系 P1 尚未交付。
