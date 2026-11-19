@@ -1,0 +1,1 @@
+ALTER TABLE memo ADD COLUMN source_memo_id BIGINT DEFAULT NULL;

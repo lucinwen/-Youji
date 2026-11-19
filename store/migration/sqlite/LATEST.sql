@@ -65,7 +65,8 @@ CREATE TABLE memo (
   payload TEXT NOT NULL DEFAULT '{}',
   space_id INTEGER DEFAULT NULL,
   event_date VARCHAR(10) DEFAULT NULL,
-  captured_ts BIGINT DEFAULT NULL
+  captured_ts BIGINT DEFAULT NULL,
+  source_memo_id BIGINT DEFAULT NULL
 );
 
 CREATE INDEX idx_memo_creator_id ON memo(creator_id);

@@ -33,6 +33,7 @@ import ManualTextImport from "./ManualTextImport";
 import MemoDates from "./MemoDates";
 import OriginalAudioPreview, { getOriginalAudio } from "./OriginalAudioPreview";
 import PDFImport from "./PDFImport";
+import PrivateSource from "./PrivateSource";
 import SemanticSearch from "./SemanticSearch";
 import {
   buildCaptureStarter,
@@ -60,7 +61,17 @@ const SOURCE_ICONS = {
 const categories = Object.entries(CATEGORY_LABELS) as [CaptureCategory, string][];
 const memoPath = (name: string) => `/memos/${encodeURIComponent(name.split("/").at(-1) ?? "")}`;
 
-function SourceCard({ memo, search, onDatesChanged }: { memo: Memo; search: string; onDatesChanged: () => void }) {
+function SourceCard({
+  memo,
+  search,
+  onDatesChanged,
+  userName,
+}: {
+  memo: Memo;
+  search: string;
+  onDatesChanged: () => void;
+  userName: string;
+}) {
   const matchIndex = search ? memo.content.indexOf(search) : -1;
   const snippetStart = Math.max(0, matchIndex - 48);
   const snippetEnd = Math.min(memo.content.length, matchIndex + search.length + 48);
@@ -125,6 +136,17 @@ function SourceCard({ memo, search, onDatesChanged }: { memo: Memo; search: stri
           <ArrowRightIcon className="ms-auto size-3.5 transition-transform group-hover:translate-x-0.5" />
         </div>
       </Link>
+      <label className="border-t border-border px-5 py-3 text-xs">
+        本记录 ID（选中复制）
+        <input
+          aria-label="本记录 ID"
+          readOnly
+          value={memo.name}
+          onFocus={(event) => event.currentTarget.select()}
+          className="mt-1 min-h-11 w-full min-w-0 rounded border border-border bg-card px-2"
+        />
+      </label>
+      <PrivateSource name={memo.name} userName={userName} visibility={memo.visibility} />
       <MemoDates name={memo.name} onChanged={onDatesChanged} />
       {originalAudio && (
         <OriginalAudioPreview key={`${originalAudio.name}:${originalAudio.filename}:${originalAudio.sha256}`} original={originalAudio} />
@@ -657,7 +679,13 @@ export default function MotearyWorkspace({ userName }: { userName: string }) {
           ) : memos.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {memos.map((memo) => (
-                <SourceCard key={`${userName}:${memo.name}`} memo={memo} search={search} onDatesChanged={() => void query.refetch()} />
+                <SourceCard
+                  key={`${userName}:${memo.name}`}
+                  memo={memo}
+                  search={search}
+                  userName={userName}
+                  onDatesChanged={() => void query.refetch()}
+                />
               ))}
             </div>
           ) : (

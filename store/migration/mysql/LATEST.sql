@@ -64,7 +64,8 @@ CREATE TABLE `memo` (
   `payload` JSON NOT NULL,
   `space_id` INT DEFAULT NULL,
   event_date VARCHAR(10) DEFAULT NULL,
-  captured_ts BIGINT DEFAULT NULL
+  captured_ts BIGINT DEFAULT NULL,
+  source_memo_id BIGINT DEFAULT NULL
 );
 
 CREATE INDEX `idx_memo_space_id` ON `memo`(`space_id`, `row_status`, `created_ts`, `id`);

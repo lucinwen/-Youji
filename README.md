@@ -66,4 +66,4 @@ env -i LANG=C.UTF-8 "$PWD/build/youji" --addr 127.0.0.1 --port 5231 \
 
 ### Career OS 日期试点
 
-独立草稿分支 `feat/career-event-dates-20261119` 提供可选事件日期、只读采集时间与分页前日期筛选；旧记录的历史时间明确标注。参见 [功能、运行与边界](moteary/CAREER_EVENT_DATES.md) 和 [实现前约定](moteary/CAREER_DATES_PRD.md)。来源关系 P1 尚未交付。
+独立草稿分支 `feat/career-event-dates-20261119` 提供可选事件日期、只读采集时间与分页前日期筛选；旧记录的历史时间明确标注。参见 [功能、运行与边界](moteary/CAREER_EVENT_DATES.md) 和 [实现前约定](moteary/CAREER_DATES_PRD.md)。日期里程碑未含来源关系；后续独立分支 `feat/career-private-source-20261119` 增加 [同账户私密来源引用](moteary/CAREER_PRIVATE_SOURCE.md)，以其草稿验收记录为准。
