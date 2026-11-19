@@ -8,7 +8,7 @@ Windows 原生或 WSL 路径见 [Windows 指南](WINDOWS_DEMO.md)，目前没有
 
 ## 1. 准备程序
 
-本轮可拉取的累计草稿是 `feat/audio-atomic-demo-20261119`，包含 PR #1–20 的前序提交，不需要逐个合并或 cherry-pick。它不是 main 或正式发行版。只在新目录执行：
+[PR #21](https://github.com/lucinwen/-Youji/pull/21) 的累计交付分支是 `feat/audio-atomic-demo-20261119`，包含 PR #1–20 的前序提交，不需要逐个合并或 cherry-pick。它不是 main 或正式发行版。只在新目录执行：
 
 ```bash
 git clone --single-branch --branch feat/audio-atomic-demo-20261119 https://github.com/lucinwen/-Youji.git youji-demo
@@ -21,6 +21,8 @@ cd youji-demo
 git status --short
 git rev-parse HEAD
 ```
+
+将输出与 PR #21 页面显示的当前 head 提交核对；不一致先停止，不覆盖未提交工作或改拉 main。QA 中的 Linux 测试源码检查点用于追溯已测构建，不是当前 checkout 的目标 SHA；文档追加提交也会改变交付 HEAD。
 
 构建环境：Node.js 24、pnpm 11.0.1、Go 1.27.2，以及 Python 3（预检及生成合成样本仅使用标准库）。版本来源分别为 `.github/actions/setup-web/action.yml`、`web/package.json`、`go.mod`。
 

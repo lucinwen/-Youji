@@ -1,8 +1,8 @@
 # 三分钟手动演示卡：保存之后，找回正确原文
 
-**三分钟是排练目标，不是已经测得的用户完成时间。** 本操作卡适用于当前配套前后端的累计分支，不要求切回旧版本。演示时记录实际 `git rev-parse HEAD`、二进制 SHA-256 及对应 QA 报告；新分支只有在自身验证通过后才能称已验收，不能继承旧提交的通过结论。
+**三分钟是排练目标，不是已经测得的用户完成时间。** 本操作卡适用于 [PR #21](https://github.com/lucinwen/-Youji/pull/21) 的配套累计交付分支 `feat/audio-atomic-demo-20261119`，不要求切回旧版本。先将 `git rev-parse HEAD` 与 PR 页面当前 head 提交核对，不一致先停止。演示时记录实际 `git rev-parse HEAD`、二进制 SHA-256 及对应 QA 报告；新分支只有在自身验证通过后才能称已验收，不能继承旧提交的通过结论。
 
-已验证的冻结基准为 [PR #20](https://github.com/lucinwen/-Youji/pull/20)，分支 `feat/chat-atomic-demo-20261118`，提交 **`ca965c73968ff9c47f9938b6e45cabffc5c2c7c9`**。它用于明确复现历史证据，不是当前累计分支操作卡的强制切换目标。音频事务开发分支的证据以 `AUDIO_ATOMIC_QA_20261119.md` 发布后的实际结果与构建身份为准；报告尚未发布或检查未通过时，仍标为未验证。
+已验证的冻结基准为 [PR #20](https://github.com/lucinwen/-Youji/pull/20)，分支 `feat/chat-atomic-demo-20261118`，提交 **`ca965c73968ff9c47f9938b6e45cabffc5c2c7c9`**。它用于明确复现历史证据，不是当前累计分支操作卡的强制切换目标。PR #21 的 Linux 验收及测试源码检查点见[音频事务 QA](AUDIO_ATOMIC_QA_20261119.md)；这些历史构建身份不等于 PR 页面的当前交付 HEAD，也不代表浏览器或 Windows 已验收。
 
 [PR #19](https://github.com/lucinwen/-Youji/pull/19)（`feat/html-atomic-demo-20261118`，`363f4b52fe1fc4914dc447f95ae828850dd06a10`）仅是可选的历史回退点，不要求先切回 #19。
 

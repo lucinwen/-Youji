@@ -2,7 +2,9 @@
 
 **状态：Windows 原生构建、PowerShell 命令、WSL2 和 Windows 浏览器均未实测。** 本文按当前源码校对参数，提供待验证的操作路径；已有启动、SQLite 和 HTTP 证据来自 Linux，不应写成 Windows 验收通过。默认关闭所有可选解析器／模型，不运行 ASR。
 
-这是基于 Memos 的累计开发分支，不是预编译 Windows 发行包，也不需要合并 main。本文使用已验证冻结候选 PR #20：累计草稿分支 `feat/audio-atomic-demo-20261119`，提交 `ca965c73968ff9c47f9938b6e45cabffc5c2c7c9`；“已验证”仅指已有 Linux 证据，不包括 Windows。先确认远端分支存在，克隆后核对提交；若查询没有输出，不要改拉 main 冒充最新版本。当前开发分支 `feat/audio-atomic-demo-20261119` 尚未验证，不作为本文的通过依据。
+这是基于 Memos 的累计开发分支，不是预编译 Windows 发行包，也不需要合并 main。本文使用 [PR #21](https://github.com/lucinwen/-Youji/pull/21) 的交付分支 `feat/audio-atomic-demo-20261119`。先查看 PR 页面显示的当前 head 提交，克隆后将 `git rev-parse HEAD` 与之核对；分支可追加文档修正，因此不把某个旧 SHA 写成永远有效的当前 HEAD。若远端查询没有输出或提交不一致，先停止核对，不要改拉 main 或用旧产物代替。
+
+Linux 验收使用的后端源码检查点是 `25e41821c5662aa98b1fcbcfe40ca7074cb00606`，前端源码检查点是 `87afc0d253c1b6abf2a07e92759bb939faf12928`，详见[音频事务 QA](AUDIO_ATOMIC_QA_20261119.md)；它们是测试来源，不是要求 checkout 的当前交付 HEAD，也不证明 Windows 已通过。冻结回退为 PR #20：分支 `feat/chat-atomic-demo-20261118`、提交 `ca965c73968ff9c47f9938b6e45cabffc5c2c7c9`；只有明确复现该回退时才在另一新目录使用它。
 
 ## 原生 Windows：PowerShell 路径
 
@@ -19,12 +21,13 @@ pnpm.cmd --version
 go version
 
 git ls-remote --heads https://github.com/lucinwen/-Youji.git refs/heads/feat/audio-atomic-demo-20261119
-# 确认上一条有对应分支 SHA，再执行：
+# 将上一条分支 SHA 与 PR #21 页面当前 head 提交核对，再执行：
 git clone --single-branch --branch feat/audio-atomic-demo-20261119 https://github.com/lucinwen/-Youji.git youji-demo
 if ($LASTEXITCODE -ne 0) { throw '克隆失败，请先核对分支是否发布。' }
 Set-Location .\youji-demo
 git status --short
 git rev-parse HEAD
+# 与 PR #21 页面显示的当前 head 提交核对；不一致先停止。
 
 pnpm.cmd --dir web install --frozen-lockfile
 if ($LASTEXITCODE -ne 0) { throw '前端依赖安装失败，停止构建。' }
@@ -100,6 +103,7 @@ cd ~
 git clone --single-branch --branch feat/audio-atomic-demo-20261119 https://github.com/lucinwen/-Youji.git youji-demo
 cd youji-demo
 git rev-parse HEAD
+# 与 PR #21 页面显示的当前 head 提交核对；不一致先停止。
 python3 --version
 pnpm --dir web install --frozen-lockfile && pnpm --dir web release
 mkdir -p build
