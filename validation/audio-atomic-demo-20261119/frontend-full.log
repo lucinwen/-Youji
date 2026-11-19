@@ -1,0 +1,44 @@
+$ vitest run --maxWorkers=1
+
+ RUN  v4.1.5 /workspace/scratch/10a41183bc23/youji-next/web
+
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollBy() method
+Not implemented: Window's scrollTo() method
+
+ Test Files  212 passed | 6 skipped (218)
+      Tests  2021 passed | 11 skipped (2032)
+   Start at  00:09:55
+   Duration  435.36s (transform 11.94s, setup 34.65s, import 88.83s, tests 84.26s, environment 177.15s)

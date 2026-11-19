@@ -1,0 +1,28 @@
+time=2026-11-18T18:21:08.133-06:00 level=INFO msg="initializing new database with latest schema" file=migration/sqlite/LATEST.sql
+time=2026-11-18T18:21:08.139-06:00 level=INFO msg="database initialized successfully" schemaVersion=26.10.1
+Memos 26.11.19-dev.25e4182 started successfully!
+Data directory: /tmp/youji-audio-atomic-independent-tebvk9iw
+Database driver: sqlite
+Server running on 127.0.0.1:36241
+Access your memos at: http://127.0.0.1:36241
+Access mode: private
+time=2026-11-18T18:21:08.203-06:00 level=INFO msg="rebuilding memo payloads" fromVersion=0 toVersion=1
+time=2026-11-18T18:21:08.204-06:00 level=INFO msg="rebuilt memo payloads" refreshed=0 skipped=0 failed=0
+time=2026-11-18T18:21:08.939-06:00 level=INFO msg="server shutting down"
+time=2026-11-18T18:21:08.941-06:00 level=INFO msg="memos stopped properly"
+Memos 26.11.19-dev.25e4182 started successfully!
+Data directory: /tmp/youji-audio-atomic-independent-tebvk9iw
+Database driver: sqlite
+Server running on 127.0.0.1:36241
+Access your memos at: http://127.0.0.1:36241
+Access mode: private
+time=2026-11-18T18:21:09.417-06:00 level=INFO msg="server shutting down"
+time=2026-11-18T18:21:09.418-06:00 level=INFO msg="memos stopped properly"
+Memos 26.11.19-dev.25e4182 started successfully!
+Data directory: /tmp/youji-audio-atomic-independent-tebvk9iw
+Database driver: sqlite
+Server running on 127.0.0.1:36241
+Access your memos at: http://127.0.0.1:36241
+Access mode: private
+time=2026-11-18T18:21:10.983-06:00 level=INFO msg="server shutting down"
+time=2026-11-18T18:21:10.984-06:00 level=INFO msg="memos stopped properly"

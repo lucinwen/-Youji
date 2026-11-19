@@ -54,9 +54,24 @@ it.skipIf(!process.env.YOUJI_AUDIO_WEB_QA)(
       attachments: value.attachments ?? [],
     });
     vi.stubGlobal("crypto", webcrypto);
-    vi.stubGlobal("fetch", (url: string, options: RequestInit = {}) =>
-      nativeFetch(`${config.base}${url}`, { ...options, headers: { ...options.headers, Authorization: `Bearer ${config.token}` } }),
-    );
+    let loseNextResponse = false;
+    let failNextBeforeSend = false;
+    vi.stubGlobal("fetch", async (url: string, options: RequestInit = {}) => {
+      if (url === "/api/youji/audio-original/import" && failNextBeforeSend) {
+        failNextBeforeSend = false;
+        throw new Error("synthetic failure before dispatch");
+      }
+      const response = await nativeFetch(`${config.base}${url}`, {
+        ...options,
+        headers: { ...options.headers, Authorization: `Bearer ${config.token}` },
+      });
+      if (url === "/api/youji/audio-original/import" && loseNextResponse && response.ok) {
+        loseNextResponse = false;
+        await response.arrayBuffer();
+        throw new Error("synthetic response loss after atomic commit");
+      }
+      return response;
+    });
     rpc.getCurrentUser.mockImplementation(() => call("GET", "auth/me"));
     rpc.getUserUsage.mockImplementation(async ({ name }) => {
       const value = await call("GET", name);
@@ -112,7 +127,7 @@ it.skipIf(!process.env.YOUJI_AUDIO_WEB_QA)(
       expect((await call("GET", search, undefined, config.otherToken)).memos ?? []).toHaveLength(0);
       // Real owner edit prevents retry from overwriting the correction.
       await call("PATCH", `${receipt.memo}?updateMask=content`, { name: receipt.memo, content: saved.content + "\n人工后续编辑" });
-      await expect(saveAudio(plan, signal(), vi.fn())).rejects.toThrow("已变化");
+      await expect(saveAudio(plan, signal(), vi.fn())).rejects.toThrow("冲突");
       // Another account cannot delete the source or its only archive.
       for (const name of [receipt.memo, attachment.name])
         expect([401, 403, 404]).toContain(
@@ -123,25 +138,21 @@ it.skipIf(!process.env.YOUJI_AUDIO_WEB_QA)(
       expect((await nativeFetch(originalURL, { headers: { Authorization: `Bearer ${config.token}` } })).status).toBe(404);
       expect((await call("GET", search)).memos ?? []).toHaveLength(0);
       expect((await call("GET", "attachments")).attachments ?? []).toHaveLength(0);
-      // Actual commit followed by a deliberately lost response at the client boundary.
-      rpc.createAttachment.mockImplementationOnce(async (args) => {
-        await upload(args);
-        throw new ConnectError("synthetic response loss", Code.Unavailable);
-      });
+      // Failure before dispatch leaves no writes; a completed response loss remains recoverable.
+      failNextBeforeSend = true;
+      await expect(saveAudio(plan, signal(), vi.fn())).rejects.toThrow("未知");
+      expect((await call("GET", "memos")).memos ?? []).toHaveLength(0);
+      expect((await call("GET", "attachments")).attachments ?? []).toHaveLength(0);
+      loseNextResponse = true;
       const receipts: string[] = [];
       await expect(saveAudio(plan, signal(), (r) => receipts.push(r.status))).rejects.toThrow("未知");
-      expect(receipts).toContain("upload-unknown");
+      expect(receipts).toContain("save-unknown");
+      expect((await call("GET", "memos")).memos).toHaveLength(1);
       expect((await call("GET", "attachments")).attachments).toHaveLength(1);
-      await saveAudio(plan, signal(), vi.fn());
-      expect((await call("GET", "attachments")).attachments).toHaveLength(1);
-      await call("DELETE", receipt.memo);
-      rpc.createMemo.mockImplementationOnce(async (args) => {
-        await createMemo(args);
-        throw new ConnectError("synthetic saved response loss", Code.Unavailable);
-      });
-      await expect(saveAudio(plan, signal(), vi.fn())).rejects.toThrow("未知");
       expect((await saveAudio(plan, signal(), vi.fn())).status).toBe("verified");
       expect((await call("GET", "attachments")).attachments).toHaveLength(1);
+      expect(rpc.createAttachment).not.toHaveBeenCalled();
+      expect(rpc.createMemo).not.toHaveBeenCalled();
       if (config.realFixture) {
         const speech = new Uint8Array(readFileSync(config.realFixture));
         const selected = await prepareAudio(

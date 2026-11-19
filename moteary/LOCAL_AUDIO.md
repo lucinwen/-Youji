@@ -42,22 +42,29 @@ keyboard behavior still require a suitable browser/device acceptance environment
 
 ## Recovery and deletion
 
-The importer derives a stable ID from owner, audio hash and filename. Before each
-write it refreshes identity, checks quota, and records a receipt. Retry verifies
-existing records or searches bounded same-name unlinked archives and checks their
-original bytes before reusing one. A missing upload response is an unknown outcome,
-not a failed upload or permission to delete. Multiple candidates or mismatched
-bytes require manual review in attachment management. Download the receipt before
-leaving; it contains filenames and identifiers and may itself be sensitive.
+The dedicated `/api/youji/audio-original/import` endpoint derives a stable ID
+from the authenticated owner, audio hash and filename. On supported SQLite
+servers, one transaction commits the original ZIP BLOB and PRIVATE record.
+Retry verifies existing body and original bytes; changed corrections or legacy
+originals conflict instead of overwriting. Unsupported servers return 404/501;
+the client does not fall back to separate uploads. Old orphan uploads are not
+adopted or automatically deleted. Download receipts before leaving.
 
-Delete the source record with the existing Memo delete action. Its transcript is
-part of that same record, so there are no separate transcript chunks to cascade.
-The existing server deletion policy checks permissions and cleans associated
-attachment metadata/storage. Interrupted, unlinked uploads remain separate and
-must be reviewed explicitly. This does not certify physical media erasure, backups
-or all external object-storage configurations. A cancelled save may have committed;
-retry and verify. Cross-tab account changes between identity checks and requests
-remain a race boundary; client checks are not server owner-bound import tokens.
+The original is at most 16 MiB, request at most 24 MiB, and body at most 256 KiB;
+account quotas still apply. This is bounded but not streaming: JSON/base64/ZIP
+and SQLite buffers retain multiple copies, so concurrent large imports can use
+substantial memory. It validates names and stores bytes, not codec validity or
+playability. No audio decoder or model runs during saving.
+
+Delete the source with the existing Memo delete action; the correction is part of
+that same record. Old unlinked uploads need explicit review. Deletion checks do
+not certify physical erasure, backups or external object storage. A cancelled or
+lost-response save may have committed; retry the same input to verify. Client
+identity checks are reinforced by the server's owner comparison and transaction;
+this is not an all-source or all-database atomicity guarantee.
+
+See [audio transaction validation](AUDIO_ATOMIC_QA_20261119.md) for the fixed build,
+actual checks and untested boundaries. ASR assessment remains paused.
 
 ## Optional local ASR adapter — not accepted for production quality
 

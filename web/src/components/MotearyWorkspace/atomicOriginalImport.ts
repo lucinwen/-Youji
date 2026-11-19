@@ -8,14 +8,17 @@ const bytes = (text: string) => new TextEncoder().encode(text);
 /** The dedicated endpoint commits this single original and memo together on supported SQLite servers. Never fall back to multi-request uploads. */
 export async function saveAtomicOriginal(
   item: BatchSource,
-  kind: "manual" | "html" | "chat",
+  kind: "manual" | "html" | "chat" | "audio",
   signal: AbortSignal,
   receipt: (value: AudioReceipt) => void,
 ): Promise<AudioReceipt> {
-  const maximumBytes = kind === "manual" ? 128 * 1024 : 512 * 1024;
-  const endpoint = { manual: "/api/youji/manual-text/import", html: "/api/youji/html-text/import", chat: "/api/youji/chat-json/import" }[
-    kind
-  ];
+  const maximumBytes = kind === "manual" ? 128 * 1024 : kind === "audio" ? 16 * 1024 * 1024 : 512 * 1024;
+  const endpoint = {
+    manual: "/api/youji/manual-text/import",
+    html: "/api/youji/html-text/import",
+    chat: "/api/youji/chat-json/import",
+    audio: "/api/youji/audio-original/import",
+  }[kind];
   signal.throwIfAborted();
   const base: AudioReceipt = {
     memo: `memos/${item.id}`,

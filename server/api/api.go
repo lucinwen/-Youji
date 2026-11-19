@@ -57,6 +57,15 @@ func requestBodyLimit(procedure string) int64 {
 	return maxGeneralRequestBytes
 }
 
+// gatewayRequestBodyLimit narrowly expands the authenticated custom audio route.
+// RPC procedures, other methods and all other custom paths retain their existing caps.
+func gatewayRequestBodyLimit(procedure, method, path string) int64 {
+	if procedure == "" && method == http.MethodPost && path == "/api/youji/audio-original/import" {
+		return audioOriginalSpec().requestLimit
+	}
+	return requestBodyLimit(procedure)
+}
+
 type APIService struct {
 	apipb.UnimplementedInstanceServiceServer
 	apipb.UnimplementedAuthServiceServer
@@ -179,7 +188,7 @@ func (s *APIService) NewHandler(ctx context.Context) (http.Handler, error) {
 			if result != nil {
 				r = r.WithContext(auth.ApplyToContext(ctx, result))
 			}
-			r.Body = http.MaxBytesReader(w, r.Body, requestBodyLimit(procedure))
+			r.Body = http.MaxBytesReader(w, r.Body, gatewayRequestBodyLimit(procedure, r.Method, r.URL.EscapedPath()))
 
 			next(w, r, pathParams)
 		}

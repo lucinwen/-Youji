@@ -1,0 +1,68 @@
+{
+  "source_checkpoint": "25e41821c5662aa98b1fcbcfe40ca7074cb00606",
+  "frontend_source_checkpoint": "87afc0d253c1b6abf2a07e92759bb939faf12928",
+  "binary_version": "26.11.19-dev.25e4182",
+  "binary_sha256": "5213826d815227301ea6bdf3d7c13583f1493042d41ac7d6a41c90594317608e",
+  "frozen_pr20": "ca965c73968ff9c47f9938b6e45cabffc5c2c7c9",
+  "checks": {
+    "frontend_full": {
+      "passed": 2021,
+      "skipped": 11
+    },
+    "frontend_targeted": {
+      "passed": 67
+    },
+    "go_race_initial": {
+      "passed": 19
+    },
+    "go_race_final_including_gateway": {
+      "passed": 21
+    },
+    "lint": "passed",
+    "production_frontend_and_final_go_build": "passed",
+    "startup_and_preflight": {
+      "passed": 10
+    },
+    "real_http_final": {
+      "independent-final/audio-atomic-independent.json": {
+        "passed": 7,
+        "binary_sha256": "5213826d815227301ea6bdf3d7c13583f1493042d41ac7d6a41c90594317608e"
+      },
+      "audio-http-final/audio-http.json": {
+        "passed": 3,
+        "binary_sha256": "5213826d815227301ea6bdf3d7c13583f1493042d41ac7d6a41c90594317608e"
+      },
+      "multisource-final/multisource-http.json": {
+        "passed": 3,
+        "binary_sha256": "5213826d815227301ea6bdf3d7c13583f1493042d41ac7d6a41c90594317608e"
+      }
+    }
+  },
+  "initial_failure": {
+    "binary_sha256": "0a77dc065480003691e638de66de40471f1649ca16d790dd74ec827b9fde37ab",
+    "independent_passed": 6,
+    "independent_failed": 1,
+    "error": "16 MiB POST connection reset; outer gateway default cap remained 16 MiB",
+    "fix": "Authenticated exact custom audio POST now receives 24 MiB cap; all other routes/methods/procedures unchanged",
+    "evidence": "independent/first-attempt-0a77dc06/audio-atomic-independent.json"
+  },
+  "browser": {
+    "status": "not rerun",
+    "reason": "Previously blocked by host socket permission; no newly verified browser environment",
+    "previous_evidence": "../chat-atomic-demo-20261118/browser-attempt.json"
+  },
+  "model_executed": false,
+  "limitations": [
+    "SQLite audio original + human-reviewed content only; not PDF/legacy batch/other DB or object-store transactions",
+    "16 MiB test is serial; 8-way test uses small synthetic WAV; not large-file concurrency/memory pressure certification",
+    "No browser/phone/Windows/playback/codec quality or user timing acceptance",
+    "No actual network cut, process crash inside transaction, power-loss or physical-erasure proof",
+    "No real ASR evaluation retried; synthetic tones/silence and authored text only"
+  ],
+  "toolchains": {
+    "node": "24.22.1",
+    "pnpm_actual": "11.25.0",
+    "pnpm_declared": "11.0.1",
+    "go": "1.27.2"
+  }
+}

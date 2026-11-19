@@ -348,7 +348,10 @@ export default function AudioImport({ userName, onSaved }: { userName: string; o
           <Link className="block underline" to={`/${receipt.memo}`}>
             打开原件与稿件记录（保存后可用）
           </Link>
-          <p>重试会核验同一原件；修改稿件后不会静默覆盖或另建。已保存稿件请打开原记录编辑。切换文件或离开页面前请下载回执。</p>
+          <p>
+            保存需配套新版 SQLite
+            服务器，原件与稿件同事务提交；旧记录可能冲突，须打开核对，不自动迁移。重试会核验同一原件；修改稿件后不会静默覆盖或另建。已保存稿件请打开原记录编辑。切换文件或离开页面前请下载回执。
+          </p>
         </div>
       )}
       <p className="mt-3 text-xs text-muted-foreground">

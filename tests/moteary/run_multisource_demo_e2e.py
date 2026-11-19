@@ -166,7 +166,7 @@ def run():
               'checks': checks, 'sources': evidence,
               'limitations': ['Connect-to-REST adapter and Node worker scheduler; no browser, responsive UI or real device acceptance',
                               'Audio is four-second zero PCM with authored synthetic manual text, not speech transcription',
-                              'Audio retains its non-atomic save path; this sequential walkthrough does not prove concurrency safety',
+                              'This sequential walkthrough does not prove concurrency safety; dedicated transaction tests cover supported SQLite entries only',
                               'All input synthetic; no external website or chat account access']}
     (output / 'multisource-http.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps(report, ensure_ascii=False, indent=2))

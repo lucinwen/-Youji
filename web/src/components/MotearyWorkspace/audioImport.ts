@@ -1,10 +1,7 @@
-import { Code, ConnectError } from "@connectrpc/connect";
-import { zipSync } from "fflate";
 import { getAccessToken } from "@/auth-state";
-import { attachmentServiceClient, authServiceClient, memoServiceClient } from "@/connect";
-import type { Attachment } from "@/types/proto/api/attachment_service_pb";
-import { Visibility } from "@/types/proto/api/memo_service_pb";
-import { type BatchSource, MAX_FILE, readOriginalArchive, validateBatchQuota, verifyOriginalArchive } from "./batchImport";
+import { authServiceClient } from "@/connect";
+import { saveAtomicOriginal } from "./atomicOriginalImport";
+import { type BatchSource, MAX_FILE } from "./batchImport";
 
 export type AudioTranscript = {
   sha256: string;
@@ -164,13 +161,15 @@ const fence = (value: string) => {
   const ticks = "`".repeat(length);
   return `${ticks}\n${value}\n${ticks}`;
 };
-const archive = (item: BatchSource) => `${item.filename}.original.zip`;
 export async function prepareAudio(file: File, owner: string): Promise<BatchSource> {
   if (!/^users\/[a-zA-Z0-9_-]+$/.test(owner)) throw new Error("请先登录。");
   if (
     !/\.(wav|mp3|ogg|m4a|flac|webm)$/i.test(file.name) ||
+    file.name.length > 240 ||
+    file.name.startsWith(".") ||
+    file.name.startsWith(" ") ||
     /[\\/]/.test(file.name) ||
-    Array.from(file.name).some((c) => c.charCodeAt(0) < 32)
+    Array.from(file.name).some((c) => c.charCodeAt(0) < 32 || c.charCodeAt(0) === 127)
   )
     throw new Error("请选择文件名有效的 WAV、MP3、OGG、M4A、FLAC 或 WebM 音频。");
   if (!file.size || file.size > MAX_FILE) throw new Error("音频须非空且不超过 16 MiB。");
@@ -243,101 +242,6 @@ export function audioWithTranscript(item: BatchSource, edited: string, machine?:
     content: `# 有记音频与校订稿\n\n#拾微 #reference #source/podcast\n\n原文件名：\n${fence(item.filename)}\n\n原件 SHA-256：\`${item.sha256}\`\n原始字节保存在 ZIP。audio-v1；原件、机器稿、人工稿在同一条仅自己可见记录。\n\n## 人工校订稿（用户确认，仍需核对原声）\n${fence(edited)}\n\n## 机器稿（可能严重错误，不代表事实）\n${machine ? `${fence(JSON.stringify({ engine: machine.engine, model: machine.model, revision: machine.revision, language: machine.language, duration: machine.duration }))}\n${fence(machine.text)}\n\n机器分段时间仅供对照，未经准确性验收：\n${fence(machine.segments.map((segment) => `[${segment.start}–${segment.end}s] ${segment.text}`).join("\n"))}` : "未使用自动转写；人工稿由用户提供。"}\n\n删除此记录使用原生删除流程。附件及备份可能残留，请在附件管理核对；不会自动删除其他记录。`,
   };
 }
-export async function saveAudio(item: BatchSource, signal: AbortSignal, receipt: (value: AudioReceipt) => void): Promise<AudioReceipt> {
-  const base: AudioReceipt = {
-    memo: `memos/${item.id}`,
-    filename: item.filename,
-    sha256: item.sha256,
-    archive: archive(item),
-    status: "prepared",
-  };
-  receipt(base);
-  await account(item, signal);
-  const verify = async (attachment: Attachment) => {
-    if (
-      attachment.creator !== item.owner ||
-      attachment.externalLink ||
-      attachment.filename !== archive(item) ||
-      !/^attachments\/[a-zA-Z0-9-]+$/.test(attachment.name)
-    )
-      throw new Error("原件附件归属不符。");
-    await account(item, signal);
-    const token = getAccessToken();
-    const response = await fetch(`/file/${attachment.name}/${encodeURIComponent(attachment.filename)}`, {
-      signal,
-      credentials: "same-origin",
-      redirect: "error",
-      cache: "no-store",
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
-    if (!response.ok) throw new Error("无法下载核验原件。");
-    await verifyOriginalArchive(await readOriginalArchive(response, signal), item.filename, item.sha256);
-  };
-  try {
-    const memo = await memoServiceClient.getMemo({ name: base.memo }, { signal });
-    if (
-      memo.creator !== item.owner ||
-      memo.visibility !== Visibility.PRIVATE ||
-      memo.content !== item.content ||
-      memo.attachments.length !== 1
-    )
-      throw new Error("同一原件的已有记录或稿件已变化，请打开已有记录人工编辑；不会覆盖或另建记录。");
-    await verify(memo.attachments[0]);
-    const result = { ...base, attachment: memo.attachments[0].name, status: "verified" as const };
-    receipt(result);
-    return result;
-  } catch (error) {
-    if (!(error instanceof ConnectError && error.code === Code.NotFound)) throw error;
-  }
-  await validateBatchQuota([item], signal);
-  const found = await attachmentServiceClient.listAttachments(
-    { filter: `creator == ${JSON.stringify(item.owner)} && filename == ${JSON.stringify(archive(item))}`, pageSize: 20 },
-    { signal },
-  );
-  if (found.nextPageToken || found.attachments.length > 19) throw new Error("同名附件候选过多，请先到附件管理核对。");
-  const matches: Attachment[] = [];
-  for (const attachment of found.attachments) {
-    if (attachment.memo) continue;
-    // Fail closed on ambiguous same-name bytes: never claim an unverified upload can be reused.
-    await verify(attachment);
-    matches.push(attachment);
-  }
-  if (matches.length > 1)
-    throw new Error(`发现多个未关联原件 ${matches.map((entry) => entry.name).join("、")}；请在附件管理核对，不自动删除。`);
-  let attachment = matches[0];
-  if (!attachment) {
-    await account(item, signal);
-    receipt({ ...base, status: "upload-unknown" });
-    try {
-      attachment = await attachmentServiceClient.createAttachment(
-        {
-          attachment: {
-            filename: archive(item),
-            type: "application/zip",
-            content: zipSync({ [item.filename]: new Uint8Array(item.data) }, { level: 0 }),
-          },
-        },
-        { signal },
-      );
-    } catch {
-      throw new Error("原件上传结果未知。请下载回执；重试会查找并校验同名未关联附件，不会自动删除。");
-    }
-  }
-  receipt({ ...base, attachment: attachment.name, status: "uploaded" });
-  const current = await attachmentServiceClient.getAttachment({ name: attachment.name }, { signal });
-  if (current.memo) throw new Error("原件已被关联，请重新核验；不会抢占其他记录附件。");
-  await verify(current);
-  await account(item, signal);
-  receipt({ ...base, attachment: current.name, status: "save-unknown" });
-  try {
-    await memoServiceClient.createMemo(
-      { memoId: item.id, memo: { content: item.content, visibility: Visibility.PRIVATE, attachments: [{ name: current.name }] } },
-      { signal },
-    );
-  } catch {
-    throw new Error("记录写入结果未知，原件附件已记录在回执中。请重试核验，不要重复新建；不会自动删除。");
-  }
-  const result = { ...base, attachment: current.name, status: "imported" as const };
-  receipt(result);
-  return result;
-}
+/** Commit the original and confirmed transcript together on supported SQLite servers. No ASR call. */
+export const saveAudio = (item: BatchSource, signal: AbortSignal, receipt: (value: AudioReceipt) => void): Promise<AudioReceipt> =>
+  saveAtomicOriginal(item, "audio", signal, receipt);
