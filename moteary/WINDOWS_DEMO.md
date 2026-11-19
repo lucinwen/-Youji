@@ -2,9 +2,9 @@
 
 **状态：Windows 原生构建、PowerShell 命令、WSL2 和 Windows 浏览器均未实测。** 本文按当前源码校对参数，提供待验证的操作路径；已有启动、SQLite 和 HTTP 证据来自 Linux，不应写成 Windows 验收通过。默认关闭所有可选解析器／模型，不运行 ASR。
 
-这是基于 Memos 的累计开发分支，不是预编译 Windows 发行包，也不需要合并 main。本文使用 [PR #21](https://github.com/lucinwen/-Youji/pull/21) 的交付分支 `feat/audio-atomic-demo-20261119`。先查看 PR 页面显示的当前 head 提交，克隆后将 `git rev-parse HEAD` 与之核对；分支可追加文档修正，因此不把某个旧 SHA 写成永远有效的当前 HEAD。若远端查询没有输出或提交不一致，先停止核对，不要改拉 main 或用旧产物代替。
+本文固定使用 [PR #24](https://github.com/lucinwen/-Youji/pull/24) 已验收源码 `8ef2d5dc40bb9f082ab726b2f7c3478a0a8453de`。克隆分支 `feat/private-source-picker-20261119` 后必须再 detached checkout 此 SHA，并自动核对；分支后来追加提交也不会改变本文版本。不要切换 main、#21 或以旧构建产物代替。本文是源码试跑路径，不是已验证 Windows 发行包。
 
-Linux 验收使用的后端源码检查点是 `25e41821c5662aa98b1fcbcfe40ca7074cb00606`，前端源码检查点是 `87afc0d253c1b6abf2a07e92759bb939faf12928`，详见[音频事务 QA](AUDIO_ATOMIC_QA_20261119.md)；它们是测试来源，不是要求 checkout 的当前交付 HEAD，也不证明 Windows 已通过。冻结回退为 PR #20：分支 `feat/chat-atomic-demo-20261118`、提交 `ca965c73968ff9c47f9938b6e45cabffc5c2c7c9`；只有明确复现该回退时才在另一新目录使用它。
+Linux 功能验收来源与边界见该固定版本的 [来源选择器 QA](https://github.com/lucinwen/-Youji/blob/8ef2d5dc40bb9f082ab726b2f7c3478a0a8453de/moteary/PRIVATE_SOURCE_PICKER_QA_20261119.md)。其本地实现检查点、树哈希与二进制哈希用于追溯，不替代本文应 checkout 的 #24 SHA，也不是 Windows/WSL 运行证据。[旧 #21 指南原文](WINDOWS_DEMO_PR21_HISTORY.md) 仅保留为历史引用，不按其命令启动本轮版本。
 
 ## 原生 Windows：PowerShell 路径
 
@@ -15,19 +15,21 @@ SQLite 使用 `modernc.org/sqlite v1.56.0`，不是要求 CGO 的 `mattn/go-sqli
 在准备存放源码的新目录执行：
 
 ```powershell
+$ErrorActionPreference = 'Stop'
+$YoujiExpectedCommit = '8ef2d5dc40bb9f082ab726b2f7c3478a0a8453de'
 git --version
 node --version
 pnpm.cmd --version
 go version
 
-git ls-remote --heads https://github.com/lucinwen/-Youji.git refs/heads/feat/audio-atomic-demo-20261119
-# 将上一条分支 SHA 与 PR #21 页面当前 head 提交核对，再执行：
-git clone --single-branch --branch feat/audio-atomic-demo-20261119 https://github.com/lucinwen/-Youji.git youji-demo
-if ($LASTEXITCODE -ne 0) { throw '克隆失败，请先核对分支是否发布。' }
-Set-Location .\youji-demo
+git clone --single-branch --branch feat/private-source-picker-20261119 https://github.com/lucinwen/-Youji.git youji-pr24-demo
+if ($LASTEXITCODE -ne 0) { throw '克隆失败，停止；不要改拉旧分支。' }
+Set-Location .\youji-pr24-demo
+git checkout --detach $YoujiExpectedCommit
+if ($LASTEXITCODE -ne 0) { throw '固定提交检出失败，停止。' }
+$YoujiActualCommit = git rev-parse HEAD
+if ($LASTEXITCODE -ne 0 -or $YoujiActualCommit -ne $YoujiExpectedCommit) { throw '不是已验收的 #24 固定提交，停止。' }
 git status --short
-git rev-parse HEAD
-# 与 PR #21 页面显示的当前 head 提交核对；不一致先停止。
 
 pnpm.cmd --dir web install --frozen-lockfile
 if ($LASTEXITCODE -ne 0) { throw '前端依赖安装失败，停止构建。' }
@@ -35,7 +37,7 @@ pnpm.cmd --dir web release
 if ($LASTEXITCODE -ne 0) { throw '前端构建失败，停止构建。' }
 New-Item -ItemType Directory -Path .\build -Force | Out-Null
 $env:CGO_ENABLED = '0'
-go build -o .\build\youji.exe ./cmd/memos
+go build -mod=readonly -o .\build\youji.exe ./cmd/memos
 if ($LASTEXITCODE -ne 0) { throw 'Windows 构建未通过；保留报错，不要运行旧二进制冒充本次构建。' }
 .\build\youji.exe version
 Get-FileHash .\build\youji.exe -Algorithm SHA256
@@ -67,7 +69,7 @@ Get-ChildItem Env: | Where-Object { $_.Name -like 'YOUJI_*' -or $_.Name -like 'M
 
 保持服务器终端运行，在同一电脑浏览器打开 `http://127.0.0.1:5231`，按首次设置界面创建合成演示账户，然后进入 `http://127.0.0.1:5231/moteary`。第一位账户具有实例管理权限，不要复用真实密码。绑定 loopback 无需向局域网开放端口；不要为此添加公网入站规则。若 5231 已被占用，先正常停止自己的演示服务，或另选端口并同步更改浏览器地址，不要结束不认识的进程。
 
-先走无模型路径：打开“粘贴聊天与文字”，粘贴“合成甲：松涛纸卡Demo，需要两张纸卡，不用投影仪。”，本地预览、确认仅自己可见后保存。搜索 `松涛纸卡Demo`，打开来源、下载 ZIP 核对原文，再测试重复核验和原记录删除。其他来源入口的容量与恢复限制见 [演示手册](DEMO_RUNBOOK.md) 和 [手动文本事务说明](ATOMIC_MANUAL_IMPORT.md)。不要把默认未启用的 PDF／语义／语音处理器当成启动失败；本文不提供启用 ASR 的命令。
+先走无模型路径：打开“粘贴聊天与文字”，粘贴“合成甲：松涛纸卡Demo，需要两张纸卡，不用投影仪。”，本地预览、确认仅自己可见后保存。搜索 `松涛纸卡Demo`，打开来源、下载 ZIP 核对原文，再测试重复核验和原记录删除。其他来源入口的容量与恢复限制见 [演示手册](DEMO_RUNBOOK.md) 和 [手动文本事务说明](ATOMIC_MANUAL_IMPORT.md)。这些链接仅供查阅功能限制，不再执行其中历史 clone/checkout。不要把默认未启用的 PDF／语义／语音处理器当成启动失败；本文不提供启用 ASR 的命令。
 
 ### 重启：使用同一份数据库
 
@@ -96,27 +98,54 @@ wsl --list --verbose
 wsl
 ```
 
-仅当已进入期望的 WSL2 Linux 发行版，且该环境已准备 Git、Node 24、pnpm、Go 1.27.2 和 Python 3 后，在 **WSL 的 Bash** 中执行。Python 3 用于随后 Linux 手册的启动／预检脚本及合成样本；项目声明 pnpm 11.0.1，已有 Linux 实测为 11.25.0，两者不可混称通过；WSL2 本身仍未实测。
+仅当已进入期望的 WSL2 Linux 发行版，且该环境已准备 Git、Node 24、pnpm、Go 1.27.2 和 Python 3 后，在 **WSL 的 Bash** 中执行。Python 3 用于下面的启动／预检脚本及合成样本；项目声明 pnpm 11.0.1，已有 Linux 实测为 11.25.0，两者不可混称通过；WSL2 本身仍未实测。
 
 ```bash
+set -e
 cd ~
-git clone --single-branch --branch feat/audio-atomic-demo-20261119 https://github.com/lucinwen/-Youji.git youji-demo
-cd youji-demo
-git rev-parse HEAD
-# 与 PR #21 页面显示的当前 head 提交核对；不一致先停止。
+youji_expected_commit=8ef2d5dc40bb9f082ab726b2f7c3478a0a8453de
+git clone --single-branch --branch feat/private-source-picker-20261119 https://github.com/lucinwen/-Youji.git youji-pr24-demo
+cd youji-pr24-demo
+git checkout --detach "$youji_expected_commit"
+test "$(git rev-parse HEAD)" = "$youji_expected_commit"
+git status --short
 python3 --version
-pnpm --dir web install --frozen-lockfile && pnpm --dir web release
+pnpm --dir web install --frozen-lockfile
+pnpm --dir web release
 mkdir -p build
-go build -o build/youji ./cmd/memos
+go build -mod=readonly -o build/youji ./cmd/memos
+python3 scripts/youji_demo_start.py --binary build/youji --data "$HOME/youji-demos/pr24-wsl-demo" --port 5231 --run
 ```
 
-任何一步失败都先停止处理，不使用旧产物。接着按 [Linux 演示手册](DEMO_RUNBOOK.md) 创建独立目录、绑定 loopback 并保留重启路径。使用 WSL 自己的 `~/youji-demo` 和数据目录，不混用 Windows 的 `node_modules`、`.exe` 或运行中的 SQLite 数据目录。Windows 浏览器访问 WSL 服务的 localhost 转发还需在实际机器验证；若不可达，不要直接改为 `0.0.0.0` 或关闭防火墙当作验收通过。
+这是完整 WSL Bash 路径，不需要再去旧 Linux 手册执行 clone/checkout。`set -e` 使上述普通命令失败时停止；不使用旧产物。启动脚本只绑定127.0.0.1、清除可选模型配置并拒绝覆盖已有非空目录。记录它打印的数据路径；目录已存在时请选择新的演示目录，不删除旧资料绕过保护。使用 WSL 自己的 `~/youji-pr24-demo` 和数据目录，不混用 Windows 的 `node_modules`、`.exe` 或运行中的 SQLite 数据目录。
+
+停止进程后若要复读同一份 WSL 演示，在相同源码目录中使用实际保存的数据路径，而不是再次调用新实例脚本：
+
+```bash
+set -e
+read -r -p '首次启动保留的数据目录完整路径：' youji_data
+test -f "$youji_data/memos_prod.db"
+env -i LANG=C.UTF-8 "$PWD/build/youji" --addr 127.0.0.1 --port 5231 \
+  --data "$youji_data" --driver sqlite --dsn '' --unix-sock '' --config-apply off
+```
+
+Windows 浏览器访问 WSL 服务的 localhost 转发还需实机验证；若不可达，不改为 `0.0.0.0`、不开防火墙入站规则、不中转公网来宣称成功。
+
+## 待执行的 Windows x64 / WSL 合成验收
+
+在已授权的 x64 环境，以普通账户、本机新数据库执行；不使用真实简历、面试记录或录音。以下是待测清单，不是已通过结果：
+
+1. 核对固定 SHA、工具版本，先构建前端再构建后端；记录 EXE 或 Linux 二进制 SHA-256。原生 Windows 与 WSL 分开记录。
+2. 首次 loopback 启动后导入一份自行保留原文件的 UTF-8 合成 TXT，核对 PRIVATE；下载原件 ZIP，解压到独立临时目录，比对原 TXT 与解压文件的 SHA-256。不要拿 ZIP 自身哈希与 TXT 比较。
+3. 两条虚构记录同标题“岗位简报”、事件日期不同，较晚编辑的故意是错误版本。在复盘的来源选择器按关键词搜索、按目标事件日明确选择；换查询与重排不能自动换成同名最新条目。打开的是该条当前正文，非历史快照。
+4. 停止并使用同一数据目录重启，重新登录，检索、打开相同来源、再下载原件核对；记录失败及具体日志，不把启动成功等同全部通过。
 
 ## 核查依据与尚缺证据
 
 - `go.mod` 指定 Go 1.27.2 和 modernc SQLite；本地依赖 `doc.go` 列出 Windows 平台。`internal/profile/profile.go` 具有 Windows 默认路径，并在显式数据目录下建立 `memos_prod.db`；本指南始终传入独立目录，不使用共享默认目录。
 - `web/package.json` 定义前端构建及 pnpm 版本，`cmd/memos/main.go` 定义本文的启动参数；没有使用臆造的 Windows 专用开关。
-- 本轮在 Linux 只尝试了 `GOOS=windows GOARCH=amd64 CGO_ENABLED=0` 的离线依赖枚举，**未完成**：缓存缺少 `github.com/inconshreveable/mousetrap v1.1.0`、`github.com/mattn/go-isatty v0.0.24`、`github.com/ncruces/go-strftime v1.0.0`，`GOPROXY=off` 拒绝查找。没有安装或下载它们，没有生成或运行 Windows 可执行文件。
+- 独立复核已针对 #24 在 Linux 尝试 `GOOS=windows GOARCH=amd64 CGO_ENABLED=0` 离线交叉构建，**编译前因缺依赖退出，未生成 EXE**：缓存缺少 `github.com/inconshreveable/mousetrap v1.1.0`、`github.com/mattn/go-isatty v0.0.24`、`github.com/ncruces/go-strftime v1.0.0`，`GOPROXY=off` 拒绝查找。这属于依赖缓存缺失，不是已确认的代码不兼容。本次文档修正未重复同一离线命令、未安装这些依赖，未运行 Windows 可执行文件。
+- 本次仅静态检查固定 SHA、命令和链接及 Bash 语法；执行环境没有 `pwsh`，没有 PowerShell AST/运行验证。
 - 当前缺少 Windows 构建、首次启动、重启保真、ZIP 下载、正常浏览器及本地草稿恢复证据。Linux HTTP／SQLite 测试不能替代这些项目。
 
 保留仓库 [LICENSE](../LICENSE)、[Memos 来源记录](UPSTREAM.json) 及 `moteary/licenses/` 中的第三方声明；分发构建产物时也应携带对应许可。此指南未引入或复制额外软件实现。

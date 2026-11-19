@@ -15,9 +15,11 @@
 - [上游说明](moteary/UPSTREAM_README.md)
 - [MIT 许可证](LICENSE)；新增依赖许可位于 `moteary/licenses/`。
 
-## 当前累计草稿与启动
+## 固定 #24 Windows / WSL 试跑与历史启动资料
 
-Windows 用户请使用 [PowerShell / WSL 待验证指南](moteary/WINDOWS_DEMO.md)，不要直接粘贴下面的 Bash 命令。Windows 实机尚未验收。
+Windows 用户请使用 [固定 #24 SHA 的 PowerShell / WSL 待验证指南](moteary/WINDOWS_DEMO.md)，其 clone/checkout 均固定到 `8ef2d5dc40bb9f082ab726b2f7c3478a0a8453de`。原生 Windows、WSL 与实机浏览器均未验收。当前选择器的 Linux 路线见 [选择器演示页](moteary/PRIVATE_SOURCE_PICKER.md)。
+
+### 历史 #21 Linux 启动记录（不是当前选择器版本）
 
 [PR #21](https://github.com/lucinwen/-Youji/pull/21) 的交付分支：`feat/audio-atomic-demo-20261119`。克隆后用 `git rev-parse HEAD` 核对 PR 页面显示的当前 head 提交，不将历史测试源码检查点当作当前 HEAD。此分支包含前序 PR #1–20；不需要逐个合并，也不表示这些草稿已经合并 main。
 
