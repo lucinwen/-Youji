@@ -1,0 +1,27 @@
+{
+  "source_commit": "f879c7dcb2204416c73b9ef7a4d7be17ad1cd0ef",
+  "functional_baseline": "8ef2d5dc40bb9f082ab726b2f7c3478a0a8453de",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "build_requested": false,
+  "checks": [
+    {
+      "check": "multisource",
+      "status": "passed"
+    },
+    {
+      "check": "source-picker",
+      "status": "passed"
+    }
+  ],
+  "browser_tested": false,
+  "asr_executed": false,
+  "limitations": [
+    "HTTP/modules only, not browser or phone",
+    "Picker uses the same binary before/after restart: not old-version migration",
+    "No Windows claim unless this report platform is Windows",
+    "Existing binary hash records identity, not proof of independent rebuild"
+  ],
+  "binary_sha256": "8b5d56a700ac8ba9c31be4ff0d8acd551c4ce1fbf128ee50d4298e3c52094d83",
+  "status": "passed"
+}

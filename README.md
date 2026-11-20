@@ -17,6 +17,8 @@
 
 ## 固定 #24 Windows / WSL 试跑与历史启动资料
 
+新增 [跨平台合成验收工具](moteary/WINDOWS_ACCEPTANCE_KIT.md)：提供 Windows 待执行构建路径；[本轮 Linux 实测记录](moteary/WINDOWS_ACCEPTANCE_QA_20261120.md)不等同 Windows 验收。
+
 Windows 用户请使用 [固定 #24 SHA 的 PowerShell / WSL 待验证指南](moteary/WINDOWS_DEMO.md)，其 clone/checkout 均固定到 `8ef2d5dc40bb9f082ab726b2f7c3478a0a8453de`。原生 Windows、WSL 与实机浏览器均未验收。当前选择器的 Linux 路线见 [选择器演示页](moteary/PRIVATE_SOURCE_PICKER.md)。
 
 ### 历史 #21 Linux 启动记录（不是当前选择器版本）

@@ -45,7 +45,8 @@ try:
             port = sock.getsockname()[1]
         base = f'http://127.0.0.1:{port}'
         # Controlled clean environment: no inherited processor or database configuration.
-        env = {'LANG': 'C.UTF-8', 'PATH': os.environ.get('PATH', '')}
+        env = {k: os.environ[k] for k in ('SystemRoot', 'WINDIR', 'TEMP', 'TMP', 'PATH') if k in os.environ}
+        env['LANG'] = 'C.UTF-8'
         with (OUT / 'server.log').open('w') as log:
             def start(binary):
                 global process
