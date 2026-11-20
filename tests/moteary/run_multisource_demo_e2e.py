@@ -122,7 +122,7 @@ def run():
                               'html': str(html), 'chat': str(chat), 'audio': str(audio),
                               'workerAsset': str(assets[0]), 'evidence': str(temp / 'sources.json')}
                     stage = 'four source frontend modules with real HTTP'
-                    result = subprocess.run(['pnpm', 'exec', 'vitest', 'run', 'tests/moteary-multisource-http.test.ts', '--maxWorkers=1'],
+                    result = subprocess.run(['node', str(root / 'web/node_modules/vitest/vitest.mjs'), 'run', 'tests/moteary-multisource-http.test.ts', '--maxWorkers=1'],
                                             cwd=root / 'web', env={**env, 'YOUJI_MULTISOURCE_WEB_QA': json.dumps(config)},
                                             capture_output=True, text=True, timeout=280)
                     (output / 'web-module-http.log').write_text(redact(result.stdout + result.stderr))
