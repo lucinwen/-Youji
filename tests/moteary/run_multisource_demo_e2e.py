@@ -124,11 +124,11 @@ def run():
                     stage = 'four source frontend modules with real HTTP'
                     result = subprocess.run(['node', str(root / 'web/node_modules/vitest/vitest.mjs'), 'run', 'tests/moteary-multisource-http.test.ts', '--maxWorkers=1'],
                                             cwd=root / 'web', env={**env, 'YOUJI_MULTISOURCE_WEB_QA': json.dumps(config)},
-                                            capture_output=True, text=True, timeout=280)
-                    (output / 'web-module-http.log').write_text(redact(result.stdout + result.stderr))
+                                            capture_output=True, encoding='utf-8', errors='replace', timeout=280)
+                    (output / 'web-module-http.log').write_text(redact(result.stdout + result.stderr), encoding='utf-8')
                     if result.returncode:
                         raise RuntimeError('Multisource frontend HTTP check failed; see sanitized log')
-                    evidence = json.loads((temp / 'sources.json').read_text())
+                    evidence = json.loads((temp / 'sources.json').read_text(encoding='utf-8'))
                     passed('same account: paste, production-worker HTML, chat JSON and audio manual text; PRIVATE, exact ZIP originals, verified duplicates, keyword/source and common-topic retrieval')
                     stage = 'restart and retrieve originals'
                     before = call('/api/memos', token=token)['memos']
@@ -157,7 +157,7 @@ def run():
                 finally:
                     stop()
                     log.flush()
-                    (output / 'server.log').write_text(redact((temp / 'server.log').read_text(errors='replace')))
+                    (output / 'server.log').write_text(redact((temp / 'server.log').read_text(encoding='utf-8', errors='replace')), encoding='utf-8')
     except Exception as error:
         failure = redact(f'{type(error).__name__}: {error}')
         checks.append({'check': stage, 'status': 'blocked' if stage in ('setup', 'temporary server startup') else 'failed', 'error': failure})
@@ -168,7 +168,7 @@ def run():
                               'Audio is four-second zero PCM with authored synthetic manual text, not speech transcription',
                               'This sequential walkthrough does not prove concurrency safety; dedicated transaction tests cover supported SQLite entries only',
                               'All input synthetic; no external website or chat account access']}
-    (output / 'multisource-http.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
+    (output / 'multisource-http.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 1 if failure else 0
 

@@ -193,6 +193,6 @@ except Exception as e:
     result['status']='failed';result['error']=type(e).__name__+': '+str(e)
 finally:
     stop()
-    (OUT/'source-picker-http.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+    (OUT/'source-picker-http.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n', encoding='utf-8')
     print(json.dumps(result,ensure_ascii=False,indent=2))
 if result['status']!='passed':raise SystemExit(1)

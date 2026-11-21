@@ -1,0 +1,142 @@
+name: Youji Windows synthetic acceptance
+on:
+  push:
+    branches: [verify/windows-2025-20261121]
+permissions:
+  contents: read
+concurrency:
+  group: youji-windows-20261121
+  cancel-in-progress: false
+jobs:
+  acceptance:
+    runs-on: windows-2025
+    timeout-minutes: 40
+    env:
+      PYTHONUTF8: '1'
+      PYTHONIOENCODING: utf-8
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff
+        with:
+          go-version: '1.27.2'
+          cache: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install fixed pnpm
+        run: |
+          npm install --global pnpm@11.0.1 *> "$env:RUNNER_TEMP/pnpm-install.log"
+          if ($LASTEXITCODE -ne 0) { throw 'pnpm installation failed; raw log not published' }
+          $pnpmVersion = pnpm.cmd --version
+          if ($LASTEXITCODE -ne 0) { throw 'pnpm version command failed' }
+          if ($pnpmVersion -ne '11.0.1') { throw 'Unexpected pnpm version' }
+      - name: Portability regressions
+        run: |
+          python tests/moteary/test_acceptance_portability.py
+          if ($LASTEXITCODE -ne 0) { throw 'Portability tests failed' }
+      - name: Frozen frontend dependencies
+        timeout-minutes: 10
+        run: |
+          pnpm.cmd --dir web install --frozen-lockfile *> "$env:RUNNER_TEMP/frontend-install.log"
+          if ($LASTEXITCODE -ne 0) { throw 'Frozen frontend dependency installation failed' }
+      - name: Vite CLI starts
+        continue-on-error: true
+        timeout-minutes: 2
+        run: |
+          python scripts/youji_frontend_diagnostic.py cli
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed-label preflight failed' }
+      - name: Native Rolldown load
+        continue-on-error: true
+        timeout-minutes: 2
+        run: |
+          python scripts/youji_frontend_diagnostic.py rolldown
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed-label preflight failed' }
+      - name: Native Tailwind Oxide load
+        continue-on-error: true
+        timeout-minutes: 2
+        run: |
+          python scripts/youji_frontend_diagnostic.py oxide
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed-label preflight failed' }
+      - name: Native LightningCSS load
+        continue-on-error: true
+        timeout-minutes: 2
+        run: |
+          python scripts/youji_frontend_diagnostic.py lightningcss
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed-label preflight failed' }
+      - name: Frontend release classified
+        id: release_diag
+        continue-on-error: true
+        timeout-minutes: 9
+        run: |
+          python scripts/youji_frontend_diagnostic.py release
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed-label frontend release failed' }
+      - name: Frontend category passed
+        if: steps.release_diag.outputs.category == 'passed'
+        run: Write-Output 'passed'
+      - name: Frontend category missing_package
+        if: steps.release_diag.outputs.category == 'missing_package'
+        run: Write-Output 'missing_package'
+      - name: Frontend category native_load
+        if: steps.release_diag.outputs.category == 'native_load'
+        run: Write-Output 'native_load'
+      - name: Frontend category path_permission
+        if: steps.release_diag.outputs.category == 'path_permission'
+        run: Write-Output 'path_permission'
+      - name: Frontend category unresolved_import
+        if: steps.release_diag.outputs.category == 'unresolved_import'
+        run: Write-Output 'unresolved_import'
+      - name: Frontend category oom_kill
+        if: steps.release_diag.outputs.category == 'oom_kill'
+        run: Write-Output 'oom_kill'
+      - name: Frontend category unknown
+        if: steps.release_diag.outputs.category == 'unknown'
+        run: Write-Output 'unknown'
+      - name: Frontend result gate
+        if: always()
+        run: |
+          if ('${{ steps.release_diag.outputs.category }}' -ne 'passed') { throw 'Frontend not passed; stopping downstream' }
+      - name: Windows Go build
+        timeout-minutes: 15
+        run: |
+          $exe = Join-Path $env:RUNNER_TEMP 'youji-validation.exe'
+          if (Test-Path $exe) { throw 'Build output exists; refusing overwrite' }
+          $env:CGO_ENABLED = '0'
+          $env:GOTOOLCHAIN = 'local'
+          go build -mod=readonly -o $exe ./cmd/memos *> "$env:RUNNER_TEMP/backend-build.log"
+          if ($LASTEXITCODE -ne 0) { throw 'Windows Go build failed' }
+          if (-not (Test-Path $exe -PathType Leaf)) { throw 'Build returned without EXE' }
+      - name: EXE version and SHA256
+        timeout-minutes: 2
+        run: |
+          $exe = Join-Path $env:RUNNER_TEMP 'youji-validation.exe'
+          & $exe version *> "$env:RUNNER_TEMP/exe-version.log"
+          if ($LASTEXITCODE -ne 0) { throw 'EXE version command failed' }
+          $hash = (Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash
+          "Built EXE SHA256: $hash" >> $env:GITHUB_STEP_SUMMARY
+          "Validated source: $env:GITHUB_SHA" >> $env:GITHUB_STEP_SUMMARY
+      - name: Synthetic HTTP acceptance
+        timeout-minutes: 12
+        run: |
+          python scripts/youji_acceptance.py --binary "$env:RUNNER_TEMP/youji-validation.exe" --output "$env:RUNNER_TEMP/youji-evidence"
+          if ($LASTEXITCODE -ne 0) { throw 'Synthetic HTTP acceptance failed; no raw logs published' }
+      - name: Stage summary only
+        if: always()
+        run: |
+          $p = Join-Path $env:RUNNER_TEMP 'youji-evidence/acceptance.json'
+          if (Test-Path $p) {
+            $r = Get-Content -Raw -Encoding utf8 $p | ConvertFrom-Json
+            "Source: $($r.source_commit)" >> $env:GITHUB_STEP_SUMMARY
+            "Binary SHA256: $($r.binary_sha256)" >> $env:GITHUB_STEP_SUMMARY
+            "Status: $($r.status)" >> $env:GITHUB_STEP_SUMMARY
+            foreach ($c in $r.checks) { "- $($c.check): $($c.status) $($c.error_type)" >> $env:GITHUB_STEP_SUMMARY }
+          } else { 'Acceptance not reached; inspect setup step status.' >> $env:GITHUB_STEP_SUMMARY }
+          'Hosted Windows build/HTTP only. Browser, user PC and ASR not tested. No logs or binaries uploaded.' >> $env:GITHUB_STEP_SUMMARY

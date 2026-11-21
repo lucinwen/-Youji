@@ -20,9 +20,14 @@ def main():
     parser.add_argument('--build', action='store_true', help='Install locked frontend dependencies, build frontend then backend; requires dependency network/cache')
     args = parser.parse_args()
     output = Path(args.output).resolve()
+    if output.is_relative_to(ROOT):
+        parser.error('Place the evidence directory outside the source checkout.')
     if output.exists():
         parser.error('Evidence directory exists; choose a new path (no overwrite).')
-    binary = Path(args.binary or ROOT / 'build' / ('youji.exe' if os.name == 'nt' else 'youji')).resolve()
+    binary_path = Path(args.binary or ROOT / 'build' / ('youji.exe' if os.name == 'nt' else 'youji'))
+    if args.build and (binary_path.exists() or binary_path.is_symlink()):
+        parser.error('Build output already exists; choose an unused --binary path (no overwrite).')
+    binary = binary_path.resolve()
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     subprocess.run(['git', 'merge-base', '--is-ancestor', BASE, commit], cwd=ROOT, check=True)
     if subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT, text=True).strip():
@@ -36,7 +41,7 @@ def main():
                              'No Windows claim unless this report platform is Windows',
                              'Existing binary hash records identity, not proof of independent rebuild']}
     env = {k: v for k, v in os.environ.items() if not k.startswith(('YOUJI_', 'MEMOS_'))}
-    env.update({'CGO_ENABLED': '0', 'GOTOOLCHAIN': 'local'})
+    env.update({'CGO_ENABLED': '0', 'GOTOOLCHAIN': 'local', 'PYTHONUTF8': '1', 'PYTHONIOENCODING': 'utf-8'})
     stage = 'prerequisites'
     try:
         if args.build:
@@ -54,7 +59,8 @@ def main():
                 report['checks'].append({'check': label, 'status': 'passed'})
         if not binary.is_file():
             raise RuntimeError('Trusted binary missing; build first or explicitly use --build')
-        report['binary_sha256'] = hashlib.file_digest(binary.open('rb'), 'sha256').hexdigest()
+        with binary.open('rb') as stream:
+            report['binary_sha256'] = hashlib.file_digest(stream, 'sha256').hexdigest()
         for label, script, extra in [
             ('multisource', 'run_multisource_demo_e2e.py', {'YOUJI_MULTISOURCE_QA_OUTPUT': str(output / 'multisource')}),
             ('source-picker', 'run_source_picker_e2e.py', {'YOUJI_PICKER_QA_OUTPUT': str(output / 'source-picker'), 'YOUJI_BASELINE_BINARY': str(binary)})]:
