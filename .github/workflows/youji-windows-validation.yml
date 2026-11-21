@@ -36,15 +36,47 @@ jobs:
         run: |
           npm install --global pnpm@11.0.1 *> "$env:RUNNER_TEMP/pnpm-install.log"
           if ($LASTEXITCODE -ne 0) { throw 'pnpm installation failed; raw log not published' }
-          if ((pnpm --version) -ne '11.0.1') { throw 'Unexpected pnpm version' }
+          $pnpmVersion = pnpm.cmd --version
+          if ($LASTEXITCODE -ne 0) { throw 'pnpm version command failed' }
+          if ($pnpmVersion -ne '11.0.1') { throw 'Unexpected pnpm version' }
       - name: Portability regressions
         run: |
           python tests/moteary/test_acceptance_portability.py
           if ($LASTEXITCODE -ne 0) { throw 'Portability tests failed' }
-      - name: Build and synthetic HTTP acceptance
+      - name: Frozen frontend dependencies
+        timeout-minutes: 10
         run: |
-          python scripts/youji_acceptance.py --build --binary "$env:RUNNER_TEMP/youji-validation.exe" --output "$env:RUNNER_TEMP/youji-evidence"
-          if ($LASTEXITCODE -ne 0) { throw 'Build or acceptance failed; see stage summary (no raw logs published)' }
+          pnpm.cmd --dir web install --frozen-lockfile *> "$env:RUNNER_TEMP/frontend-install.log"
+          if ($LASTEXITCODE -ne 0) { throw 'Frozen frontend dependency installation failed' }
+      - name: Frontend release
+        timeout-minutes: 10
+        run: |
+          pnpm.cmd --dir web release *> "$env:RUNNER_TEMP/frontend-build.log"
+          if ($LASTEXITCODE -ne 0) { throw 'Frontend release failed' }
+      - name: Windows Go build
+        timeout-minutes: 15
+        run: |
+          $exe = Join-Path $env:RUNNER_TEMP 'youji-validation.exe'
+          if (Test-Path $exe) { throw 'Build output exists; refusing overwrite' }
+          $env:CGO_ENABLED = '0'
+          $env:GOTOOLCHAIN = 'local'
+          go build -mod=readonly -o $exe ./cmd/memos *> "$env:RUNNER_TEMP/backend-build.log"
+          if ($LASTEXITCODE -ne 0) { throw 'Windows Go build failed' }
+          if (-not (Test-Path $exe -PathType Leaf)) { throw 'Build returned without EXE' }
+      - name: EXE version and SHA256
+        timeout-minutes: 2
+        run: |
+          $exe = Join-Path $env:RUNNER_TEMP 'youji-validation.exe'
+          & $exe version *> "$env:RUNNER_TEMP/exe-version.log"
+          if ($LASTEXITCODE -ne 0) { throw 'EXE version command failed' }
+          $hash = (Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash
+          "Built EXE SHA256: $hash" >> $env:GITHUB_STEP_SUMMARY
+          "Validated source: $env:GITHUB_SHA" >> $env:GITHUB_STEP_SUMMARY
+      - name: Synthetic HTTP acceptance
+        timeout-minutes: 12
+        run: |
+          python scripts/youji_acceptance.py --binary "$env:RUNNER_TEMP/youji-validation.exe" --output "$env:RUNNER_TEMP/youji-evidence"
+          if ($LASTEXITCODE -ne 0) { throw 'Synthetic HTTP acceptance failed; no raw logs published' }
       - name: Stage summary only
         if: always()
         run: |
