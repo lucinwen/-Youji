@@ -28,7 +28,7 @@ Get-Content (Join-Path $YoujiEvidence 'acceptance.json')
 python3 scripts/youji_acceptance.py --binary build/youji --output /tmp/youji-acceptance-new
 ```
 
-输出目录必须全新；不会覆盖既有证据。省略 `--build` 只使用指定可信构建，不声称重新编译过。脚本的功能基线祖先检查不等于当前二进制由该源码编译，须核对报告中的二进制哈希和构建来源。
+证据目录必须是源码目录之外的新目录；不会覆盖既有证据。若重新构建，使用新路径（可通过 `--binary` 指定），避免覆盖现有二进制。省略 `--build` 只使用指定可信构建，不声称重新编译过。脚本的功能基线祖先检查不等于当前二进制由该源码编译，须核对报告中的二进制哈希和构建来源。
 
 ## 实际执行内容与边界
 

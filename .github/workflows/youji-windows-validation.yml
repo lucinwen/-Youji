@@ -1,0 +1,59 @@
+name: Youji Windows synthetic acceptance
+on:
+  push:
+    branches: [verify/windows-2025-20261121]
+permissions:
+  contents: read
+concurrency:
+  group: youji-windows-20261121
+  cancel-in-progress: false
+jobs:
+  acceptance:
+    runs-on: windows-2025
+    timeout-minutes: 40
+    env:
+      PYTHONUTF8: '1'
+      PYTHONIOENCODING: utf-8
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff
+        with:
+          go-version: '1.27.2'
+          cache: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install fixed pnpm
+        run: |
+          npm install --global pnpm@11.0.1 *> "$env:RUNNER_TEMP/pnpm-install.log"
+          if ($LASTEXITCODE -ne 0) { throw 'pnpm installation failed; raw log not published' }
+          if ((pnpm --version) -ne '11.0.1') { throw 'Unexpected pnpm version' }
+      - name: Portability regressions
+        run: |
+          python tests/moteary/test_acceptance_portability.py
+          if ($LASTEXITCODE -ne 0) { throw 'Portability tests failed' }
+      - name: Build and synthetic HTTP acceptance
+        run: |
+          python scripts/youji_acceptance.py --build --binary "$env:RUNNER_TEMP/youji-validation.exe" --output "$env:RUNNER_TEMP/youji-evidence"
+          if ($LASTEXITCODE -ne 0) { throw 'Build or acceptance failed; see stage summary (no raw logs published)' }
+      - name: Stage summary only
+        if: always()
+        run: |
+          $p = Join-Path $env:RUNNER_TEMP 'youji-evidence/acceptance.json'
+          if (Test-Path $p) {
+            $r = Get-Content -Raw -Encoding utf8 $p | ConvertFrom-Json
+            "Source: $($r.source_commit)" >> $env:GITHUB_STEP_SUMMARY
+            "Binary SHA256: $($r.binary_sha256)" >> $env:GITHUB_STEP_SUMMARY
+            "Status: $($r.status)" >> $env:GITHUB_STEP_SUMMARY
+            foreach ($c in $r.checks) { "- $($c.check): $($c.status) $($c.error_type)" >> $env:GITHUB_STEP_SUMMARY }
+          } else { 'Acceptance not reached; inspect setup step status.' >> $env:GITHUB_STEP_SUMMARY }
+          'Hosted Windows build/HTTP only. Browser, user PC and ASR not tested. No logs or binaries uploaded.' >> $env:GITHUB_STEP_SUMMARY
