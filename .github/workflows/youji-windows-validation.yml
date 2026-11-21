@@ -48,11 +48,62 @@ jobs:
         run: |
           pnpm.cmd --dir web install --frozen-lockfile *> "$env:RUNNER_TEMP/frontend-install.log"
           if ($LASTEXITCODE -ne 0) { throw 'Frozen frontend dependency installation failed' }
-      - name: Frontend release
-        timeout-minutes: 10
+      - name: Vite CLI starts
+        continue-on-error: true
+        timeout-minutes: 2
         run: |
-          pnpm.cmd --dir web release *> "$env:RUNNER_TEMP/frontend-build.log"
-          if ($LASTEXITCODE -ne 0) { throw 'Frontend release failed' }
+          python scripts/youji_frontend_diagnostic.py cli
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed-label preflight failed' }
+      - name: Native Rolldown load
+        continue-on-error: true
+        timeout-minutes: 2
+        run: |
+          python scripts/youji_frontend_diagnostic.py rolldown
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed-label preflight failed' }
+      - name: Native Tailwind Oxide load
+        continue-on-error: true
+        timeout-minutes: 2
+        run: |
+          python scripts/youji_frontend_diagnostic.py oxide
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed-label preflight failed' }
+      - name: Native LightningCSS load
+        continue-on-error: true
+        timeout-minutes: 2
+        run: |
+          python scripts/youji_frontend_diagnostic.py lightningcss
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed-label preflight failed' }
+      - name: Frontend release classified
+        id: release_diag
+        continue-on-error: true
+        timeout-minutes: 9
+        run: |
+          python scripts/youji_frontend_diagnostic.py release
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed-label frontend release failed' }
+      - name: Frontend category passed
+        if: steps.release_diag.outputs.category == 'passed'
+        run: Write-Output 'passed'
+      - name: Frontend category missing_package
+        if: steps.release_diag.outputs.category == 'missing_package'
+        run: Write-Output 'missing_package'
+      - name: Frontend category native_load
+        if: steps.release_diag.outputs.category == 'native_load'
+        run: Write-Output 'native_load'
+      - name: Frontend category path_permission
+        if: steps.release_diag.outputs.category == 'path_permission'
+        run: Write-Output 'path_permission'
+      - name: Frontend category unresolved_import
+        if: steps.release_diag.outputs.category == 'unresolved_import'
+        run: Write-Output 'unresolved_import'
+      - name: Frontend category oom_kill
+        if: steps.release_diag.outputs.category == 'oom_kill'
+        run: Write-Output 'oom_kill'
+      - name: Frontend category unknown
+        if: steps.release_diag.outputs.category == 'unknown'
+        run: Write-Output 'unknown'
+      - name: Frontend result gate
+        if: always()
+        run: |
+          if ('${{ steps.release_diag.outputs.category }}' -ne 'passed') { throw 'Frontend not passed; stopping downstream' }
       - name: Windows Go build
         timeout-minutes: 15
         run: |
